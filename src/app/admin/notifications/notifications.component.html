@@ -1,0 +1,60 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Notifications Assign</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+            <div class="row">
+              <form class="form-horizontal" [formGroup]="formGroup">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Notification Type</label>
+                    <select type="text" class="form-control input-xxs" formControlName="type" (change)="loadAssignedUsers()">
+                      <option [ngValue]="null">... Select type ...</option>
+                      <option *ngFor="let notificationType of notificationTypes$ | async" value="{{notificationType.type}}"> {{notificationType.type}}</option>
+                    </select>
+                    <span class="err" > {{ appValidator.validate_field('type') }} </span>
+                  </div>
+                  <div class="form-group">
+                    <label>User</label>
+                    <ng-select [items]="users$ | async"
+                        placeholder = "[Select user]"
+                        [selectOnTab]="true"
+                        bindLabel="user_name"
+                        [loading]="usersLoading"
+                        [typeahead]="usersInput$"
+                        formControlName="user_id">
+                    </ng-select>
+                    <span class="err" > {{ appValidator.validate_field('user_id') }} </span>
+                  </div>
+                  <div class="form-group">
+                      <button type="button" class="btn btn-labeled btn-primary btn-xs" (click)="assignUser()" [disabled]="processing || formGroup.invalid" ><b><i class="icon-plus22"></i></b> Add</button>
+          				</div>
+                  </div>
+                </form>
+              </div>
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="row">
+                    <hot-table
+                      [hotId]="instance"
+                      [settings]="settings"
+                      [data]="data">
+                    </hot-table>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+
+		</div>
+</div>

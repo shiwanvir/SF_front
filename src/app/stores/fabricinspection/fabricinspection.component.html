@@ -1,0 +1,262 @@
+<form class="form-horizontal" [formGroup]="formGroup"  (ngSubmit)="saveStyle()">
+  <div class="panel panel-flat">
+    <div class="panel-heading">
+      <!--<h5 class="panel-title">Style Creation</h5>-->
+      <div class="row" style="text-align:center;">
+        <h6 style="background-color:#26A69A;font-weight:bold;color:#FFF">Fabric Inspection</h6>
+      </div>
+      <div class="heading-elements">
+        <ul class="icons-list">
+          <li><a data-action="collapse"></a></li>
+          <li><a data-action="reload"></a></li>
+          <li><a data-action="close"></a></li>
+        </ul>
+      </div>
+    </div>
+    <!--<form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveStyle()">-->
+    <div class="panel-body" style="background-color:  #bbff99">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3">
+            <!--<input type="hidden" formControlName="id" class="form-control input-xxs">-->
+            <label>PO# :</label>
+            <input type="text" formControlName="po_no" value="" id="po_no" #po_no class="form-control input-xxs">
+          </div>
+          <div class="col-md-3">
+            <label>SC# :</label>
+            <input type="text" formControlName="sc_no" id="sc_no" class="form-control input-xxs">
+          </div>
+          <div class="col-md-3">
+            <label>Invoice :</label>
+            <input type="text" formControlName="invoice_no" id="invoice_no" class="form-control input-xxs">
+          </div>
+          <div class="col-md-3">
+            <label>Batch :</label>
+            <input type="text" formControlName="batch_no" id="batch_no" class="form-control input-xxs">
+          </div>
+
+          <div class="col-md-3">
+            <label>Part No :</label>
+            <input type="text" formControlName="part_no" id="part_no" class="form-control input-xxs">
+          </div>
+          <div class="col-md-3">
+            <label>Description :</label>
+            <input type="text" formControlName="description" id="description" class="form-control input-xxs">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 text-right">
+
+        <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  (click)="search()">
+          <b><i class="icon-floppy-disk"></i></b> Search</button>
+        <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="clear()"><b><i class="icon-cross"></i></b> Clear</button>
+
+      </div>
+    </div>
+    <!--</form>-->
+    <div class="panel-body">
+      <div class="tabbable">
+        <ul class="nav nav-tabs nav-tabs-highlight nav-justified">
+          <li class="active"><a href="#inspection_summery_log" data-toggle="tab">Inspection Summery Log</a></li>
+          <li ><a href="#width_report_melsiripura" data-toggle="tab">Width Report</a></li>
+          <li><a href="#shrinkage_log_melsiripura" data-toggle="tab">Shrinkage Log</a></li>
+          <li><a href="#length_audit_log" data-toggle="tab">Length Audit Log</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+
+          <div class="tab-pane active" id="inspection_summery_log">
+
+            <!--<app-inspection-summery-log></app-inspection-summery-log>-->
+            <div class="panel-body">
+              <form [formGroup]="form">
+                <table class="table">
+                  <thead><tr> <th class="text-center">ROLL NO </th><th class="text-center">SC NO </th><th class="text-center">PO NO</th><th class="text-center">STYLE</th><th class="text-center">COLOR</th><th class="text-center">  SHADE </th><th class="text-center">   COMMENTS </th>
+
+                  </tr></thead>
+                  <ng-container formArrayName="roll_info">
+                    <tr *ngFor="let ctrl of form.get('roll_info')['controls']; let i = index" [formGroupName]="i">
+                      <td><input type="text" class="form-control" formControlName="roll_no"></td>
+                      <td><input type="text" class="form-control" formControlName="sc_no"></td>
+                      <td><input type="text" class="form-control" formControlName="po_no"></td>
+                      <td><input type="text" class="form-control" formControlName="style"></td>
+                      <td><input type="text" class="form-control" formControlName="colour"></td>
+                      <td><input type="text" class="form-control" formControlName="shade" ></td>
+                      <td><input type="text" class="form-control" formControlName="comments"></td>
+
+                    </tr>
+                  </ng-container>
+                </table>
+              </form>
+
+              <!--<pre>{{form.value | json}}</pre>-->
+
+
+            </div>
+
+          </div>
+
+          <div class="tab-pane" id="width_report_melsiripura">
+
+            <div class="panel-body">
+              <form [formGroup]="form">
+                <table class="table">
+                  <thead><tr> <th class="text-center">PURCHASE WEIGHT </th><th class="text-center"> ACTUAL WEIGHT</th>
+
+                    <th class="text-center">  P GSM </th> <th class="text-center">  A GSM </th><th class="text-center"> PURCHASE LENGTH</th><th class="text-center"> ACTUAL LENGTH</th><th class="text-center">  UOM </th><th class="text-center">  FRESH LENGTH </th><th class="text-center">  RELAXING LENGTH </th></tr></thead>
+                  <ng-container formArrayName="roll_info">
+                    <tr *ngFor="let ctrl of form.get('roll_info')['controls']; let i = index" [formGroupName]="i">
+                      <td><input type="text" class="form-control" formControlName="purchase_weight"></td>
+                      <td><input type="text" class="form-control" formControlName="actual_weight"></td>
+                      <td><input type="text" class="form-control" formControlName="p_gsm" ></td>
+                      <td><input type="text" class="form-control" formControlName="a_gsm"></td>
+                      <td><input type="text" class="form-control" formControlName="purchase_length"></td>
+                      <td><input type="text" class="form-control" formControlName="actual_length"></td>
+                      <td><input type="text" class="form-control" formControlName="uom"></td>
+                      <td><input type="text" class="form-control" formControlName="fresh_length"></td>
+                      <td><input type="text" class="form-control" formControlName="relaxing_length"></td>
+
+                    </tr>
+                  </ng-container>
+                </table>
+              </form>
+
+              <!--<pre>{{form.value | json}}</pre>-->
+
+
+            </div>
+
+          </div>
+
+          <div class="tab-pane" id="shrinkage_log_melsiripura">
+
+            <div class="panel-body">
+              <form [formGroup]="form">
+                <table class="table">
+                  <thead><tr>
+                    <th class="text-center">  COLOR INSPECTION </th><th class="text-center">  DEFECT GRADING </th><th class="text-center">  TOTAL GRADING </th><th class="text-center">  REASON </th><th class="text-center">  SHADE GRADING </th>
+                  </tr></thead>
+                  <ng-container formArrayName="roll_info">
+                    <tr *ngFor="let ctrl of form.get('roll_info')['controls']; let i = index" [formGroupName]="i">
+
+                      <td><input type="text" class="form-control" formControlName="color_inspection"></td>
+                      <td><input type="text" class="form-control" formControlName="defect_grading"></td>
+                      <td><input type="text" class="form-control" formControlName="total_grading"></td>
+                      <td><input type="text" class="form-control" formControlName="reason"></td>
+                      <td><input type="text" class="form-control" formControlName="shade_grading"></td>
+
+                    </tr>
+                  </ng-container>
+                </table>
+              </form>
+
+              <!--<pre>{{form.value | json}}</pre>-->
+
+
+            </div>
+
+          </div>
+          <div class="tab-pane" id="length_audit_log">
+
+            <!--<div class="panel-body">-->
+              <!--<form [formGroup]="form">-->
+                <!--<table class="table">-->
+                  <!--<thead><tr> <th class="text-center">ROLL NO </th><th class="text-center">PURCHASE WEIGHT </th><th class="text-center"> ACTUAL WEIGHT</th><th class="text-center">  PURCHASE WIDTH  </th><th class="text-center">  ACTUAL WIDTH </th><th class="text-center">  OP COLOR </th><th class="text-center">  SHADE </th>-->
+                    <!--<th class="text-center">  P GSM </th> <th class="text-center">  A GSM </th><th class="text-center">  FAULT RATE(%) </th><th class="text-center">  LENGTH (Y) </th><th class="text-center">  UOM </th><th class="text-center">  FRESH LENGTH </th><th class="text-center">  RELAXING LENGTH </th><th class="text-center">  COLOR INSPECTION </th>-->
+                    <!--<th class="text-center">  DEFECT GRADING </th><th class="text-center">  TOTAL GRADING </th><th class="text-center">  REASON </th><th class="text-center">  SHADE GRADING </th><th class="text-center">   COMMENTS </th></tr></thead>-->
+                  <!--<ng-container formArrayName="roll_info">-->
+                    <!--<tr *ngFor="let ctrl of form.get('roll_info')['controls']; let i = index" [formGroupName]="i">-->
+                      <!--<td><input type="text" class="form-control" formControlName="roll_no"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="purchase_weight"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="actual_weight"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="purchase_width"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="actual_width" ></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="po_color" ></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="shade" ></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="p_gsm" ></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="a_gsm"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="fault_rate"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="length_y"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="uom"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="fresh_length"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="relaxing_length"></td>-->
+                      <!--<td><input type="hidden" class="form-control" formControlName="color_inspection">-->
+                        <!--<ng-select  [items]="result"-->
+                                    <!--bindLabel="color"-->
+                                    <!--placeholder="Select"-->
+                                    <!--[(ngModel)]="selectedColor">-->
+                        <!--</ng-select></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="defect_grading"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="total_grading"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="reason"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="shade_grading"></td>-->
+                      <!--<td><input type="text" class="form-control" formControlName="comments"></td>-->
+
+                    <!--</tr>-->
+                  <!--</ng-container>-->
+                <!--</table>-->
+              <!--</form>-->
+
+              <!--<pre>{{form.value | json}}</pre>-->
+
+
+            <!--</div>-->
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--<div class="panel-body">-->
+      <!--<form [formGroup]="form">-->
+        <!--<table class="table">-->
+          <!--<thead><tr> <th class="text-center">ROLL NO </th><th class="text-center">PURCHASE WEIGHT </th><th class="text-center"> ACTUAL WEIGHT</th><th class="text-center">  PURCHASE WIDTH  </th><th class="text-center">  ACTUAL WIDTH </th><th class="text-center">  OP COLOR </th><th class="text-center">  SHADE </th>-->
+            <!--<th class="text-center">  P GSM </th> <th class="text-center">  A GSM </th><th class="text-center">  FAULT RATE(%) </th><th class="text-center">  LENGTH (Y) </th><th class="text-center">  UOM </th><th class="text-center">  FRESH LENGTH </th><th class="text-center">  RELAXING LENGTH </th><th class="text-center">  COLOR INSPECTION </th>-->
+            <!--<th class="text-center">  DEFECT GRADING </th><th class="text-center">  TOTAL GRADING </th><th class="text-center">  REASON </th><th class="text-center">  SHADE GRADING </th><th class="text-center">   COMMENTS </th></tr></thead>-->
+          <!--<ng-container formArrayName="roll_info">-->
+            <!--<tr *ngFor="let ctrl of form.get('roll_info')['controls']; let i = index" [formGroupName]="i">-->
+              <!--<td><input type="text" class="form-control" formControlName="roll_no"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="purchase_weight"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="actual_weight"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="purchase_width"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="actual_width" ></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="po_color" ></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="shade" ></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="p_gsm" ></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="a_gsm"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="fault_rate"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="length_y"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="uom"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="fresh_length"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="relaxing_length"></td>-->
+              <!--<td><input type="hidden" class="form-control" formControlName="color_inspection"></td>-->
+              <!--<td><input type="hidden" class="form-control" formControlName="defect_grading"></td>-->
+              <!--&lt;!&ndash;<ng-select  [items]="result"&ndash;&gt;-->
+                         <!--&lt;!&ndash;bindLabel="color"&ndash;&gt;-->
+                         <!--&lt;!&ndash;placeholder="Select"&ndash;&gt;-->
+                         <!--&lt;!&ndash;[(ngModel)]="selectedColor">&ndash;&gt;-->
+              <!--&lt;!&ndash;</ng-select></td>&ndash;&gt;-->
+              <!--<td><input type="text" class="form-control" formControlName="defect_grading"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="total_grading"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="reason"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="shade_grading"></td>-->
+              <!--<td><input type="text" class="form-control" formControlName="comments"></td>-->
+
+            <!--</tr>-->
+          <!--</ng-container>-->
+        <!--</table>-->
+      <!--</form>-->
+
+      <!--<pre>{{form.value | json}}</pre>-->
+
+
+    <!--</div>-->
+    <div class="modal-footer">
+      <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" >
+        <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+    </div>
+  </div>
+</form>

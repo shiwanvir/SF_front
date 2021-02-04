@@ -1,0 +1,33 @@
+<div class="col-md-12">
+  <div class="panel ">
+
+    <div class="panel-heading">
+      <h6 class="panel-title">Non Inventory GRN</h6>
+      <div class="heading-elements">
+        <ul class="icons-list">
+          <li><a data-action="collapse"></a></li>
+          <li><a data-action="reload"></a></li>
+          <li><a data-action="close"></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <tabset #grnTabs [justified]="true">
+
+        <tab heading="Non Inventory GRN List" (select)="onSelect($event)">
+          <app-non-inventory-grn-list></app-non-inventory-grn-list>
+        </tab>
+
+        <tab heading="Non Inventory GRN">
+          <app-non-inventory-grn-home></app-non-inventory-grn-home>
+        </tab>
+
+      </tabset>
+
+
+    </div>
+
+  </div>
+</div>

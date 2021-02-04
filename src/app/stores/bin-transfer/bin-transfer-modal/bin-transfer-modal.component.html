@@ -1,0 +1,86 @@
+<form [formGroup]="modalGroup" (ngSubmit)="addToBinQty()">
+  <div class="tabbable">
+
+    <div class="form-group col-md-6">
+      <label>Bin</label>
+      <select formControlName="binName" class="form-control input-xxs" (change)="loadModalBinQty()">
+        <option *ngFor='let bin of binArr' [value]="bin.store_bin_id">
+          {{ bin.store_bin_name }}
+        </option>
+      </select>
+    </div >
+
+    <br clear="all">
+    <div class="table-responsive">
+      <table class="table table-striped" id="grn-form">
+        <thead>
+        <tr>
+          <th>Style</th>
+          <th>Item Code</th>
+          <th>Item</th>
+          <th>Color</th>
+          <th>Size</th>
+          <th>Sales Order</th>
+          <th>Qty</th>
+          <th>Select</th>
+        </tr>
+        </thead>
+        <tbody >
+        <ng-container formArrayName="binModalData">
+
+          <tr *ngFor="let column of modalGroup.get('binModalData')['controls']; let i = index;" [formGroupName]="i">
+            <td style="width: 90px">
+              <input type="hidden" #style class="form-control input-xxs hidden-text"  formControlName="style">
+              {{style.value}}
+            </td>
+            <td>
+              <input type="hidden" #item_code class="form-control input-xxs hidden-text"  formControlName="item_code">
+              {{item_code.value}}
+            </td>
+            <td>
+              <input type="hidden" #item class="form-control input-xxs hidden-text" formControlName="item">
+              {{item.value}}
+            </td>
+            <td>
+              <input type="hidden" #colour class="form-control input-xxs hidden-text" formControlName="colour">
+              {{colour.value}}
+            </td>
+            <td>
+              <input type="hidden" #size class="form-control input-xxs hidden-text"  formControlName="size">
+              {{size.value}}
+              <!-- {{style_no.value}} {{so_no.value}}-->
+              <!--<div *ngIf="(so_no.value | json) != '{}'">something else</div>-->
+
+            </td>
+            <td>
+              <input type="hidden" #so class="form-control input-xxs hidden-text"  formControlName="so">
+              {{so.value}}
+            </td>
+            <td>
+              <input type="text" #qty class="form-control input-xxs " formControlName="qty">
+            </td>
+            <td>
+              <div class="checkbox">
+                <label><input type="checkbox" name="select" class="styled" formControlName="select_item" /></label>
+              </div>
+            </td>
+            <input type="hidden" name="color_id" class="styled" formControlName="color_id" />
+            <input type="hidden" name="size_id" class="styled" formControlName="size_id" />
+            <input type="hidden" name="uom_id" class="styled" formControlName="uom_id" />
+            <input type="hidden" name="material_id" class="styled" formControlName="material_id" />
+            <input type="hidden" name="style_id" class="styled" formControlName="style_id" />
+
+          </tr>
+        </ng-container>
+        </tbody>
+
+      </table>
+
+    </div>
+    <br clear="all">
+    <div id="btn-cluster" class="pull-right" >
+      <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" ><b><i class="icon-floppy-disk"></i></b> Save</button>&nbsp;
+    </div>
+  </div>
+
+</form>

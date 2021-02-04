@@ -1,0 +1,39 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Sales Order</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+
+          <tabset #buyerPoTabs [justified]="true">
+
+            <tab heading="Sales Order List" (select)="onSelect($event)">
+              <app-style-buyer-po-list></app-style-buyer-po-list>
+            </tab>
+
+            <tab heading="Sales Order" (select)="onSelect($event)">
+                <app-style-buyer-po></app-style-buyer-po>
+            </tab>
+
+          </tabset>
+
+
+        </div>
+
+      <app-buyer-po-size></app-buyer-po-size>
+
+      <app-po-split></app-po-split>
+
+      <app-po-revision></app-po-revision>
+
+		</div>
+</div>

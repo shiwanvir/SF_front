@@ -1,0 +1,25 @@
+<div bsModal #searchingModel="bs-modal"
+ class="modal fade" (onShow)="showEvent($event)" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+                <div class="modal-header  bg-teal-300">
+                    <button type="button" class="close" (click)="searchingModel.hide()">&times;</button>
+                    <h5 class="modal-title">Customer order search</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <input type="text" class="form-control input-xxs"  placeholder="Enter search keyword">
+                      </div>
+                    </div>
+                  <div class="row">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="searchingModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                </div>
+
+        </div>
+      </div>
+  </div>

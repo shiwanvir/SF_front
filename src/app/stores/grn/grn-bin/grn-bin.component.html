@@ -1,0 +1,45 @@
+
+<div class="modal-body">
+  <form [formGroup]="binForm" (ngSubmit)="addBinAllocation()">
+    <ng-container formArrayName="bin_list">
+
+      <table class="table table-borderless col-lg-8">
+        <thead>
+          <tr>
+            <th scope="col">Bin</th>
+            <th scope="col">Qty</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let column of binForm.get('bin_list')['controls']; let i = index;" [formGroupName]="i">
+            <td class="form-group col-md-6">
+              <select class="form-control input-xxs" formControlName="bin">
+                <option selected>[select]</option>
+                <option *ngFor='let bin of binList$ | async' [value]="bin.store_bin_id">
+                  {{ bin.store_bin_name }}
+                </option>
+
+              </select>
+            </td>
+
+            <td class="form-group col-md-4">
+              <input class="form-control input-xxs" type="text" value="" style="width: 100px" formControlName="qty" />
+            </td>
+
+            <td class="form-group col-md-2">
+              <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="addNewBinRow()">Add</button>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+      <div class="col-lg-2"></div>
+    </ng-container>
+    <input type="hidden" formControlName="line_id" />
+    <input type="hidden" formControlName="id"/>
+
+    <br clear="all">
+    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" >Save</button>
+  </form>
+</div>

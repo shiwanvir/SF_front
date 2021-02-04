@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="text-right" (window:resize)="onResize($event)">
+      <div [hasPermission]="['CLUSTER_CREATE']">
+        <button type="button"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+        (click)="clusterModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" (window:resize)="onResize($event)"  style="min-height: 350px;">
+  <div class="col-md-12">
+    <table class="table display datatable-basic" id="cluster_tbl">
+        <thead >
+            <tr>
+                <th class="text-center">Action</th>
+                <th>Status</th>
+                <th>Cluster Code</th>
+                <th>Cluster Name</th>
+                <th>Parent Company Name</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- popup -->
+<div bsModal #clusterModel="bs-modal" [config]="{backdrop: 'static'}"
+ class="modal fade" (onShow)="showEvent($event)">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveCluster()">
+                <div class="modal-header  bg-teal-300">
+                    <button type="button" class="close" (click)="clusterModel.hide()">&times;</button>
+                    <h5 class="modal-title">{{ popupHeaderTitle }}</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" formControlName="group_id" class="form-control input-xxs">
+                    <fieldset class="content-group">
+                        <label>Parent Company Name <span class="text-danger">* </span>:</label>
+                        <select class="form-control input-xxs" formControlName="source_id">
+                           <option [ngValue]="null">Select Parent Company Name</option>
+                           <option *ngFor='let source of sourceList$ | async' [value]="source.source_id">
+                             {{ source.source_name }}
+                           </option>
+                       </select>
+                       <span class="err" > {{ appFormValidator.validate_field('source_id') }} </span>
+                    </fieldset>
+                    <fieldset class="content-group">
+                       <label>Cluster Code <span class="text-danger">* </span>:</label>
+                       <span class="err" *ngIf="formGroup.get('group_code').status === 'PENDING'"> Validating....</span>
+                       <input type="text" class="form-control input-xxs" formControlName="group_code" placeholder="Cluster Code" upperCase>
+                       <span class="err" *ngIf="formGroup.get('group_code').errors && formGroup.get('group_code').errors.remoteValidation">{{formGroup.get('group_code').errors.remoteValidation}}</span>
+                       <span class="err" > {{ appFormValidator.validate_field('group_code') }} </span>
+                    </fieldset>
+                    <fieldset class="content-group">
+                          <label>Cluster Name <span class="text-danger">* </span>:</label>
+                          <input type="text" class="form-control input-xxs" formControlName="group_name" placeholder="Cluster Name" upperCase>
+                          <span class="err" > {{ appFormValidator.validate_field('group_name') }} </span>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="getSourceList_auto()"><b><i class="icon-reload-alt"></i></b> Reload</button>
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="clusterModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                  <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || processing || loading || formGroup.pending">
+                    <b><i class="icon-floppy-disk"></i></b> Save</button>
+                </div>
+          </form>
+        </div>
+      </div>
+  </div>

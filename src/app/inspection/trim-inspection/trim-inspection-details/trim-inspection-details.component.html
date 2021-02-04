@@ -1,0 +1,46 @@
+
+
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                            </div>
+                            <div class="form-group col-md-4">
+                            </div>
+                            <div class="form-group col-md-4"  style="text-align: right" >
+                              <form [formGroup]="grnGroup">
+                                <select (change)="filterData($event.target.value)" formControlName="grn_type_code">
+                                  <option value="AUTO">AUTO PO</option>
+                                  <option value="MANUAL">MANUAL PO</option>
+                                  </select>
+                                </form>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="min-height: 350px;">
+                  	 <div class="col-md-12">
+                      <table class="table  display datatable-basic" id="inspection_table">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">Action</th>
+                                  <th>Status</th>
+                                  <th>Inspection Status</th>
+                                  <th>GRN NO</th>
+                                  <th>PO NO</th>
+                                  <th>Invoice NO</th>
+                                  <th>Item Code</th>
+                                  <th>GRN Qty</th>
+
+
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>

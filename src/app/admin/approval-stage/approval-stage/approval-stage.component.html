@@ -1,0 +1,81 @@
+<form [formGroup]="formGroup" (ngSubmit)="save()">
+		<!--<legend class="text-bold">Role Details</legend>-->
+		<div class="row">
+
+        <input type="hidden" formControlName="stage_id">
+
+				<div class=" col-md-3">
+						<label>Stage Name <span class="text-danger">*</span>:</label>
+						<span class="err" *ngIf="formGroup.get('stage_name').status === 'PENDING'"> Validating....</span>
+						<input type="text" class="form-control input-xxs" formControlName="stage_name">
+						<span class="err" *ngIf="formGroup.get('stage_name').errors && formGroup.get('stage_name').errors.remoteValidation">{{formGroup.get('stage_name').errors.remoteValidation}}</span>
+            <span class="err">{{ formValidator.validate_field('stage_name')  }}</span>
+				</div>
+        <div class=" col-md-6">
+					<div [hasPermission]="['APPROVAL_STAGE_CREATE']">
+          <div class="heading-btn" style="margin-top:20px">
+            <button type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-left:15px" (click)="newApprovalStage()"><b><i class="icon-plus22"></i></b> New Approval Stage</button>
+					</div>
+					</div>
+        </div>
+
+		</div>
+
+		<legend class="text-bold" >Approval Users</legend>
+		<div class="row" >
+
+			<div class="col-md-6">
+				<ng-select [items]="user$ | async"
+								placeholder = "[Select User]"
+								[selectOnTab]="true"
+								bindLabel="full_name"
+								[loading]="userLoading"
+								[typeahead]="userInput$"
+								(change)="onChange($event)"	>
+			</ng-select>
+			</div>
+
+			<div class="col-md-12" style="margin-top : 20px">
+				<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th style="width:20px">#</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>Department</th>
+									<th style="width:15%">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let user of userList; let i = index">
+									<td>{{ (i + 1) }}</td>
+									<td>{{ user.first_name }}</td>
+									<td>{{ user.last_name }}</td>
+									<td>{{ user.email }}</td>
+									<td>{{ user.email }}</td>
+									<td>
+										<i class="icon-square-up action-button-padding" (click)="changeOrder(i, 'UP')"></i>
+										<i class="icon-square-down action-button-padding" (click)="changeOrder(i, 'DOWN')"></i>
+										<i class="icon-close2 action-button-padding" (click)="removeUser(i)"></i>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+			</div>
+
+			<div class="col-md-12" style="margin-top:15px">
+				<div [hasPermission]="['APPROVAL_STAGE_CREATE']">
+					<button *ngIf="!processing" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending"><b><i class="icon-floppy-disk"></i></b> Save Role</button>
+					</div>
+			</div>
+
+		</div>
+
+  </form>
+
+
+<ng-snotify class="simple"></ng-snotify>
+  <!--<ng-snotify class="simple"></ng-snotify>-->

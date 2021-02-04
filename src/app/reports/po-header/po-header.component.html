@@ -1,0 +1,123 @@
+
+<div class="panel panel-flat">
+
+  <div class="panel-heading">
+      <h6 class="panel-title">Purchase Order Summary Report</h6>
+
+      <div class="heading-elements">
+          <ul class="icons-list">
+              <li><a data-action="collapse"></a></li>
+              <li><a data-action="reload"></a></li>
+              <li><a data-action="close"></a></li>
+          </ul>
+      </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+
+        <form class="form-horizontal" [formGroup]="formGroup">
+          <fieldset class="content-group">
+
+            <div class=" col-md-3">
+              <label>Supplier :</label>
+              <ng-select [items]="supplier$ | async"
+                  placeholder = "Select Supplier"
+                  [selectOnTab]="true"
+                  bindLabel="supplier_name"
+                  [loading]="supplierLoading"
+                  [typeahead]="supplierInput$"
+                  formControlName="supplier_name" >
+              </ng-select>
+            </div>
+
+            <div class="col-md-3">
+              <label>PO Created Date :</label>
+              <input type="text" class="form-control input-xxs" placeholder="Selected PO Created Date"  formControlName="po_date" bsDaterangepicker [bsConfig]= "{ rangeInputFormat : 'YYYY-MM-DD' }">
+            </div>
+
+            <div class="col-md-3">
+              <label>Status :</label>
+              <ng-select
+                placeholder = "Select Status"
+                [items]="POStatus$ | async"
+                bindLabel="status"
+                [hideSelected]="true"
+                formControlName="po_status" >
+              </ng-select>
+            </div>
+
+            <div class=" col-md-3">
+              <label>PO # :</label>
+              <ng-select [items]="po_no$ | async"
+                  placeholder = "Select PO #"
+                  [selectOnTab]="true"
+                  bindLabel="po_number"
+                  [loading]="POLoading"
+                  [typeahead]="POInput$"
+                  formControlName="po_no" >
+              </ng-select>
+            </div>
+
+          </fieldset>
+
+          <fieldset class="content-group">
+            <div class="col-md-12">
+              <div class="text-right">
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="reset_feilds()"><b><i class="icon-loop3"></i></b> Refresh </button>&nbsp;&nbsp;
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="searchFrom()">
+                <b><i class="icon-search4"></i></b> Search</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+
+        <fieldset class="content-group">
+          <legend class="text-bold text-center">Purchase Order Summery</legend>
+          <div class="col-md-12">
+            <div class="row overflow-auto">
+
+              <table class="datatable display datatable-basic" id="po_tbl" width="100%">
+                <thead>
+                    <tr>
+                        <th>PO #</th>
+                        <th>Supplier</th>
+                        <th>PO Created Date</th>
+                        <th>Delivery Date</th>
+                        <th>PO Status</th>
+                        <th>PO Value $</th>
+                        <th>PO Created User</th>
+                        <th>Delivery Location</th>
+                    </tr>
+                </thead>
+                <!-- <tfoot>
+                  <tr>
+                      <th>PO No</th>
+                      <th>Supplier</th>
+                      <th>PO Date</th>
+                      <th>Delivery Date</th>
+                      <th>Status</th>
+                      <th>Value</th>
+                      <th>User</th>
+                      <th>Location</th>
+                  </tr>
+                </tfoot> -->
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </fieldset>
+
+    </div>
+  </div>
+
+  <!-- <div class="panel-footer">
+    <div class="col-md-12">
+      <div class="text-right">
+        <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="onBtExport()"><b><i class="icon-file-excel"></i></b> Export As Excel </button>
+      </div>
+    </div>
+  </div> -->
+
+</div>

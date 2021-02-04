@@ -1,0 +1,123 @@
+
+<div class="modal-body">
+    <form [formGroup]="modelForm" (ngSubmit)="saveGrnLines()">
+        <input type="hidden" value="23" formControlName="po_no" />
+        <!--<div class="form-group col-md-4">
+            <label>SO NO</label>
+            <select class="form-control input-xxs" name="sc_no" >
+                <option selected>[select]</option>
+                <option *ngFor='let sc of scList$ | async' [value]="sc.sc_no" (change)="filterPoLInes($event.target.value, 'so')">
+                    {{ sc.sc_no }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>Color</label>
+
+            <select class="form-control input-xxs" name="color" (change)="filterPoLInes($event.target.value, 'color')">
+                 <option selected>[select]</option>
+                 <option *ngFor='let color of colorList$ | async' [value]="color.color_id">
+                   {{ color.color_name }}
+                 </option>
+            </select>
+        </div>-->
+
+
+    <!--<pre>{{ formData$ | json  }}</pre>-->
+        <br clear="All">
+
+    <!--<app-grn-modal></app-grn-modal>-->
+
+
+        <div class="table-responsive">
+
+            <!--<pre>{{modelForm.value | json}}</pre>-->
+
+            <div [innerHtml]="htmlToAdd" id="po_details" class="col-md-12 html">
+
+            </div>
+            <!--<div>{{ modelForm.get('item_list')['controls'] }}</div>-->
+            <div>
+                <table class="table table-bordered table-framed" id="grn-popup">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Combine Id</th>
+                            <th>Customer</th>
+                            <th>Description</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                            <th>UOM</th>
+                            <th>PO Qty</th>
+                            <th>Bal Qty</th>
+                            <th>Qty</th>
+                        </tr>
+                    </thead>
+
+                    <tbody >
+                        <ng-container formArrayName="item_list">
+
+                                <tr *ngFor="let column of modelForm.get('item_list')['controls']; let i = index;" [formGroupName]="i">
+                                    <td>
+                                        <input type="hidden" formControlName="po_line_id" />
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" name="select" class="styled"  formControlName="item_select" /></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" #cus_order class="form-control input-xxs hidden-text" value="" formControlName="cus_order">
+                                        {{cus_order.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #customer class="form-control input-xxs hidden-text" value="" formControlName="customer">
+                                        {{customer.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #description class="form-control input-xxs hidden-text" value="" formControlName="master_description">
+                                        {{description.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #colour class="form-control input-xxs hidden-text" value="" formControlName="colour">
+                                        {{colour.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #size class="form-control input-xxs hidden-text" value="" formControlName="size">
+                                        {{size.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #uom class="form-control input-xxs hidden-text" value="" formControlName="uom">
+                                        {{uom.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #po_qty class="form-control input-xxs hidden-text" value="" formControlName="po_qty">
+                                        {{po_qty.value}}
+                                    </td>
+                                    <td>
+                                        <input type="text" #bal_qty class="form-control input-xxs hidden-text" value="" formControlName="bal_qty">
+                                        {{bal_qty.value}}
+                                    </td>
+                                    <td>
+                                        <input class="form-control input-xxs" type="text" value="" style="width: 100px" formControlName="qty"  />
+                                        <!--<input type="hidden" value="{{column.id}}" name="line-id" />-->
+                                        <span class="err">{{modelForm.qty}}</span>
+                                        <input type="hidden" value="" formControlName="item_code"/>
+                                    </td>
+                                </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div>&nbsp;</div>
+            <div class="modal-footer">
+                <input type="hidden" value="" formControlName="id"/>
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"  ><b><i class="icon-cross"></i></b> Close</button>
+                <button type="submit" id="addBtn" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="modelForm.invalid || modelForm.pending || processing">
+                    <b><i class="icon-plus3"></i></b> Add</button>
+
+            </div>
+
+        </div>
+    </form>
+
+</div>

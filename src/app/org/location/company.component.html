@@ -1,0 +1,250 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="text-right">
+        <button type="button" [hasPermission]="['COMPANY_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+        (click)="saveStatus = 'SAVE';companyModel.show()" ><b><i class="icon-plus3"></i></b>Add New</button>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="min-height: 350px;" [hasPermission]="['COMPANY_VIEW']">
+	 <div class="col-md-12" >
+     <table class="table display datatable-basic" id="company_tbl">
+         <thead style="">
+             <tr>
+                 <th class="text-center">Action</th>
+                 <th>Status</th>
+                 <th>Cluster Code</th>
+                 <th>Company Code</th>
+                 <th>Company Name</th>
+                 <th>Address 01</th>
+                 <th>Address 02</th>
+                 <th>City</th>
+                 <th>Country</th>
+                 <th>Com Reg Num</th>
+                 <th>Contact 01</th>
+                 <th>Def.Currency</th>
+                 <th>Finance Month</th>
+                 <th>Created Date</th>
+             </tr>
+         </thead>
+         <tbody>
+         </tbody>
+     </table>
+  </div>
+</div>
+
+<!-- popup -->
+ <div bsModal #sourceModel="bs-modal" [config]="{backdrop: 'static'}"
+ 	class="modal fade" (onShow)="showEvent($event)" >
+  <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+        <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveCompany()">
+            <div class="modal-header bg-teal-300">
+                <button type="button" class="close" (click)="companyModel.hide()">&times;</button>
+                <h5 class="modal-title">
+                  <span *ngIf="!loading && !processing">{{ popupHeaderTitle }}</span>
+                  <span *ngIf="loading"><i class="icon-spinner2 spinner"></i> Please wait...</span>
+                  <span *ngIf="processing"><i class="icon-spinner2 spinner"></i> Saving...</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" formControlName="company_id" class="form-control input-xxs">
+                <fieldset class="content-group">
+                    <div class="row">
+                       <div class=" col-md-4">
+                        <label>Select Main Cluster <span class="text-danger">* </span>:</label>
+                          <select class="form-control input-xxs" formControlName="group_id">
+                            <option [ngValue]="null">Select Main Cluster</option>
+                            <option *ngFor="let cluster of clusterList$ | async" [value]="cluster.group_id" [selected]="cluster.group_id == formGroup.get('group_id').value"upperCase>
+                              {{ cluster.group_name }}
+                            </option>
+                        </select>
+                        <span class="err" > {{ formValidator.validate_field('group_id')  }} </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Company Code <span class="text-danger">* </span>:</label>
+                        <span class="err" *ngIf="formGroup.get('company_code').status === 'PENDING'"> Validating....</span>
+                        <input type="text" class="form-control input-xxs" formControlName="company_code" placeholder="Company Code" upperCase >
+                        <span class="err" *ngIf="formGroup.get('company_code').errors && formGroup.get('company_code').errors.remoteValidation">{{formGroup.get('company_code').errors.remoteValidation}}</span>
+                        <span class="err" > {{ formValidator.validate_field('company_code')  }} </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Company Name <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_name" placeholder="Company Name" upperCase>
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_name')  }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-4">
+                        <label>Company Address 1 <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_address_1" placeholder="Company Address 1" upperCase>
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_address_1')  }}
+                        </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Company Address 2 :</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_address_2" placeholder="Company Address 2" upperCase>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>City <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="city" placeholder="City" upperCase>
+                        <span class="err" >
+                          {{ formValidator.validate_field('city')  }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-4">
+                        <label>Country <span class="text-danger">* </span>:</label>
+                        <ng-select [items]="country$ | async"
+                                placeholder = "Select Country"
+                                [selectOnTab]="true"
+                                bindLabel="country_description"
+                                [loading]="countryLoading"
+                                [typeahead]="countryInput$"
+                                [(ngModel)]="selectedCountry"
+                                formControlName="country_code" >
+                      </ng-select>
+                      <span class="err" >
+                        {{ formValidator.validate_field('country_code')  }}
+                      </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Company Registration Number <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_reg_no"  placeholder="Company Registration Number" upperCase>
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_reg_no')  }}
+                        </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Contact 1 <span class="text-danger">* </span>:</label>
+                        <input type="number" class="form-control input-xxs" formControlName="company_contact_1" placeholder="Contact 1">
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_contact_1')  }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-4">
+                        <label>Contact 2 :</label>
+                        <input type="number" class="form-control input-xxs" formControlName="company_contact_2" placeholder="Contact 2">
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_contact_2')  }}
+                        </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Fax :</label>
+                        <input type="number" class="form-control input-xxs" formControlName="company_fax" placeholder="Fax">
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_fax')  }}
+                        </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Email <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_email" placeholder="Email" style="text-transform: none;">
+                        <span class="err" >
+                          {{ formValidator.validate_field('company_email')  }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-4">
+                        <label>Web :</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_web" placeholder="Web Address" style="text-transform: none;">
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Remarks :</label>
+                        <input type="text" class="form-control input-xxs" formControlName="company_remarks" placeholder="Remarks" upperCase>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Vat Registration Number <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="vat_reg_no" placeholder="Vat Registration Number" upperCase>
+                        <span class="err" >
+                          {{ formValidator.validate_field('vat_reg_no')  }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-4">
+                        <label>Tax Code <span class="text-danger">* </span>:</label>
+                        <input type="text" class="form-control input-xxs" formControlName="tax_code" placeholder="Tax Code" upperCase>
+                        <span class="err" >
+                          {{ formValidator.validate_field('tax_code')  }}
+                        </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Currency <span class="text-danger">* </span>:</label>
+                        <ng-select [items]="currency$ | async"
+                                placeholder = "Select Currency"
+                                [selectOnTab]="true"
+                                bindLabel="currency_code"
+                                [loading]="currencyLoading"
+                                [typeahead]="currencyInput$"
+                                [(ngModel)]="selectedCurrency"
+                                formControlName="default_currency">
+                      </ng-select>
+                      <span class="err" >
+                        {{ formValidator.validate_field('default_currency')  }}
+                      </span>
+                    </div>
+                    <div class=" col-md-4">
+                        <label>Finance Month <span class="text-danger">* </span>:</label>
+                        <select class="form-control input-xxs" formControlName="finance_month" upperCase>
+                            <option [ngValue]="null">Select Finance Month</option>
+                            <option value="JAN TO DEC">JAN TO DEC</option>
+                            <option value="MARCH TO APRIL">MARCH TO APRIL</option>
+                        </select>
+                        <span class="err" >
+                          {{ formValidator.validate_field('finance_month')  }}
+                        </span>
+                    </div>
+                </div>
+
+
+                  <div class="row">
+                    <div class="col-md-6">
+                     <label>Select Section :</label>
+                     <ng-select [items]="section$ | async"
+                        bindLabel="section_name"
+                        placeholder="Select Section"
+                        [multiple]="true"
+                        [hideSelected]="true"
+                        [typeahead]="sectionsInput$"
+                        [(ngModel)]="selectedSections"
+                        formControlName="sections">
+                    </ng-select>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Select Department :</label>
+                      <ng-select [items]="departments$ | async"
+                        bindLabel="dep_name"
+                        [multiple]="true"
+                        placeholder="Select Department"
+                        [hideSelected]="true"
+                        [loading]="departmentsLoading"
+                        [typeahead]="departmentsInput$"
+                        [(ngModel)]="selectedDepartments"
+                        formControlName="departments">
+                     </ng-select>
+                    </div>
+                  </div>
+
+
+
+             </fieldset>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="loadClusterList()"><b><i class="icon-reload-alt"></i></b> Reload</button>
+            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="companyModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+            <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || loading || processing || formGroup.pending">
+                <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+            </div>
+        </form>
+          </div>
+      </div>
+  </div>

@@ -1,0 +1,13 @@
+<div class="col-md-6 col-md-offset-3">
+
+    <h4 class="text-center">Rejected</h4>
+       <canvas baseChart height="340vw" width="425vw"
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="colours"
+          (chartClick)="chartClicked($event)">
+        </canvas>
+
+</div>

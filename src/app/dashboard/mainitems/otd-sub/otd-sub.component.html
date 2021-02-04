@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-flat">
+      <div class="panel-heading">
+        <h4 class="text-center">On-Time Delivery {{myDate | date:'yyyy-MM-dd'}}</h4>
+         <div>
+           <canvas baseChart height="350vw" width="470vw"
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [colors]="colours"
+            (chartClick)="chartClicked($event)">
+           </canvas>
+         </div>
+       </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-flat">
+      <div class="panel-heading">
+        <h6 class="text-center">OTD / LD {{myDate | date:'yyyy'}}</h6>
+          <div>
+           <canvas baseChart height="122vw" width="470vw"
+            [data]="pieChartData2"
+            [labels]="pieChartLabels2"
+            [chartType]="pieChartType2"
+            [options]="pieChartOptions2"
+            [colors]="colours2"
+            (chartClick)="chartClicked2($event)">
+           </canvas>
+          </div>
+      </div>
+    </div>
+    <div class="panel panel-flat">
+      <div class="panel-heading">
+        <h6 class="text-center">OTD / LD {{anio}}</h6>
+          <div>
+            <canvas baseChart height="122vw" width="470vw"
+              [data]="pieChartData3"
+              [labels]="pieChartLabels3"
+              [chartType]="pieChartType3"
+              [options]="pieChartOptions3"
+              [colors]="colours3"
+              (chartClick)="chartClicked3($event)">
+            </canvas>
+          </div>
+         </div>
+       </div>
+    </div>
+</div>

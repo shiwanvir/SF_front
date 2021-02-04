@@ -1,0 +1,156 @@
+<div class="row" style="min-height: 350px;">
+  <div class="col-md-12">
+      <table class="table  display datatable-basic" id="color_tbl">
+        <thead>
+          <tr>
+            <th class="text-center">Action</th>
+            <th>Status</th>
+            <th>Style No</th>
+            <th>BOM Stage</th>
+            <th>Color Type</th>
+            <th>Buy Name</th>
+            <th>Total SMV</th>
+            <th>Revision No</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<!-- popup -->
+<div bsModal #colorModel="bs-modal" [config]="{backdrop: 'static'}"
+class="modal fade" (onShow)="showEvent($event)" >
+<div class="modal-dialog">
+  <div class="modal-content">
+    <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveColor()">
+
+      <div class="modal-header  bg-teal-300">
+        <button type="button" class="close" (click)="colorModel.hide()">&times;</button>
+        <h5 class="modal-title">{{ modelTitle }}</h5>
+      </div>
+      <div class="modal-body">
+
+        <div class="col-md-12">
+          <div class="row">
+
+            <input type="hidden" formControlName="id" class="form-control input-xxs">
+            <legend class="text-bold">from:</legend>
+            <div class="col-md-4">
+              <fieldset class="content-group">
+                <label>Style<span class="text-danger">*</span></label>
+                <ng-select [items]="styleFrom$ | async"
+                placeholder = "[Select Style]"
+                [selectOnTab]="true"
+                bindLabel="style_no"
+                [loading]="styleLoadingFrom"
+                [typeahead]="styleInputFrom$"
+                [(ngModel)]="selectedStyleFrom"
+                formControlName="style_no_from" (blur)="formValidate()">
+              </ng-select>
+              <span class="err">{{ formFields.style_no_from }}</span>
+              <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+            </fieldset>
+          </div>
+          <div class="col-md-4">
+            <fieldset class="content-group">
+              <label>BOM Stage<span class="text-danger">*</span></label>
+              <ng-select [items]="bomStageFrom$ | async"
+              placeholder = "[Select BOM Stage]"
+              [selectOnTab]="true"
+              bindLabel="bom_stage_description"
+              [loading]="bomStageLoadingFrom"
+              [typeahead]="bomStageInputFrom$"
+              [(ngModel)]="selectedBomSatageFrom"
+              formControlName="bom_stage_description_from" (blur)="formValidate()">
+            </ng-select>
+            <span class="err"></span>
+            <span *ngIf="formFields.validation_error != ''" class="err"></span>
+          </fieldset>
+        </div>
+        <div class="col-md-4">
+          <fieldset class="content-group">
+            <label>Color Type<span class="text-danger">*</span></label>
+            <ng-select [items]="colorOptionFrom$ | async"
+            placeholder = "[Select Color Option]"
+            [selectOnTab]="true"
+            bindLabel="color_option"
+            [loading]="colorOptionLoadingFrom"
+            [typeahead]="colorOptionInputFrom$"
+            [(ngModel)]="selectedColorOptionFrom"
+            formControlName="color_option_from" (blur)="formValidate()">
+          </ng-select>
+          <span class="err"></span>
+          <span *ngIf="formFields.validation_error != ''" class="err"></span>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <legend class="text-bold" style="margin-top:20px">To:</legend>
+
+  <div class="col-md-12">
+    <div class="row">
+
+      <div class="col-md-4">
+        <fieldset class="content-group">
+          <label>Style<span class="text-danger">*</span></label>
+          <ng-select [items]="styleTo$ | async"
+          placeholder = "[Select Style]"
+          [selectOnTab]="true"
+          bindLabel="style_no"
+          [loading]="styleLoadingTo"
+          [typeahead]="styleInputTo$"
+          [(ngModel)]="selectedStyleTo"
+          formControlName="style_no_to" (blur)="formValidate()">
+        </ng-select>
+        <span class="err">{{ formFields.style_no_to }}</span>
+        <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+      </fieldset>
+    </div>
+    <div class="col-md-4">
+      <fieldset class="content-group">
+        <label>BOM Stage<span class="text-danger">*</span></label>
+        <ng-select [items]="bomStageTo$ | async"
+        placeholder = "[Select BOM Stage]"
+        [selectOnTab]="true"
+        bindLabel="bom_stage_description"
+        [loading]="bomStageLoadingTo"
+        [typeahead]="bomStageInputTo$"
+        [(ngModel)]="selectedBomSatageTo"
+        formControlName="bom_stage_description_to" (blur)="formValidate()">
+      </ng-select>
+      <span class="err"></span>
+      <span *ngIf="formFields.validation_error != ''" class="err"></span>
+    </fieldset>
+  </div>
+  <div class="col-md-4">
+    <fieldset class="content-group">
+      <label>Color Type<span class="text-danger">*</span></label>
+      <ng-select [items]="colorOptionTo$ | async"
+      placeholder = "[Select Color Option]"
+      [selectOnTab]="true"
+      bindLabel="color_option"
+      [loading]="colorOptionLoadingTo"
+      [typeahead]="colorOptionInputTo$"
+      [(ngModel)]="selectedColorOptionTo"
+      formControlName="color_option_to" (blur)="formValidate()">
+    </ng-select>
+    <span class="err"></span>
+    <span *ngIf="formFields.validation_error != ''" class="err"></span>
+  </fieldset>
+</div>
+</div>
+</div>
+
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="colorModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+  <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending || processing">
+    <b><i class="icon-floppy-disk"></i></b> Save</button>
+  </div>
+</form>
+</div>
+</div>
+</div>

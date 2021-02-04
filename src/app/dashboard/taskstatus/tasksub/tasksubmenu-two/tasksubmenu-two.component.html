@@ -1,0 +1,26 @@
+<!-- Load c3.css -->
+<link href="/path/to/c3.css" rel="stylesheet">
+
+<!-- Load d3.js and c3.js -->
+<script src="/path/to/d3.v5.min.js" charset="utf-8"></script>
+<script src="/path/to/c3.min.js"></script>
+
+<div id="chart"></div>
+
+
+
+
+<div class="row">
+<div>
+    <h4 class="text-center">Task Status - menu2</h4>
+        <canvas baseChart height="150vw" width="425vw"
+           [data]="pieChartData"
+           [labels]="pieChartLabels"
+           [chartType]="pieChartType"
+           [options]="pieChartOptions"
+           [colors]="colours"
+           (chartClick)="chartClicked($event)">
+
+         </canvas>
+  </div>
+</div>

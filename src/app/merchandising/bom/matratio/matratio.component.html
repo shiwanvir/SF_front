@@ -1,0 +1,80 @@
+<div bsModal #ratioModel="bs-modal" class="modal fade" (onShown)="modelShowEvent($event)" >
+     <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header  bg-teal-300">
+		            <button type="button" class="close" (click)="ratioModel.hide()">&times;</button>
+		            <h5 class="modal-title">{{ selectedItem['master_description'] }}</h5>
+            </div>
+            <form class="form-horizontal form-validate-jquery" [formGroup]="materialRatioForm" >
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4" style="">
+                            <label>BOM Required Qty</label>
+                            <input type="text" class="form-control input-xxs text-right" [value]="selectedItem['required_qty']" readonly>
+                        </div>
+                        <div class="col-md-4" style="">
+                            <label>Total Ratio Qty</label>
+                            <input type="text" class="form-control input-xxs text-right" [value]="currentQty" readonly>
+                        </div>
+                    </div>
+                     <legend class="text-bold" style="margin-top:10px">Material Ratio</legend>
+                     <div class="row">
+                         <div class="col-md-4" style="">
+                            <label>Color <span class="text-danger">*</span></label>
+                            <ng-select [items]="ColorList$ | async"
+                                placeholder = "[Select Color]"
+                                [selectOnTab]="true"
+                                bindLabel="color_name"
+                                [loading]="ColorListLoading"
+                                [typeahead]="ColorListInput$"
+                                [(ngModel)]="selectedColors"
+                                formControlName="color_id">
+                            </ng-select>
+                            <span class="err">{{ formValidator.validate_field('color_id')  }}</span>
+                         </div>
+                         <div class="col-md-4" style="">
+                            <label>Size <span class="text-danger">*</span></label>
+                            <ng-select [items]="SizeList$ | async"
+                                placeholder = "[Select Size]"
+                                [selectOnTab]="true"
+                                bindLabel="size_name"
+                                [loading]="SizeListLoading"
+                                [typeahead]="SizeListInput$"
+                                [(ngModel)]="selectedSizes"
+                                formControlName="size_id">
+                            </ng-select>
+                            <span class="err">{{ formValidator.validate_field('size_id')  }}</span>
+                         </div>
+                         <div class="col-md-2" style="">
+                            <label>Required Qty <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control input-xxs text-right" formControlName="required_qty">
+                            <span class="err">{{ formValidator.validate_field('required_qty')  }}</span>
+                         </div>
+                         <div class="col-md-2" style="">
+                             <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" style="margin-top:15px" [disabled]="materialRatioForm.invalid || processing" (click)="addRatio()" >
+                                <b><i class="icon-check"></i></b>Add</button>
+                         </div>
+
+                     </div>
+
+                     <div class="row">
+                         <div class="col-md-12" style="margin-top:15px;border-style:solid;border-width:1px;border-color:#DCDCDC">
+                            <hot-table
+                              [hotId]="instance"
+                              [settings]="hotOptions"
+                              [data]="dataset">
+                            </hot-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" id='btnSave' [disabled] = "processing"  (click)="saveRatio()">
+                      <b><i class="icon-floppy-disk"></i></b> Save</button>
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="hideRatioModel()" id="">
+                  <b><i class="icon-cross"></i></b>Close</button>
+                </div>
+            </form>
+         </div>
+
+    </div>
+</div>

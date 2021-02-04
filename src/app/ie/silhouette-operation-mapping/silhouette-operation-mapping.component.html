@@ -1,0 +1,136 @@
+
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Silhouette Operation Mapping</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                        <div [hasPermission]="['SIL_OPE_MAPPING_CREATE']">
+                          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                          (click)="garmentOperationModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" [hasPermission]="['SIL_OPE_MAPPING_VIEW']" style="min-height: 350px;">
+                  	 <div class="col-md-12">
+                      <table class="table display datatable-basic" id="garment_operation_tbl">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">Action</th>
+                                  <th>Status</th>
+                                  <th>Product Silhouette Code</th>
+                                  <th>Product Silhouette Description</th>
+                                  <th>created Date</th>
+
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- popup -->
+                   <div bsModal #garmentOperationModel="bs-modal" [config]="{backdrop: 'static'}"
+                   	class="modal fade" (onShow)="showEvent($event)">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="save()">
+                                <div class="modal-header  bg-teal-300">
+                                    <button type="button" class="close" (click)="garmentOperationModel.hide();clear()">&times;</button>
+                                    <h5 class="modal-title">{{ modelTitle }}</h5>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="col-md-12">
+                                      <div class="row">
+                                    <input type="hidden" formControlName="mapping_header_id" class="form-control input-xxs">
+
+                                      <div class="col-md-3">
+                                          <label >Product Silhouette<span class="text-danger" > *</span> :</label>
+                                            <ng-select [items]="silhouette$ | async"
+                                             placeholder="Select Product Silhouette"
+                                             [selectOnTab]="true"
+                                             bindLabel="product_silhouette_description"
+                                             [loading]="silhouetteLoading"
+                                             [typeahead]="silhouetteInput$"
+                                             [(ngModel)]="selectedSilhouette"
+                                             formControlName="silhouette_code" (blur)="formValidate()">                                             >
+
+                                            </ng-select>
+                                            <span class="err" *ngIf="formGroup.get('silhouette_code').status === 'PENDING'"> Validating....</span>
+                                             <span class="err" *ngIf="formGroup.get('silhouette_code').errors && formGroup.get('silhouette_code').errors.remoteValidation">{{formGroup.get('silhouette_code').errors.remoteValidation}}</span>
+                                             <span class="err">{{ formValidator.validate_field('silhouette_code')}}</span>
+                                             </div>
+                                    <div class="col-md-3">
+                                      <label >Opearation Component <span class="text-danger" >*</span> :</label>
+                                      <ng-select [items]="operationCompoent$ | async"
+                                                 placeholder="Select Operation Component"
+                                                 [selectOnTab]="true"
+                                                 bindLabel="operation_component_name"
+                                                 [loading]="operationCompoentLoading"
+                                                 [typeahead]="operationCompoentInput$"
+                                                 [(ngModel)]="selectedOperationCompoent"
+                                                 formControlName="operation_component_id"
+                                            >
+
+                                      </ng-select>
+
+                                      <span class="err" *ngIf="formGroup.get('operation_component_id').errors"></span>
+                                      <span class="err" > {{ formValidator.validate_field('operation_component_id')  }} </span>
+                                      <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                                    </div>
+                                        <div class="col-md-3">
+                                          <br>
+                                        <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="addDetils()"  [disabled]="processing || formGroup.pending||formGroup.invalid">
+                                            <b><i class="icon-plus3"></i></b> Add Details</button>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                    <br>
+                                    <div classs="row">
+
+                                    </div>
+                                      <br>
+                                      <legend class="text-bold" style="margin-top:20px">Mapping Details</legend>
+                                      <div class="row">
+
+                                        <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                                          <hot-table
+                                            [hotId]="instance"
+                                            [settings]="hotOptions"
+                                            [(data)]="dataset">
+
+                                        </hot-table>
+                                        </div>
+                                      </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="garmentOperationModel.hide();clear()"><b><i class="icon-cross"></i></b> Close</button>
+                                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  [disabled]="addButtonNotClicked">
+                                        <b><i class="icon-floppy-disk"></i></b> Save</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>

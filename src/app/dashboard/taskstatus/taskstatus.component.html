@@ -1,0 +1,11 @@
+<div lass="wrapper" >
+    <h4 class="text-center">Task Status</h4>
+        <canvas baseChart height="250vw" width="425vw"
+           [data]="pieChartData"
+           [labels]="pieChartLabels"
+           [chartType]="pieChartType"
+           [options]="pieChartOptions"
+           [colors]="colours"
+           (chartClick)="getElementsAtEvent($event)">
+         </canvas>
+ </div>

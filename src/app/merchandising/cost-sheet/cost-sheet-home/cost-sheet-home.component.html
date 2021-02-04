@@ -1,0 +1,27 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Costing</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+          <tabset #costingTabs [justified]="true" >
+            <tab heading="Costing List" (select)="onSelect($event)">
+              <app-cost-sheet-list></app-cost-sheet-list>
+            </tab>
+            <tab heading="Costing" (select)="onSelect($event)">
+                <app-cost-sheet></app-cost-sheet>
+            </tab>
+          </tabset>
+        </div>
+
+		</div>
+</div>

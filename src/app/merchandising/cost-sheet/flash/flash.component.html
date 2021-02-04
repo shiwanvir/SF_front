@@ -1,0 +1,395 @@
+<div class="content">
+    <div class="col-md-12">
+        <div class="panel panel-flat">
+            <div class="panel-body">
+                <div class="tabbable">
+                    <div class="tab-content">
+                        <form class="form-horizontal form-validate-jquery" [formGroup]="falshCostingForm" id="falshCostingForm" >
+                            <div class="tab-pane active" id="highlighted-justified-tab1">
+                                <div class="col-md-12">&nbsp;</div>
+                                <div class="col-md-12" style="border: thin solid #e3e5e8; border-radius: 5px; box-shadow: 5px 10px #e5e6e8;">
+                                    <div class="row">
+                                        <!-- <div class="col-md-12"> -->
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Style #<span class="text-danger">*</span></label>
+                                                        <ng-select [items]="StyleList$ | async"
+                                                            placeholder = "[Select Style]"
+                                                            [selectOnTab]="true"
+                                                            bindLabel="style_no"
+                                                            bindValue="style_id"
+                                                            [loading]="StyleListingLoading"
+                                                            [typeahead]="StyleListInput$"
+                                                            [(ngModel)]="selectedStyle"
+                                                            formControlName="StyleList"
+                                                            (change)="onChange($event)">
+                                                        </ng-select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Order Quantity<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control input-xxs" id="order_qty" name="order_qty" formControlName="ctrlOrderQty" required minlength="2">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>FOB<span class="text-danger"></span></label>
+                                                        <input type="text" class="form-control input-xxs" id="order_fob" name="order_fob" formControlName="ctrlFOB" required (input)="calEPM();calNP()">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Flash Costing ID<span class="text-danger"></span></label>
+                                                        <select formControlName="flashCostingCtrl" class="form-control input-xxs set-select-general-200" name="item_uom" id="item_uom" (change)='getCostingDetails($event.target.value)' [(ngModel)]="flashControl">
+                                                            <option value="-1" class="space-option">..................</option>
+                                                            <option *ngFor="let flashList of FlashCostList$ | async" [value]="flashList.costing_id" class="space-option">
+                                                                {{flashList.CostingNumber}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>SMV<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control input-xxs" id="order_smv" readonly="readonly" name="order_smv" (input)="calLabourCost();calCorporateCost()" (click)="popUpSMV()">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Efficiency<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control input-xxs" id="order_eff" name="order_eff">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="col-md-4" style="height: 100px;">
+                                            <img id="style_img" name="style_img" alt="" width="200px" height="200px"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Style Description<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="style_desc" formControlName="ctrlStyleDescription" name="style_desc" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Factory CPM<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control input-xxs" id="fac_cpm" name="fac_cpm" (input)="calLabourCost()">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Front-End CPM<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control input-xxs" id="front_cpm" name="front_cpm" (input)="calCorporateCost()">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Customer<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" formControlName="ctrlCustomer" id="customer_name" name="customer_name" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Finance Rate (%)<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control input-xxs" id="finance_perc" name="finance_perc" (input)="calFinanceCost()">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Season<span class="text-danger"></span></label>
+                                            <select formControlName="SeasonsList" class="form-control input-xxs set-select-general-200" name="seasons" id="seasons" [(ngModel)]="modelSeason" >
+                                                <option value="-1" class="space-option">..................</option>
+                                                <option *ngFor="let seasonList of SeasonsListing$ | async" [value]="seasonList.season_id" class="space-option">
+                                                    {{seasonList.season_name}}
+                                                </option>
+                                            </select>
+                                           <!-- <ng-select #seasons [items]="SeasonsListing$ | async"
+                                                placeholder = "[Select Seasons]"
+                                                name="seasonName"
+                                                [selectOnTab]="true"
+                                                bindLabel="season_name"
+                                                bindValue="season_id"
+                                                [loading]="SeasonsListLoading"
+                                                [typeahead]="SeasonsListInput$"
+                                                [(ngModel)]="selectedSeason"
+                                                formControlName="SeasonsList"
+                                                (change)="getSeasonDeatils($event)">
+                                            </ng-select> -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Product Category<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" formControlName="product_category" id="product_category" name="product_category" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Total RM Cost<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="total_rm_cost" name="total_rm_cost" readonly="readonly" value="{{total_rm_cost | number:'0.1-5'}}">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Total Finance Cost<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="total_fin_cost" name="total_fin_cost" readonly="readonly" value="{{finance_cost | number:'0.1-5'}}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Product Feature<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" formControlName="ctrlProductFeature" id="product_feature" name="product_feature" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Labour/Sub Con. Cost<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="labour_cost" name="labour_cost" value="{{labour_cost | number:'0.1-5'}}" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Corporate Cost<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="corporate_cost" name="corporate_cost" value="{{corporate_cost | number:'0.1-5'}}" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-4">
+                                            <label>Division<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" formControlName="ctrlDivision" id="division" name="division" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>EPM<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="epm" name="epm" readonly="readonly" value="{{EPM_value | number:'0.1-5'}}">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>NP<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="np" name="np" readonly="readonly" value="{{NP_value | number:'0.1-5'}}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Product Silhouette<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" formControlName="ctrlProductSilhouette" id="product_silhouette" name="product_silhouette" readonly="readonly">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Total Cost<span class="text-danger"></span></label>
+                                            <input type="text" class="form-control input-xxs" id="totalCost" name="totalCost" readonly="readonly" value="{{total_cost | number:'0.1-5'}}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">&nbsp;</div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="add_item" (click)="PopUpAddItem()" [disabled]="falshCostingForm.invalid" >
+                                            <b><i class="icon-plus3"></i></b>Add Items</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="gridItems" style="height: 150px; overflow: hidden; width: 900px; border: thin solid;" class="handsontable" data-originalstyle="height: 150px; overflow: hidden; width: 900px;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" style="text-align: right;">
+                                            <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" id='btnNew'(click)="reset_forms()">
+                                                  <b><i class="icon-file-text2"></i></b> New</button>
+                                                  &nbsp;&nbsp;
+                                             <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" id='btnSave'(click)="save_costing()">
+                                                  <b><i class="icon-floppy-disk"></i></b> Save</button>
+                                                  &nbsp;&nbsp;
+                                             <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" data-dismiss="modal" id="btnConfirm" (click)="confirm_costing()" >
+                                                            <b><i class="icon-check"></i></b>Confirm</button>
+                                             <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" data-dismiss="modal" id="btnRevise" (click)="revise_costing()" >
+                                                            <b><i class="icon-loop3"></i></b>Revise</button>
+                                                            &nbsp;&nbsp;
+
+
+                                             <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="">
+                                                  <b><i class="icon-cross"></i></b>Close</button>
+                                                  &nbsp;&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="model_item_adding" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+       <div class="modal-content">
+           <form class="form-horizontal form-validate-jquery" [formGroup]="itemCostingForm">
+            <div class="modal-header bg-teal-300">
+                <button type="button" class="close" data-dismiss="modal" (click)="itemadding_modal.hide()">&times;</button>
+                <h5 class="modal-title">{{modelTitle}}</h5>
+            </div>
+            <div class="modal-body">
+                <div class=" col-source_hidmd-12">
+                    <fieldset class="content-group">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label>Main Category<span class="text-danger"></span></label>
+                                        <select formControlName="category_code" class="form-control input-xxs set-select-general-200"  (change)='loadSubCategory($event.target.value)'>
+                                            <option value="-1" class='space-option'>..................</option>
+                                            <option *ngFor="let com of mainCategory$ | async" [value]="com.category_id" class='space-option'>
+                                                    {{com.category_name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label>Sub Category<span class="text-danger"></span></label>
+                                        <select formControlName="SubCategory" class="form-control input-xxs set-select-general-200"  (change)='loadStyleItemsBySubCat($event.target.value)'>
+                                            <option value="-1" class='space-option'>..................</option>
+                                            <option *ngFor="let subCategory of subCategory$ | async" [value]="subCategory.subcategory_id" class='space-option'>
+                                                    {{subCategory.subcategory_name}}
+                                            </option>
+                                        </select>
+                                        <!-- <ng-select [items]="subCategory$ | async"
+                                            placeholder = "[Select Subcategory]"
+                                            [selectOnTab]="true"
+                                            bindLabel="subcategory_name"
+                                            bindValue="subcategory_id"
+                                            [loading]="SubCategoryLoading"
+                                            [typeahead]="SubcategoryInput$"
+                                            [(ngModel)]="selectedSubCategory"
+                                            formControlName="SubCategory"
+                                            (change)="loadStyleItems($event)">
+                                        </ng-select>-->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Item Description<span class="text-danger"></span></label>
+                                        <select formControlName="ctrlStyleItems" class="form-control input-xxs set-select-general-200" id="itemDescription" name="itemDescription"  (change)='setFocusConPc($event.target.value)'>
+                                            <option value="-1" class='space-option'>..................</option>
+                                            <option *ngFor="let itemList of StyleItemListing$ | async" [value]="itemList.master_id" class='space-option'>
+                                                    {{itemList.master_description}}
+                                            </option>
+                                        </select>
+                                        <!-- <ng-select [items]="StyleItemListing$ | async"
+                                            placeholder = "[Select Item Description]"
+                                            [selectOnTab]="true"
+                                            bindLabel="master_description"
+                                            bindValue="master_id"
+                                            [loading]="StyleItemLoading"
+                                            [typeahead]="StyleItemInput$"
+                                            [(ngModel)]="selectedItem"
+                                            formControlName="ctrlStyleItems"
+                                            (change)="setFocusConPc($event)">
+                                        </ng-select>-->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Suppliers<span class="text-danger"></span></label>
+                                        <select formControlName="ctrlStyleItems" class="form-control input-xxs set-select-general-200" id="supplierlist" name="supplierlist"  (change)='onSupplierChange($event)'>
+                                            <option value="-1" class='space-option'>..................</option>
+                                            <option *ngFor="let supplierList of SupplierListing$ | async" [value]="supplierList.supplier_id" class='space-option'>
+                                                    {{supplierList.supplier_name}}
+                                            </option>
+                                        </select>
+                                        <!--<ng-select [items]="SupplierListing$ | async"
+                                            placeholder = "[Select Suppliers]"
+                                            [selectOnTab]="true"
+                                            autofocus
+                                            bindLabel="supplier_name"
+                                            bindValue="supplier_id"
+                                            [loading]="SuppliersLoading"
+                                            [typeahead]="SupplierInput$"
+                                            [(ngModel)]="selectedSupplier"
+                                            formControlName="supplier_code"
+                                            (change)="onSupplierChange($event)">
+                                        </ng-select>
+                                        -->
+                                    </div>
+                                </div>
+                                <div class="row"><div class="col-md-12"><legend>&nbsp;</legend></div></div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Con/Pc<span class="text-danger"></span></label>
+                                        <input type="text" formControlName="conpc" id="conpc" name="conpc" class="form-control input-xxs" placeholder="Enter Con/Pc" >
+                                    </div>
+                                    <div class="col-md-1">&nbsp;</div>
+                                    <div class="col-md-4">
+                                        <label>UOM<span class="text-danger"></span></label>
+                                        <select formControlName="uomCtrl" class="form-control input-xxs set-select-general-200" id="itemuom" name="itemuom" >
+                                            <option value="-1" class="space-option">..................</option>
+                                            <option *ngFor="let uomlist of UOMList$ | async" [value]="uomlist.uom_id" class="space-option">
+                                                {{uomlist.uom_code}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Unit Price<span class="text-danger"></span></label>
+                                        <input type="text" formControlName="unitprice" id="unitprice" class="form-control input-xxs" value="00.00" placeholder="Enter unit price" >
+                                    </div>
+                                    <div class="col-md-1">&nbsp;</div>
+                                    <div class="col-md-4">
+                                        <label>Wastage<span class="text-danger"></span></label>
+                                        <input type="text" formControlName="wastage" id="wastage" class="form-control input-xxs" value="0" placeholder="Enter wastage" >
+                                    </div>
+                                </div>
+                                <div class="row" style="height: 50px;"><div class="col-md-12"><legend>&nbsp;</legend></div></div>
+                                <div class="row">
+                                    <div class="col-md-12 allignRight" style="text-align: right">
+                                        <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" (click)="addItemToGrid()" >
+                                        <b><i class="icon-check"></i></b>Add</button>
+                                        &nbsp;&nbsp;
+                                        <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" >
+                                        <b><i class="icon-cross"></i></b>Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+             </form>
+        </div>
+
+    </div>
+</div>
+<div id="model_add_smv" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <form class="form-horizontal form-validate-jquery" [formGroup]="smvAddingForm">
+                <div class="modal-header bg-teal-300">
+                    <button type="button" class="close" data-dismiss="modal" (click)="smvadding_modal.hide()">&times;</button>
+                    <h5 class="modal-title">Adding SMV</h5>
+                </div>
+                <div class="modal-body">
+                    <div class=" col-source_hidmd-12">
+                        <fieldset class="content-group">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label>Sewing SMV<span class="text-danger"></span></label>
+                                            <input type="text" formControlName="ctrlSewingSMV" id="sewingsmv" name="sewingsmv" class="form-control input-xxs" value="00.00" placeholder="Enter sewing SMV" >
+                                        </div>
+                                        <div class="col-md-2">&nbsp;</div>
+                                        <div class="col-md-5">
+                                            <label>Packing SMV<span class="text-danger"></span></label>
+                                            <input type="text" formControlName="ctrlPackingSMV" id="packingsmv" name="packingsmv" class="form-control input-xxs" value="00.00" placeholder="Enter packing SMV" >
+                                        </div>
+                                    </div>
+                                    <div class="row" style="height: 50px;"><div class="col-md-12"><legend>&nbsp;</legend></div></div>
+                                    <div class="row">
+                                        <div class="col-md-12 allignRight" style="text-align: right">
+                                            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" (click)="addSMV()" >
+                                            <b><i class="icon-check"></i></b>Add</button>
+                                            &nbsp;&nbsp;
+                                            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" >
+                                            <b><i class="icon-cross"></i></b>Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

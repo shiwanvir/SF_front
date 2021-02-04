@@ -1,0 +1,36 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Bin Transfer</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+
+          <tabset #menuTab [justified]="true">
+
+            <tab heading="Bin Transfer List" (select)="onSelect($event)">
+                <app-bin-transfer-list></app-bin-transfer-list>
+            </tab>
+
+            <tab heading="Bin Transfer" (select)="onSelect($event)">
+                <app-bin-transfer></app-bin-transfer>
+            </tab>
+
+          </tabset>
+
+
+        </div>
+
+
+
+
+		</div>
+</div>

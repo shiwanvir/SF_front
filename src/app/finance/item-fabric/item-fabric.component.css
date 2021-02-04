@@ -1,0 +1,28 @@
+li {
+  padding-top:3px;
+  padding-bottom: 3px
+}
+
+.li-align-right {
+  text-align: right
+}
+
+.card-title {
+  margin-left:5px;
+  margin-top:0px
+}
+
+div .card {
+  border-style:solid;
+  border-width:1px;
+  margin-bottom: 10px;
+}
+
+table {
+  width:100%;
+}
+
+table tr td {
+  padding-left: 10px;
+  padding-right: 10px;
+}

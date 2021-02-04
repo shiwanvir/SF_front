@@ -1,0 +1,70 @@
+            <div class="panel panel-flat">
+                <!-- <div class="panel-heading">
+                    <h5 class="panel-title">Dashboard</h5>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div> -->
+
+                <div class="panel-body">
+
+
+                  <div id="calendar" [hasPermission]="['CALENDER_VIEW']"></div>
+
+
+                  <div id="calendarModal" class="modal fade">
+                  <div class="modal-dialog">
+
+                    <div class="modal-content">
+                        <form class="form-horizontal" [formGroup]="formGroup">
+                            <div class="modal-header  bg-teal-300">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h5 class="modal-title">SELECT ONE</h5>
+                            </div>
+                            <div class="modal-body">
+
+                              <input type="hidden" class="form-control input-xxs" formControlName="start_date" id="start_date">
+                              <input type="hidden" class="form-control input-xxs" formControlName="end_date" id="end_date">
+
+                              <button [hasPermission]="['CALENDER_CREATE_NEW']" type="submit" class="btn bg-info btn-labeled btn-info btn-xs" id="save_new"
+                               [disabled]="formGroup.invalid || formGroup.pending || processing">
+                              <b><i class=" icon-add"></i></b> NEW</button>
+
+                              <button [hasPermission]="['CALENDER_CREATE_HOLIDAY']" type="submit" class="btn bg-danger btn-labeled btn-danger btn-xs" style="margin-left:10px;" id="save_holiday"
+                               [disabled]="formGroup.invalid || formGroup.pending || processing">
+                              <b><i class="icon-calendar2"></i></b> HOLIDAY</button>
+
+                              <button [hasPermission]="['CALENDER_FINAL_CALCULATION']" type="submit" class="btn bg-success btn-labeled btn-success btn-xs" style="margin-left:10px;" id="save_full_cal"
+                               [disabled]="formGroup.invalid || formGroup.pending || processing">
+                              <b><i class="icon-calculator2"></i></b> FINAL CALCULATION</button>
+
+                              <button [hasPermission]="['CALENDER_SEND_FOR_APPROVEL']" type="submit" class="btn bg-brown btn-labeled btn-brown btn-xs" style="margin-left:10px;" id="send_to_app"
+                               [disabled]="formGroup.invalid || formGroup.pending || processing">
+                              <b><i class="icon-calendar2"></i></b> SEND FOR APPROVAL</button>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"  data-dismiss="modal"><b><i class="icon-cross"></i></b> Close</button>
+                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                  </div>
+                  </div>
+
+
+
+
+                </div>
+            </div>

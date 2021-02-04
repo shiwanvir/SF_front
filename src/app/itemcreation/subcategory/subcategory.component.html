@@ -1,0 +1,124 @@
+<div class="content">
+
+    <div class="col-md-12">
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+
+                <h5 class="panel-title">Sub Category</h5>
+                <div class="heading-elements">
+                    <ul class="icons-list">
+                        <li><a data-action="collapse"></a></li>
+                        <li><a data-action="reload"></a></li>
+                        <li><a data-action="close"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="tabbable">
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="tab_payment_term">
+				 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="text-right">
+                                          <div [hasPermission]="['SUB_CATEGORY_CREATE']">
+                                                <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"  id="btn_new_sub_category" (click)="LoadPopUp()"><b><i class="icon-plus3"></i></b>Add New</button>
+
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="min-height: 350px;">
+                                    <div class="col-md-12">
+                                        <table class="table display compact" id="tbl_sub_category">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Action</th>
+                                                    <th>Status</th>
+                                                    <th>Sub Category Name</th>
+                                                    <th>Sub Category Code</th>
+                                                    <th>Category</th>
+                                                    <th>Inspection Allowed</th>
+                                                    <th>Display</th>
+                                                    <!-- <th>Status</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                   </div>
+                                </div>
+                                <div bsModal #model_sub_category="bs-modal" class="modal fade" [config]="{backdrop: 'static'}">
+                                    <div class="modal-dialog modal-md">
+                                        <div class="modal-content">
+                                            <form class="form-horizontal form-validate-jquery" [formGroup]="formGroup" (ngSubmit)="saveSubCategory()">
+                                                <div class="modal-header bg-teal-300">
+                                                    <button type="button" class="close" data-dismiss="modal" (click)="model_sub_category.hide()" >&times; </button>
+                                                    <h5 class="modal-title">{{modelTitle}}</h5>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <input type="hidden" name="subcategory_id" id="subcategory_id" value="0">
+                                                    <fieldset class="content-group">
+                                                        <label>Category <span class="text-danger">*</span> :</label>
+                                                        <select formControlName="category_code" class="form-control input-xxs" (blur)="formValidate()">
+                                                            <option [ngValue]="null">Select Category</option>
+                                                            <option *ngFor="let com of mainCategory$ | async" [value]="com.category_id">
+                                                                {{com.category_name}}
+                                                            </option>
+                                                        </select>
+                                                        <span class="err">{{ formValidator.validate_field('category_code')}}</span>
+                                                    </fieldset>
+                                                    <fieldset class="content-group">
+                                                            <label>Sub Category Code <span class="text-danger">*</span> :</label>
+
+                                                            <span class="err" *ngIf="formGroup.get('subcategory_code').status === 'PENDING'"> Validating....</span>
+                                                            <input type="text" class="form-control input-xxs" formControlName="subcategory_code" placeholder="Sub Category Code" upperCase>
+                                                            <span class="err" *ngIf="formGroup.get('subcategory_code').errors && formGroup.get('subcategory_code').errors.remoteValidation">{{formGroup.get('subcategory_code').errors.remoteValidation}}</span>
+                                                            <span class="err">{{ formValidator.validate_field('subcategory_code')}}</span>
+
+                                                        </fieldset>
+                                                    <fieldset class="content-group">
+                                                        <label>Sub Category Name <span class="text-danger">*</span> :</label>
+                                                        <input type="text" formControlName="subcategory_name" class="form-control input-xxs" placeholder="Sub Category Name" upperCase>
+                                                            <span class="err" > {{ formValidator.validate_field('subcategory_name')  }} </span>
+                                                    </fieldset>
+                                                    <fieldset class="content-group">
+                                                        <input type="checkbox" formControlName="is_display" value="1">
+                                                        <label>&nbsp; Display </label>
+                                                    </fieldset>
+                                                    <fieldset class="content-group">
+                                                        <input type="checkbox" formControlName="is_inspectiion_allowed" value="1">
+                                                        <label>&nbsp; Inspection Allowed</label>
+                                                    </fieldset>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" (click)="model_sub_category.hide()"><b><i class="icon-cross"></i></b>Close</button>
+                                                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" id="btn_save_payment_method"  [disabled]="formGroup.invalid"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                                                </div>
+                                            </form>
+
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            <div class="tab-pane" id="tab_cost_center">
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

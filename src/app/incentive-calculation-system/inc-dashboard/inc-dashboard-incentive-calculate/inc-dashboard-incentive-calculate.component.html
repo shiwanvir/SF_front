@@ -1,0 +1,582 @@
+<form class="form-horizontal" [formGroup]="formHeader">
+
+<div class="row" [hasPermission]="['CALENDER_EVENT_OPEN']">
+  <div class="col-md-12">
+
+    <div class="row">
+      <div class=" col-md-12">
+        <div class=" col-md-7">
+            <legend class="text-bold">Incentive Header Details</legend>
+
+          <div class="row" style="margin-top:10px;" >
+            <div class="col-md-12">
+          <button [hasPermission]="['CALENDER_IMPORT_EMPLOYEE']" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs"
+           [disabled]=" processing" (click)="upload_employee()">
+          <b><i class="icon-import"></i></b> IMPORT EMPLOYEES</button>
+
+          <button [hasPermission]="['CALENDER_IMPORT_EFFICIENCY']" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs" style="margin-left:10px;"
+           [disabled]=" processing" (click)="upload_efficiency()">
+          <b><i class="icon-import"></i></b> IMPORT EFFICIENCY</button>
+
+             </div></div>
+
+          <div class="row"  style="margin-top:10px;" >
+            <div class="col-md-12">
+
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><b>Date</b></td>
+
+                  <td>{{ facDate_2 }}</td>
+                  <td><b>Employees</b></td>
+
+                  <td>{{ attendance }}</td>
+                </tr>
+                <tr>
+                  <td><b>Location</b></td>
+
+                  <td>{{ facLocation }}</td>
+                  <td><b>Efficiency %</b></td>
+
+                  <td>{{ efficiency }}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+         </div>
+
+         <legend class="text-bold" style="margin-top:10px;">Incentive Line Details</legend>
+
+         <div class="row">
+         <div class="col-md-12" style="margin-left:-10px;">
+           <div class="col-md-5">
+               <label>Section <span class="text-danger">*</span> :</label>
+               <ng-select
+                 placeholder = "Select Section"
+                 [items]="type_section$ | async"
+                 bindLabel="line_no"
+                 [hideSelected]="true"
+                 formControlName="inc_section_id"
+                 (change)="onLineChange($event)">
+               </ng-select>
+               <span class="err">{{ formHeaderValidator.validate_field('inc_section_id')  }}</span>
+           </div>
+         <div class="col-md-4">
+             <label>Type of Order <span class="text-danger">*</span> :</label>
+             <ng-select
+               placeholder = "Select Type Of Order"
+               [items]="type_order$ | async"
+               bindLabel="order_type"
+               [hideSelected]="true"
+               formControlName="inc_order_id"
+               (change)="onOrderTypeChange($event)" >
+             </ng-select>
+             <span class="err">{{ formHeaderValidator.validate_field('inc_order_id')  }}</span>
+         </div>
+         <div class="col-md-3">
+             <label>Day <span class="text-danger">*</span> :</label>
+             <ng-select [items]="subDay$ | async"
+                 placeholder = "Select Day"
+                 [selectOnTab]="true"
+                 bindLabel="qco_date"
+                 formControlName="qco_date_id"
+                 (change)="onLineChangeDay($event)">
+             </ng-select>
+             <span class="err">{{ formHeaderValidator.validate_field('qco_date_id')  }}</span>
+         </div>
+
+
+         </div>
+         <div class="col-md-12" style="margin-left:-10px;">
+         <div class="col-md-2">
+             <label>Efficiency % <span class="text-danger">*</span> :</label>
+             <input type="number" formControlName="efficiency_rate"  class="form-control input-xxs"
+               placeholder="Efficiency" disabled>
+             <span class="err">{{ formHeaderValidator.validate_field('efficiency_rate')  }}</span>
+         </div>
+         <div class="col-md-4">
+             <label>Total Line Employees <span class="text-danger">*</span> :</label>
+             <input type="number" formControlName="emp_count"  class="form-control input-xxs"
+               placeholder="Total Line Employees" disabled>
+             <span class="err">{{ formHeaderValidator.validate_field('emp_count')  }}</span>
+         </div>
+
+         <div class="col-md-3">
+             <label>AQL Code <span class="text-danger">*</span> :</label>
+             <input type="number" formControlName="aql"  class="form-control input-xxs"
+               placeholder="AQL Code">
+             <span class="err">{{ formHeaderValidator.validate_field('aql')  }}</span>
+         </div>
+
+         <div class="col-md-3">
+             <label>CNI Code <span class="text-danger">*</span> :</label>
+             <input type="number" formControlName="cni"  class="form-control input-xxs"
+               placeholder="CNI Code">
+             <span class="err">{{ formHeaderValidator.validate_field('cni')  }}</span>
+         </div>
+
+         </div>
+         <div class="col-md-12" style="margin-left:-10px;">
+
+           <div class="col-md-4">
+               <label>Line Incentive (LKR) <span class="text-danger">*</span> :</label>
+               <input type="number" formControlName="incentive"  class="form-control input-xxs"
+                 placeholder="Incentive" disabled>
+               <span class="err">{{ formHeaderValidator.validate_field('incentive')  }}</span>
+           </div>
+           <div class="col-md-2">
+               <!-- <label>Status :</label> -->
+               <input type="hidden" formControlName="status" class="form-control input-xxs"
+                 placeholder="Status" disabled>
+               <span class="err">{{ formHeaderValidator.validate_field('status')  }}</span>
+           </div>
+
+          </div>
+
+
+
+         </div>
+
+
+
+
+         <div class="row" style="margin-top:10px;" >
+           <div class="col-md-6">
+         <button  [hasPermission]="['CALENDER_SAVE_LINE_DETAILS']"   type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"
+          [disabled]="formHeader.invalid || formHeader.pending || processing || add_cader" (click)="save_production()">
+         <b><i class=" icon-floppy-disk"></i></b> Save</button>
+
+         <button style="margin-left:5px;" type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="clearForm3()">
+           <b><i class="icon-redo"></i></b> Clear</button>
+
+
+
+            </div>
+            <div class="col-md-5">
+
+            <ul class="nav nav-sm nav-pills nav-justified">
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Saved Sections <span class="badge badge-default position-right">{{saved_lines_count}}</span> <span class="caret"></span></a>
+                              <ul class="dropdown-menu dropdown-menu-right">
+                                <li *ngFor="let s of saved_lines"><a href="#" data-toggle="tab">{{s.line_no}}</a></li>
+
+                              </ul>
+                            </li>
+                          </ul>
+
+            </div></div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+        <div class="col-md-5">
+
+          <legend class="text-bold">Incentive Employees</legend>
+
+          <div class="col-md-4" *ngFor="let emp of empList; let i = index" style="margin-top:10px;" id="context-menu-simple">
+
+            <div class="btn-group">
+                <button class="btn {{ emp.button_colour }} btn-mini btn-xs" [disabled]="emp_processing">{{ emp.emp_no }}</button>
+                <button class="btn btn-info btn-mini dropdown-toggle btn-xs" data-toggle="dropdown" [disabled]="emp_processing" >
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" [hasPermission]="['CALENDER_LINE_TRANSFER']">
+                  <li class="dropdown-submenu">
+                    <a tabindex="-1"  (click)="line_transfer(emp.emp_no,emp.emp_detail_id,emp.inc_production_incentive_line_id)" >Line Transfer</a>
+                  </li>
+                </ul>
+              </div>
+
+          </div>
+
+          <!-- <div class="table-responsive">
+              <table class="table ">
+                <thead class="">
+                  <tr>
+                    <th>EMP#</th>
+                    <th>Hour</th>
+                    <th>Incentive</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let emp of empList; let i = index">
+                    <td><button type="button" class="btn btn-success btn-xs">{{ emp.emp_no }}</button></td>
+                    <td><input type="number" class="form-control input-xxs" value="{{ emp.shift_duration }}" disabled></td>
+                    <td><input type="number" class="form-control input-xxs" disabled></td>
+
+                     <td>
+                      <i class="icon-transmission action-button-padding" (click)="changeOrder(i, 'LEFT',emp.emp_no)" *ngIf="!processing"></i>&nbsp;
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+
+
+
+        </div>
+
+
+
+
+
+
+<div class="col-md-12">
+
+        <legend class="text-bold" style="margin-top:10px;">Cadre
+        <div class="legend2"  style="margin-top:-20px;"><b>
+          <a [hasPermission]="['CALENDER_CADRE_CREATE']" class="icon-add" (click)="load_cadre()" style="cursor: pointer;" ></a></b></div></legend>
+
+          <div class="row">
+            <div class="col-md-12">
+            <div style="border-style:solid;border-width:1px;border-color:#DCDCDC;">
+              <hot-table
+                [hotId]="directcadreinstance"
+                [settings]="directcadrehotOptions"
+                [data]="directcadredataset">
+            </hot-table>
+            </div>
+          </div>
+          </div>
+
+          <div class="row" style="margin-top:10px;" >
+            <div class="col-md-12">
+
+              <button [hasPermission]="['CALENDER_CONFIRM']" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs"
+               [disabled]="btn_confirm"  (click)="confirm_line_details()">
+              <b><i class="icon-checkbox-checked2"></i></b> CONFIRM</button>
+
+              <button [hasPermission]="['CALENDER_CALCULATE']" type="submit" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" style="margin-left:10px;"
+               [disabled]="btn_calculate" (click)="calculate()">
+              <b><i class="icon-calculator2"></i></b> CALCULATE</button>
+
+
+
+             </div></div>
+
+</div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</form>
+
+
+
+<!-- popup -->
+ <div bsModal #lineTransferModel="bs-modal" [config]="{backdrop: 'static'}"
+  class="modal fade" (onShow)="showEvent($event)" >
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+              <div class="modal-header  bg-teal-300">
+                  <button type="button" class="close" (click)="lineTransferModel.hide()">&times;</button>
+                  <h5 class="modal-title">{{ modelTitleView }}</h5>
+              </div>
+              <div class="modal-body">
+
+                <div class="row"  style="margin-top:10px;">
+                  <div class="col-md-12">
+
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><b>Date</b></td>
+
+                        <td>{{ facDate_2 }}</td>
+                        <td><b>Shift Hours</b></td>
+
+                        <td>{{ shift_duration }}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Location</b></td>
+
+                        <td>{{ facLocation }}</td>
+                        <td><b>Work Hours</b></td>
+
+                        <td>{{ work_duration }}</td>
+                      </tr>
+                      </tbody>
+                  </table>
+                  </div>
+               </div>
+
+               <form [formGroup]="formTranfer" (ngSubmit)="saveTransfer($event)">
+    						 <fieldset class="content-group" *ngIf="showTransferForm">
+                   <input type="hidden" formControlName="inc_production_incentive_line_id" class="form-control input-xxs" value="0">
+    							 <div class="row">
+    									 <div class="col-md-4">
+                         <label>From Line <span class="text-danger">*</span> :</label>
+                         <ng-select
+                           placeholder = "Select Section"
+                           [items]="type_section$ | async"
+                           bindLabel="line_no"
+                           [hideSelected]="true"
+                           formControlName="from_line">
+                         </ng-select>
+                         <span class="err">{{ formTranferValidator.validate_field('from_line')  }}</span>
+    									 </div>
+                       <div class="col-md-4">
+                         <label>To Line <span class="text-danger">*</span> :</label>
+                         <ng-select
+                           placeholder = "Select Section"
+                           [items]="type_section$ | async"
+                           bindLabel="line_no"
+                           [hideSelected]="true"
+                           formControlName="to_line">
+                         </ng-select>
+                         <span class="err">{{ formTranferValidator.validate_field('to_line')  }}</span>
+    									 </div>
+    									 <div class="col-md-4">
+    											 <label>Work Hours <span class="text-danger">*</span> :</label>
+    											 <input type="number" class="form-control input-xxs" placement="bottom"
+    												 placeholder="Work Hours" formControlName="work_duration" (keyup)="calculatePlannedQty()">
+    											 <span class="err">{{ formTranferValidator.validate_field('work_duration')  }}</span>
+    									 </div>
+    									 <!-- <div class="col-md-4">
+    											 <label>Planned Qty <span class="text-danger">*</span> :</label>
+    											 <input type="number"  class="form-control input-xxs"
+    												  formControlName="planned_qty" disabled placeholder="Planned Qty">
+    											 <span class="err">{{ formValidatorSize.validate_field('planned_qty')  }}</span>
+    									 </div> -->
+    							</div>
+
+                  <div class="btn-group" style="float:right;margin-top:10px">
+
+                         <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="clearForm()"><b><i class="icon-redo"></i></b> Clear</button> -->
+                         <button [hasPermission]="['CALENDER_LINE_TRANSFER']" style="margin-left:5px;" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formTranfer.invalid || processingtransfer">
+         										 <b><i class="icon-floppy-disk"></i></b> {{ buttonChange }}</button>
+
+                   </div>
+
+
+    					</fieldset>
+              </form>
+
+               <div>
+       					<legend class="text-bold" style="margin-top:10px">Transfer List</legend>
+       					<div class="row">
+       						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                     <hot-table
+                       [hotId]="instance"
+                       [settings]="hotOptions"
+                       [data]="dataset">
+                   </hot-table>
+       						</div>
+       					</div>
+             </div>
+
+
+
+
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="lineTransferModel.hide()"><b>
+                    <i class="icon-cross"></i></b> Close</button>
+
+                  </div>
+
+          </div>
+      </div>
+  </div>
+
+
+
+
+  <!-- popup -->
+   <div bsModal #cadreModel="bs-modal" [config]="{backdrop: 'static'}"
+    class="modal fade" (onShow)="showEvent($event)" >
+    <div class="modal-dialog modal-full">
+        <div class="modal-content">
+
+                <div class="modal-header  bg-teal-300">
+                    <button type="button" class="close" (click)="close_model()">&times;</button>
+                    <h5 class="modal-title">{{ cadreTitleView }}</h5>
+                </div>
+                <div class="modal-body">
+
+                      <form [formGroup]="formcadre" (ngSubmit)="saveCadre($event)">
+                        <fieldset class="content-group">
+                        <input type="hidden" formControlName="cadre_id" class="form-control input-xxs" value="0">
+                        <div class="row">
+                          <div  class="col-md-6">
+                            <div class="col-md-12">
+                              <div class="col-md-6">
+           											 <label>Cadre Name <span class="text-danger">*</span> :</label>
+           											 <input type="text" class="form-control input-xxs" placement="bottom"
+           												 placeholder="Cadre Name" formControlName="cadre_name" >
+           											 <span class="err">{{ formCadreValidator.validate_field('cadre_name')  }}</span>
+           									 </div>
+                             <div class=" col-md-6">
+                                 <label>Cadre Type <span class="text-danger">* </span>:</label>
+                                 <select class="form-control input-xxs" formControlName="cadre_type">
+                                     <option [ngValue]="null">Select Cadre Type</option>
+                                     <option value="DIRECT">DIRECT</option>
+                                     <option value="INDIRECT">INDIRECT</option>
+                                 </select>
+                                 <span class="err" > {{ formCadreValidator.validate_field('cadre_type')  }} </span>
+                             </div>
+
+                             </div>
+
+                             <div class="col-md-12" style="margin-top:25px;">
+
+                               <button [hasPermission]="['CALENDER_CADRE_CREATE']" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"
+                                [disabled]="formcadre.invalid || processingcadre" (click)="savecadreHeader()" style="margin-left:10px;">
+                               <b><i class="icon-floppy-disk"></i></b> Save </button>
+
+                               <button type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" style="margin-left:10px;" (click)="clearForm2()">
+                               <b><i class="icon-redo"></i></b> Clear</button>
+
+
+
+                              </div>
+                              <!--
+                             <div class="col-md-12">
+                             <div class="col-md-2">
+                               <button style="margin-left:5px;margin-top:18px;" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"
+                               [disabled]="formcadre.invalid || processingcadre" (click)="savecadreHeader()">
+                    					 <b><i class="icon-floppy-disk"></i></b> SAVE </button>
+
+
+
+                              </div>
+                              <div class="col-md-2">
+                                <button style="margin-left:5px;margin-top:18px;" type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="clearForm2()">
+                                  <b><i class="icon-redo"></i></b> Clear</button>
+                              </div>
+
+                              </div> -->
+
+
+                        <div class="col-md-12">
+                        <legend class="text-bold"  style="margin-top:10px">Cadre</legend>
+                        <div style="margin-top:10px">
+
+                					<div class="row">
+                						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                              <hot-table
+                                [hotId]="cadreinstance"
+                                [settings]="cadrehotOptions"
+                                [data]="cadredataset">
+                            </hot-table>
+                						</div>
+                					</div>
+                      </div>
+                      </div>
+                     </div>
+
+                        <div  class="col-md-6">
+                          <div class="col-md-12">
+                            <div class="col-md-6">
+                              <label>Designation <span class="text-danger">*</span> :</label>
+                              <ng-select
+                                placeholder = "Select Designation"
+                                [items]="desig_list$ | async"
+                                bindLabel="emp_designation"
+                                [hideSelected]="true"
+                                formControlName="inc_designation_equation_id"
+                                (change)="onEMPChange($event)">
+                              </ng-select>
+                              <span class="err">{{ formCadreValidator.validate_field('inc_designation_equation_id')  }}</span>
+                           </div>
+                            <div class="col-md-6">
+                              <label>EMP # <span class="text-danger">*</span> :</label>
+                              <ng-select
+                                placeholder = "Select EMP#"
+                                [items]="type_emp_list$ | async"
+                                bindLabel="emp_no"
+                                [hideSelected]="true"
+                                formControlName="cadre_emp_no">
+                              </ng-select>
+                              <span class="err">{{ formCadreValidator.validate_field('cadre_emp_no')  }}</span>
+                           </div>
+                             </div>
+                          <div class="col-md-12">
+                            <div class="col-md-6">
+                              <label>Section(s) <span class="text-danger">*</span> :</label>
+                              <ng-select
+                                placeholder = "Select Section(s)"
+                                [items]="type_section$ | async"
+                                bindLabel="line_no"
+                                [hideSelected]="true"
+                                [multiple]="true"
+                                formControlName="cadre_line_no">
+                              </ng-select>
+                              <span class="err">{{ formCadreValidator.validate_field('cadre_line_no')  }}</span>
+                           </div>
+
+                           <div class="col-md-2">
+                             <button [hasPermission]="['CALENDER_CADRE_CREATE']" style="margin-left:5px;margin-top:18px;" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs"
+                             [disabled]="formcadre.invalid || processingcadredetail">
+                             <b><i class="icon-floppy-disk"></i></b> Add </button>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                          <legend class="text-bold" style="margin-top:10px">Cadre Details</legend>
+                          <div style="margin-top:10px">
+
+                  					<div class="row">
+                  						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                                <hot-table
+                                  [hotId]="cadredetailsinstance"
+                                  [settings]="cadredetailshotOptions"
+                                  [data]="cadredetailsdataset">
+                              </hot-table>
+                  						</div>
+                  					</div>
+                        </div>
+                      </div>
+
+                        </div>
+
+                        </div>
+
+                        </fieldset>
+                      </form>
+
+
+
+
+              </div>
+
+
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="close_model()"><b>
+                      <i class="icon-cross"></i></b> Close</button>
+
+                    </div>
+
+            </div>
+        </div>
+    </div>

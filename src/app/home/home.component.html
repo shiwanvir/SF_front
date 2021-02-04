@@ -1,0 +1,81 @@
+<app-header></app-header>
+
+
+<!-- Page container -->
+<div class="page-container">
+
+	<!-- Page content -->
+	<div class="page-content">
+
+		<div class="sidebar sidebar-main">
+
+				<app-left-menu></app-left-menu>
+
+		</div>
+
+
+		<!-- Main content -->
+		<div class="content-wrapper" style="height:600px">
+
+
+
+
+			<!-- Page header -->
+			<div class="page-header page-header-default" >
+				<div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline" style="margin-top:50px">
+					<ul class="breadcrumb">
+						<li><a routerLink="/dashboard/dashboard"><i class="icon-home2 position-left"></i> Home</a></li>
+						<li *ngFor="let item of pagePathItems"><a> {{ item }}</a></li>
+					</ul>
+
+					<ul class="breadcrumb-elements">
+						<li><a href="#"><i class="icon-comment-discussion position-left"></i> Support</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-gear position-left"></i>
+								Settings
+								<span class="caret"></span>
+							</a>
+
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li><a (click)="bookmarkPage()"><i class="icon-star-full2"></i>Bookmark this page</a></li>
+								<!--<li><a href="#"><i class="icon-statistics"></i> Analytics</a></li>
+								<li><a href="#"><i class="icon-accessibility"></i> Accessibility</a></li>
+								<li class="divider"></li>
+								<li><a href="#"><i class="icon-gear"></i> All settings</a></li>		-->
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- /page header -->
+
+
+			<!-- Content area -->
+			<div class="content">
+
+
+
+
+				<div class="col-md-12">
+
+				<router-outlet></router-outlet>
+
+				</div>
+
+
+				<app-footer></app-footer>
+
+			</div>
+			<!-- /content area -->
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
+
+	  <ng-snotify class="simple"></ng-snotify>
+
+</div>
+<!-- /page container -->

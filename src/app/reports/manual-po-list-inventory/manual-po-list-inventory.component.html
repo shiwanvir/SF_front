@@ -1,0 +1,140 @@
+<div class="panel panel-flat">
+
+  <div class="panel-heading">
+    <h6 class="panel-title">Manual Purchase Order List - Inventory</h6>
+
+    <div class="heading-elements">
+      <ul class="icons-list">
+        <li><a data-action="collapse"></a></li>
+        <li><a data-action="reload"></a></li>
+        <li><a data-action="close"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+
+      <form class="form-horizontal" [formGroup]="formGroup">
+        <fieldset class="content-group">
+
+          <div class="col-md-3">
+            <label>PO Created Date Range<span class="text-danger">*</span> :</label>
+            <input type="text" class="form-control input-xxs" placeholder = "Select PO Created Date Range" formControlName="po_date" bsDaterangepicker [bsConfig]= "{ rangeInputFormat : 'DD-MM-YYYY' }">
+            <span class="err"> {{ formValidatorHeader.validate_field('po_date') }} </span>
+          </div>
+
+          <div class="col-md-3">
+            <label>Cost Center :</label>
+            <ng-select [items]="cost_center$ | async"
+            placeholder = "Select Cost Center"
+            [selectOnTab]="true"
+            bindLabel="cost_center_name"
+            [loading]="costCenterLoading"
+            [typeahead]="costCenterInput$"
+            formControlName="cost_center">
+          </ng-select>
+        </div>
+
+        <div class="col-md-3">
+          <label>Department :</label>
+          <ng-select [items]="department$ | async"
+          placeholder = "Select Department"
+          [selectOnTab]="true"
+          bindLabel="dep_name"
+          [loading]="departmentLoading"
+          [typeahead]="departmentInput$"
+          formControlName="department">
+        </ng-select>
+      </div>
+
+      <div class="col-md-3">
+        <label>Supplier :</label>
+        <ng-select [items]="supplier$ | async"
+        placeholder = "Select Supplier"
+        [selectOnTab]="true"
+        bindLabel="supplier_name"
+        [loading]="supplierLoading"
+        [typeahead]="supplierInput$"
+        formControlName="supplier">
+      </ng-select>
+    </div>
+
+  </fieldset>
+
+  <fieldset class="content-group">
+    <div class="col-md-12">
+      <div class="text-right">
+        <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="reset_feilds()"><b><i class="icon-loop3"></i></b> Refresh </button>&nbsp;&nbsp;
+        <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="searchFrom()" [disabled]="formGroup.invalid">
+          <b><i class="icon-search4"></i></b> Search</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <fieldset class="content-group">
+    <legend class="text-bold text-center">Manual Purchase Order List - Inventory</legend>
+    <div class="col-md-12">
+      <div class="row overflow-auto">
+        <table class="datatable display datatable-basic" id="m_po_list_inv_tbl">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Item Code</th>
+              <th>Description</th>
+              <th>Inventory UOM</th>
+              <th>Standard Price</th>
+              <th>Purchase UOM</th>
+              <th>Purchase Price</th>
+              <th>Price Variance</th>
+              <th>Supplier</th>
+              <th>Purchase Group</th>
+              <th>Supplier Region</th>
+              <th>PO #</th>
+              <th>PO Created Date</th>
+              <th>PO Status</th>
+              <th>PO Qty</th>
+              <th>GRN Qty</th>
+              <th>GRN Location</th>
+              <th>Merchandiser</th>
+              <th>Division</th>
+              <th>Customer</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Company</th>
+              <th>Item Code</th>
+              <th>Description</th>
+              <th>Inventory UOM</th>
+              <th>Standard Price</th>
+              <th>Purchase UOM</th>
+              <th>Purchase Price</th>
+              <th>Price Variance</th>
+              <th>Supplier</th>
+              <th>Purchase Group</th>
+              <th>Supplier Region</th>
+              <th>PO #</th>
+              <th>PO Created Date</th>
+              <th>PO Status</th>
+              <th>PO Qty</th>
+              <th>GRN Qty</th>
+              <th>GRN Location</th>
+              <th>Merchandiser</th>
+              <th>Division</th>
+              <th>Customer</th>
+            </tr>
+          </tfoot>
+          <tbody>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </fieldset>
+
+</div>
+</div>
+
+</div>

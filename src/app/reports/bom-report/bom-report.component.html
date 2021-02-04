@@ -1,0 +1,144 @@
+<div class="panel panel-flat">
+
+  <div class="panel-heading">
+      <h6 class="panel-title">Bill Of Materials Report</h6>
+
+      <div class="heading-elements">
+          <ul class="icons-list">
+              <li><a data-action="collapse"></a></li>
+              <li><a data-action="reload"></a></li>
+              <li><a data-action="close"></a></li>
+          </ul>
+      </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+
+        <form class="form-horizontal" [formGroup]="formGroup">
+
+          <fieldset class="content-group">
+
+            <div class="col-md-3">
+              <label>Costing ID :</label>
+              <ng-select [items]="costing_id$ | async"
+                  placeholder = "Select Costing ID"
+                  [selectOnTab]="true"
+                  bindLabel="id"
+                  [loading]="costingLoading"
+                  [typeahead]="costingInput$"
+                  formControlName="costing_id">
+              </ng-select>
+            </div>
+
+            <div class="col-md-3">
+              <label>Style :</label>
+              <ng-select [items]="style$ | async"
+                  placeholder = "Select Style"
+                  [selectOnTab]="true"
+                  bindLabel="style_no"
+                  [loading]="styleLoading"
+                  [typeahead]="styleInput$"
+                  formControlName="style_name" >
+              </ng-select>
+            </div>
+
+            <div class="col-md-3">
+              <label>FNG # :</label>
+              <ng-select [items]="fng$ | async"
+                  placeholder = "Select FNG#"
+                  [selectOnTab]="true"
+                  bindLabel="master_code"
+                  [loading]="fngLoading"
+                  [typeahead]="fngInput$"
+                  formControlName="fng_code" >
+              </ng-select>
+            </div>
+
+            <div class="col-md-3">
+              <label>BOM Stage :</label>
+              <ng-select
+                placeholder = "Select BOM Stage"
+                [items]="BomStage$ | async"
+                bindLabel="bom_stage_description"
+                [hideSelected]="true"
+                formControlName="bom_stage" >
+              </ng-select>
+            </div>
+
+            <div class="col-md-3">
+              <label>Status :</label>
+              <ng-select
+                placeholder = "Select Status"
+                [items]="bomStatus$ | async"
+                bindLabel="status"
+                [hideSelected]="true"
+                formControlName="bom_status" >
+              </ng-select>
+            </div>
+
+          </fieldset>
+
+          <fieldset class="content-group">
+            <div class="col-md-12">
+              <div class="text-right">
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="reset_feilds()"><b><i class="icon-loop3"></i></b> Refresh </button>&nbsp;&nbsp;
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="searchFrom()">
+                <b><i class="icon-search4"></i></b> Search</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+
+        <fieldset class="content-group">
+          <legend class="text-bold text-center">Bill of materials details</legend>
+          <div class="col-md-12">
+            <div class="row overflow-auto">
+
+              <table class="datatable display datatable-basic" id="bom_tbl" style="width:100%">
+                  <thead>
+                      <tr>
+                          <th class="text-center">Action</th>
+                          <th>BOM ID</th>
+                          <th>Costing ID</th>
+                          <th>Status</th>
+                          <th>SC</th>
+                          <th>FNG</th>
+                          <th>Style</th>
+                          <th>Country</th>
+                          <th>Bom Stage</th>
+                          <th>Season</th>
+                          <th>Color Type</th>
+                          <th>Created By</th>
+                          <th>Date</th>
+                      </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                        <th>Action</th>
+                        <th>BOM ID</th>
+                        <th>Costing ID</th>
+                        <th>Status</th>
+                        <th>SC</th>
+                        <th>FNG</th>
+                        <th>Style</th>
+                        <th>Country</th>
+                        <th>Bom Stage</th>
+                        <th>Season</th>
+                        <th>Color Type</th>
+                        <th>Created By</th>
+                        <th>Date</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  </tbody>
+              </table>
+
+            </div>
+          </div>
+        </fieldset>
+
+    </div>
+  </div>
+
+</div>

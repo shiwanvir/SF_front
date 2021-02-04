@@ -1,0 +1,142 @@
+
+                    <div class="panel-body" [hasPermission]="['SMV_TOOL_BOX_VIEW']">
+                        <form class="form-horizontal" [formGroup]="formGroup">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-5">
+                                  <input type="hidden" formControlName="smv_reading_id" class="form-control input-xxs">
+
+                                                <label>Customer<span class="text-danger"> *</span> :</label>
+                                                <ng-select [items]="customer$ | async"
+                                                        placeholder = "Select Customer"
+                                                        [selectOnTab]="true"
+                                                        bindLabel="customer_name"
+                                                        [loading]="customerLoading "
+                                                        [typeahead]="customerInput$"
+                                                        [(ngModel)]="selectedCustomer"
+                                                        formControlName="customer_code" (blur)="formValidate()">
+                                              </ng-select>
+                                              <span class="err" *ngIf="formGroup.get('customer_code').errors"></span>
+                                              <span class="err" > {{ formValidator.validate_field('customer_code')  }} </span>
+                                              <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                              </div>
+
+                              <div class="col-md-7">
+                                <label >Product Silhouette<span class="text-danger" > *</span> :</label>
+                                <ng-select [items]="silhouette$ | async"
+                                           placeholder="Select Product Silhouette"
+                                           [selectOnTab]="true"
+                                           bindLabel="product_silhouette_description"
+                                           [loading]="silhouetteLoading"
+                                           [typeahead]="silhouetteInput$"
+                                           [(ngModel)]="selectedSilhouette"
+                                           formControlName="silhouette_code"
+                                          (change)="LoadMapedOperations($event)"
+                                     >
+
+                                </ng-select>
+
+                                <span class="err" *ngIf="formGroup.get('silhouette_code').errors"></span>
+                                <span class="err" > {{ formValidator.validate_field('silhouette_code')  }} </span>
+                                <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+
+                                </div>
+                            </div>
+                                  <div class="row">
+                                    <div class="col-md-5">
+                                      <label >Operation Component <span class="text-danger" > *</span> :</label>
+                                      <ng-select [items]="operationCompoent$ | async"
+                                                 placeholder="Select Operation Component"
+                                                 [selectOnTab]="true"
+                                                  bindLabel="operation_component_name"
+                                                 [loading]="operationCompoentLoading"
+                                                 [typeahead]="operationCompoentInput$"
+                                                 [(ngModel)]="selectedOperationCompoent"
+                                                 formControlName="operation_component_id"
+                                                 (change)="LoadsubOperationlist($event)"
+                                           >
+
+                                      </ng-select>
+
+                                      <span class="err" *ngIf="formGroup.get('operation_component_id').errors"></span>
+                                      <span class="err" > {{ formValidator.validate_field('operation_component_id')  }} </span>
+                                      <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+
+                                    </div>
+
+                                    <div class="col-md-7">
+                                      <label >Operation Sub Component <span class="text-danger" > *</span> :</label>
+                                      <ng-select [items]="operationSubCompoent$ | async"
+                                                 placeholder="Select Operation Sub Component"
+                                                 [selectOnTab]="true"
+                                                 multiple="true"
+                                                 bindLabel="operation_sub_component_name"
+                                                 [loading]="operationSubCompoentLoading"
+                                                 [typeahead]="operationSubCompoentInput$"
+                                                 [(ngModel)]="selectedOperationSubCompoent"
+                                                 formControlName="operation_sub_component_id"
+                                                 (remove)="removetableLines($event)"
+                                           >
+
+                                      </ng-select>
+
+                                      <span class="err" *ngIf="formGroup.get('operation_sub_component_id').errors"></span>
+                                      <span class="err" > {{ formValidator.validate_field('operation_sub_component_id')  }} </span>
+                                      <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+
+
+                                  </div>
+
+                      </div>
+                      <div class="row">
+                          <div class="pull-right" [hasPermission]="['SMV_TOOL_BOX_SEARCH']">
+                          <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  style="margin-top:20px;margin-right:10px" (click)="searchData()"[disabled]="formGroup.invalid || processing || formGroup.pending">
+                            <b><i class="icon-plus22"></i></b> Add</button>
+                            <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  style="margin-top:20px" (click)="clear()">
+                              <b><i class="icon-redo"></i></b> Clear</button>
+                            </div>
+                      </div>
+
+
+
+                      </div>
+                      <div class="col-md-5">
+                        <br>
+                      <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+
+                          <hot-table
+                            [hotId]="instanceSummary"
+                            [settings]="hotOptionsSummary"
+                            [(data)]="datasetSummary">
+
+                        </hot-table>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="text-bold">Total SMV<span class="text-danger"></span> :</label>
+                          <input type="text" formControlName="total_smv" class="form-control input-xxs"
+                            placeholder="Total SMV" (blur)="formValidate()" upperCase>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="pull-right" [hasPermission]="['SMV_TOOL_BOX_PRINT']">
+                              <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  style="margin-top:20px;align:right" [disabled]="!printToXl" (click)="saveBeforeprint()">
+                                  <b><i class="icon-printer"></i></b>Print to Excel</button>
+                              </div>
+                            </div>
+                      </div>
+
+                      </form>
+                      <br>
+                      <legend class="text-bold" style="margin-top:20px">Operation Details</legend>
+                      <div class="row">
+
+                        <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                          <hot-table
+                            [hotId]="instance"
+                            [settings]="hotOptions"
+                            [(data)]="dataset">
+
+                        </hot-table>
+                        </div>
+                      </div>
+
+                    </div>

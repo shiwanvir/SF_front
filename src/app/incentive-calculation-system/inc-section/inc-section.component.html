@@ -1,0 +1,96 @@
+
+
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h6 class="panel-title">Section</h6>
+
+            <div class="heading-elements">
+                <ul class="icons-list">
+                    <li><a data-action="collapse"></a></li>
+                    <li><a data-action="reload"></a></li>
+                    <li><a data-action="close"></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel-body">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="text-right">
+                  <button type="button" [hasPermission]="['INC_SECTION_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                  (click)="sectionModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" [hasPermission]="['INC_SECTION_VIEW']" style="min-height: 350px;">
+          	 <div class="col-md-12">
+              <table class="table display datatable-basic" id="designation_tbl">
+                  <thead>
+                      <tr>
+                          <th class="text-center">Action</th>
+                          <th>Status</th>
+                          <th>Location</th>
+                          <th>Section</th>
+
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- popup -->
+           <div bsModal #sectionModel="bs-modal" [config]="{backdrop: 'static'}"
+           	class="modal fade" (onShow)="showEvent($event)" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveSilhouette()">
+                        <div class="modal-header  bg-teal-300">
+                            <button type="button" class="close" (click)="sectionModel.hide()">&times;</button>
+                            <h5 class="modal-title">{{ modelTitle }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" formControlName="inc_section_id" class="form-control input-xxs">
+
+                            <fieldset class="content-group">
+
+                              <label>Location <span class="text-danger">*</span> :</label>
+                              <ng-select
+                                placeholder = "Select Location"
+                                [items]="prod_location$ | async"
+                                bindLabel="loc_name"
+                                [hideSelected]="true"
+                                formControlName="loc_id" >
+                              </ng-select>
+                              <span class="err">{{ formValidator.validate_field('loc_id')}}</span>
+
+                            </fieldset>
+
+                            <fieldset class="content-group">
+
+                              <label>Section <span class="text-danger">*</span> :</label>
+                              <span class="err" *ngIf="formGroup.get('line_no').status === 'PENDING'"> Validating....</span>
+                              <input type="text" class="form-control input-xxs" formControlName="line_no" placeholder="Section" upperCase>
+                              <span class="err" *ngIf="formGroup.get('line_no').errors && formGroup.get('line_no').errors.remoteValidation">
+                                {{formGroup.get('line_no').errors.remoteValidation}}</span>
+                              <span class="err" > {{ formValidator.validate_field('line_no')  }} </span>
+
+                            </fieldset>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="sectionModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                            <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending || processing">
+                                <b><i class="icon-floppy-disk"></i></b> Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>

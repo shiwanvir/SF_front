@@ -1,0 +1,132 @@
+<div bsModal #sizeModel="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" (onShown)="modelShowEvent($event)" >
+ <div class="modal-dialog">
+		 <div class="modal-content">
+				 <div class="modal-header  bg-teal-300">
+						 <button type="button" class="close" (click)="Model_hide()">&times;</button>
+						 <h5 class="modal-title">{{ modelTitle }}</h5>
+				 </div>
+				 <div class="modal-body">
+
+           <table width="100%">
+             <tr>
+               <td width="25%">Delivery Order Qty</td>
+               <td width="1%">:</td>
+               <td width="7%">{{ (deliveryData == null) ? 0 : deliveryData.order_qty }}</td>
+
+               <td width="25%">Delivery Excess Percentage</td>
+               <td width="1%">:</td>
+               <td width="7%"> {{ (deliveryData == null) ? 0 : deliveryData.excess_presentage }} % </td>
+
+               <td width="25%">Delivery Planned Qty</td>
+               <td width="1%">:</td>
+               <td width="7%">{{ (deliveryData == null) ? 0 : deliveryData.planned_qty }}</td>
+             </tr>
+
+             <tr>
+               <td width="25%">Total Order Qty</td>
+               <td width="1%">:</td>
+               <td width="7%">{{ totalOrderQty }}</td>
+
+               <td width="25%">Total Planned Qty</td>
+               <td width="1%">:</td>
+               <td width="7%">{{ totalPlannedQty }}</td>
+
+               <td width="25%"></td>
+               <td width="1%"></td>
+               <td width="7%"></td>
+             </tr>
+
+
+           </table>
+
+           <!-- <div class="row">
+             <div class="col-md-4">
+                 <label>Delivery Order Qty : </label>
+                 <label> {{ (deliveryData == null) ? 0 : deliveryData.order_qty }}</label>
+             </div>
+             <div class="col-md-4">
+                 <label>Delivery Excess Percentage :</label>
+                 <label> {{ (deliveryData == null) ? 0 : deliveryData.excess_presentage }} % </label>
+             </div>
+             <div class="col-md-4">
+                 <label>Delivery Planned Qty  :</label>
+                 <label> {{ (deliveryData == null) ? 0 : deliveryData.planned_qty }}</label>
+             </div>
+           </div>
+
+           <div class="row">
+             <div class="col-md-4">
+                 <label>Total Order Qty : </label>
+                 <label> {{ totalOrderQty }}</label>
+             </div>
+             <div class="col-md-4">
+                 <label>Total Planned Qty : </label>
+                 <label> {{ totalPlannedQty }}</label>
+             </div>
+           </div> -->
+
+
+           <form [formGroup]="formSize" (ngSubmit)="saveSizes($event)">
+						 <fieldset class="content-group" *ngIf="showSizeForm">
+               <input type="hidden" formControlName="id" value="0">
+							 <div class="row">
+									 <div class="col-md-4">
+										 <label>Size <span class="text-danger">*</span> :</label>
+                     <ng-select [items]="size$ | async"
+                        placeholder = "Select Size"
+                        [selectOnTab]="true"
+                        bindLabel="size_name"
+                        [loading]="sizeLoading"
+                        [typeahead]="sizeInput$"
+                        formControlName="size_id">
+                      </ng-select>
+										 <span class="err">{{ formValidatorSize.validate_field('size_id')  }}</span>
+									 </div>
+									 <div class="col-md-4">
+											 <label>Order Qty <span class="text-danger">*</span> :</label>
+											 <input type="number" class="form-control input-xxs" placement="bottom"
+												 placeholder="Enter Order Qty" formControlName="order_qty" (keyup)="calculatePlannedQty()">
+											 <span class="err">{{ formValidatorSize.validate_field('order_qty')  }}</span>
+									 </div>
+									 <div class="col-md-4">
+											 <label>Planned Qty <span class="text-danger">*</span> :</label>
+											 <input type="number"  class="form-control input-xxs"
+												  formControlName="planned_qty" disabled placeholder="Planned Qty">
+											 <span class="err">{{ formValidatorSize.validate_field('planned_qty')  }}</span>
+									 </div>
+							</div>
+
+              <div class="btn-group" style="float:right;margin-top:10px">
+
+                     <button type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="clearForm()"><b><i class="icon-redo"></i></b> Clear</button>
+                     <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b>Close</button> -->
+                     <button *ngIf="!loading && !processing" style="margin-left:5px;" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formSize.invalid">
+     										 <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+               </div>
+
+
+					</fieldset>
+          </form>
+
+           <div>
+   					<legend class="text-bold" style="margin-top:10px">Size List</legend>
+   					<div class="row">
+   						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                 <hot-table
+                   [hotId]="instance"
+                   [settings]="hotOptions"
+                   [data]="dataset">
+               </hot-table>
+   						</div>
+   					</div>
+         </div>
+			</div>
+  		 <div class="modal-footer">
+				 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="Model_hide()"><b><i class="icon-cross"></i></b> Close</button>
+       </div>
+
+		</div>
+
+	</div>
+</div>

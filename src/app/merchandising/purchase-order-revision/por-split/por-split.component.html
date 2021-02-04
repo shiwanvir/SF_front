@@ -1,0 +1,72 @@
+<div bsModal #splitModel="bs-modal"
+ class="modal fade" (onShown)="modelShowEvent($event)"  [config]="{backdrop: 'static'}">
+ <div class="modal-dialog modal-md">
+
+		 <div class="modal-content">
+
+						 <div class="modal-header  bg-teal-300">
+								 <button type="button" class="close" (click)="Model_hide()">&times;</button>
+								 <h5 class="modal-title">{{ modelTitle }}</h5>
+						 </div>
+						 <div class="modal-body">
+
+
+                 <div>
+                    <div class="row">
+                     <div class="col-md-4">
+                         <label>Line Qty : </label>
+                         <label> {{ (orderLineData == null) ? 0 : orderLineData.tra_qty }}</label>
+                     </div>
+                     <div class="col-md-4">
+                         <label>Total Delivered Qty : </label>
+                         <label> {{ totalPlannedQty }}</label>
+                     </div>
+                   </div>
+
+                     <div class="row">
+                       <form [formGroup]="formSplit" (ngSubmit)="addNewSplit()" >
+                         <div class="col-md-4">
+                             <label>Split Qty <span class="text-danger">*</span> :</label>
+                             <input type="number" formControlName="split_qty"  class="form-control input-xxs"
+                               placeholder="Split Qty" >
+                             <span class="err">{{ formValidatorSplit.validate_field('split_qty')  }}</span>
+                         </div>
+
+                         <div class="col-md-3">
+
+                             <label>Delivery Date:</label>
+                             <input type="text" class="form-control input-xxs" bsDatepicker placement="bottom"
+                                formControlName="delivery_date" placeholder="Select Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" >
+                             <span class="err">{{ formValidatorSplit.validate_field('delivery_date')  }}</span>
+
+                         </div>
+                         <div class="col-md-4">
+                           <button *ngIf="!processingHeader" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-top:20px" [disabled]="formSplit.invalid">
+                              <b><i class="icon-floppy-disk"></i></b>Split Delivery</button>
+                         </div>
+                     </form>
+                   </div>
+
+         					<legend class="text-bold" style="margin-top:10px">SPLIT Lines</legend>
+         					<div class="row">
+         						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                       <hot-table
+                         [hotId]="instance"
+                         [settings]="hotOptions"
+                         [data]="dataset">
+                     </hot-table>
+         						</div>
+         					</div>
+               </div>
+
+
+						 </div>
+						 <div class="modal-footer">
+								 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="Model_hide()"><b><i class="icon-cross"></i></b> Close</button>
+
+						 </div>
+
+				 </div>
+
+		 </div>
+ </div>

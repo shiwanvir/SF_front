@@ -1,0 +1,37 @@
+
+
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Roll Plan Update</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+
+          <tabset #rollPlanTabs [justified]="true">
+
+            <tab heading="Roll Plan List" (select)="onSelect($event)">
+              <app-roll-plan-details></app-roll-plan-details>
+            </tab>
+
+            <tab heading="Roll Plan" (select)="onSelect($event)">
+              <app-roll-plan></app-roll-plan>
+            </tab>
+
+          </tabset>
+
+
+        </div>
+
+
+
+		</div>
+</div>

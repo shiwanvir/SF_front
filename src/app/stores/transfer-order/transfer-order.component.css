@@ -1,0 +1,8 @@
+.sTable > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+     padding: 2px 2px;
+}
+
+/*.form-control {*/
+     /*height: 18px;*/
+    /*padding: 1px 2px;*/
+/*}*/

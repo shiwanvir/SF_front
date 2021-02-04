@@ -1,0 +1,27 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Bill Of Material</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+          <tabset #bomTabs [justified]="true">
+            <tab heading="BOM List" (select)="onSelect($event)">
+              <app-bom-list></app-bom-list>
+            </tab>
+            <tab heading="BOM" (select)="onSelect($event)">
+                <app-bom></app-bom>
+            </tab>
+          </tabset>
+        </div>
+
+		</div>
+</div>

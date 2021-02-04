@@ -1,0 +1,258 @@
+ <div class="panel-body">
+                 <form class="form-horizontal " [formGroup]="formGroup" (ngSubmit)="searchLocation()" style="margin-top:-25px">
+                   <div class="row">
+                     <div class="col-md-3">
+                      <fieldset>
+                      <label>Style No <span class="text-danger">*</span> :</label>
+                      <input type="text" class="form-control input-xxs" formControlName="style_from"  placeholder="Style No" (blur)="formValidate()" disabled>
+                      <span class="err">{{ formFields.style_from}}</span>
+                      <span class="err">{{ style_from_error }}</span>
+                      </fieldset>
+                   </div>
+
+                   <div class="col-md-3">
+                     <fieldset>
+                     <label >Shop Order No From <span class="text-danger">*</span> :</label>
+                     <ng-select   [items]="shopOrderFrom$ | async"
+                             placeholder = "Select Shop Order No From"
+                             [selectOnTab]="true"
+                             bindLabel="shop_order_id"
+                             [loading]="shopOrderFromLoading"
+                             [typeahead]="shopOrderFromInput$"
+                             [(ngModel)]="selectedShopOrderFrom"
+                             formControlName="shop_order_from" (blur)="formValidate()">
+                   </ng-select>
+                     <span class="err" *ngIf="formGroup.get('shop_order_from').errors"></span>
+                   <!--  <span class="err" > {{ formValidatorGrn.validate_field('shop_order_from')  }} </span>-->
+                     <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                     <span class="err">{{ formFields.shop_order_from}}</span>
+                     </fieldset>
+                    </div>
+                  <div class="col-md-3">
+                    <fieldset>
+                    <label >Shop Order No To <span class="text-danger">*</span> :</label>
+                    <ng-select   [items]="shopOrderTo$ | async"
+                            placeholder = "Select Shop Order No To"
+                            [selectOnTab]="true"
+                            bindLabel="shop_order_id"
+                            [loading]="shopOrderToLoading"
+                            [typeahead]="shopOrderToInput$"
+                            [(ngModel)]="selectedShopOrderTo"
+                            formControlName="shop_order_to" (blur)="formValidate()">
+                  </ng-select>
+                    <span class="err" *ngIf="formGroup.get('shop_order_to').errors"></span>
+                  <!--  <span class="err" > {{ formValidatorGrn.validate_field('shop_order_from')  }} </span>-->
+                    <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                    <span class="err">{{ formFields.shop_order_to}}</span>
+                    </fieldset>
+
+
+                  </div>
+
+                              <div class="col-md-3">
+                              <fieldset>
+                                <fieldset>
+                                    <label>Transfer Type <span class="text-danger">*</span> :</label>
+                                      <ng-select   [items]="transferType$ | async"
+                                        placeholder = "Select Transfer Location"
+                                        [selectOnTab]="true"
+                                        bindLabel="transfer_type"
+                                        [loading]="typeLoading"
+                                        [typeahead]="typeInput$"
+                                        [(ngModel)]="selectedType"
+                                        formControlName="transfer_type" (blur)="formValidate()" (change)="changeLocation()">
+                              </ng-select>
+                                  <span class="err">{{ formFields.transfer_type}}</span>
+                          <!-- <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span> -->
+                            </fieldset>
+
+                                    </fieldset>
+
+                                  </div>
+
+
+
+
+                    </div>
+                    <div class="row">
+
+                      <div class="col-md-3">
+
+                          <fieldset>
+                              <label>Transfer Location <span class="text-danger">*</span> :</label>
+                                <ng-select   [items]="location$ | async"
+                                  placeholder = "Select Location"
+                                  [selectOnTab]="true"
+                                  bindLabel="loc_name"
+                                  [loading]="locationLoading"
+                                  [typeahead]="locationInput$"
+                                  [(ngModel)]="selectedLocation"
+                                  formControlName="loc_name" (blur)="formValidate()">
+                        </ng-select>
+                          <span class="err">{{ formFields.loc_name }}</span>
+                     <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                      </fieldset>
+
+
+                        </div>
+
+                    </div>
+                    <div class="heading-btn pull-right" style="margin-top:20px">
+                  <button type="button"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs"  style="margin-right:15px" [disabled]="formGroup.invalid" (click)="searchFrom()"><b><i class="icon-search4"></i></b>Search</button>
+                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="clearDetails()"><b><i class="icon-redo"></i></b> Clear</button>&nbsp;
+                   </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                      <legend class="text-bold" style="margin-top:20px">Material Details</legend>
+                      <div class="row">
+                        <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                          <hot-table
+                            [hotId]="instance"
+                            [settings]="hotOptions"
+                            [(data)]="dataset">
+                        </hot-table>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+
+                </form>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="heading-btn pull-right" style="margin-top:20px">
+
+                      <button type="button"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs" style="margin-right:15px" [disabled]="!islineticked||isSaved" (click)="saveDetails()" ><b><i class="icon-floppy-disk"></i></b>Save</button>
+                        <button type="button"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs" style="margin-right:15px"  [disabled]="!isSaved" (click)="sendToAprproval()"><b><i class="icon-plus22"></i></b>Send For Approval</button>
+                      </div>
+                  </div>
+                </div>
+
+
+
+
+            <!--  </div>-->
+    </div>
+
+
+
+
+<div bsModal #detailsModel="bs-modal" [config]="{backdrop: 'static'}"
+ class="modal fade" (onShow)="modelShowEvent($event)" >
+ <div class="modal-dialog">
+   <form [formGroup]="formGroupDetails" (ngSubmit)="saveDetails()">
+     <div class="modal-content">
+
+             <div class="modal-header  bg-teal-300">
+                 <button type="button" class="close" (click)="detailsModel.hide()">&times;</button>
+                 <h5 class="modal-title">{{ modelTitle }}</h5>
+             </div>
+             <div class="modal-body">
+
+                 <input type="hidden"  class="form-control input-xxs" formControlName="details_id">
+                 <fieldset class="content-group">
+
+                   <div class="row">
+                       <div class="col-md-4">
+                         <label>Item Code <span class="text-danger">*</span> :</label>
+                         <input type="text" class="form-control input-xxs" formControlName="item_code" placeholder="Item Code">
+                         <span class="err" >{{ formValidator.validate_field('item_code')  }}</span>
+                       </div>
+                       <div class="col-md-4">
+                           <label>Description <span class="text-danger">*</span> :</label>
+                           <input type="text" class="form-control input-xxs"	 formControlName="description" placeholder="description">
+                           <span class="err">{{ formValidator.validate_field('description') }}</span>
+                       </div>
+                       <div class="col-md-4">
+                           <label>Color <span class="text-danger">*</span> :</label>
+                           <input type="text"  class="form-control input-xxs" formControlName="color" placeholder="Color">
+                           <span class="err">{{ formValidator.validate_field('color') }}</span>
+                       </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="col-md-4">
+                        <label>Size <span class="text-danger">*</span> :</label>
+                        <input type="text" class="form-control input-xxs" formControlName="item_code" placeholder="Size">
+                        <span class="err" > {{ formValidator.validate_field('size')  }} </span>
+                      </div>
+                      <div class="col-md-4">
+                          <label>Bin <span class="text-danger">*</span> :</label>
+                          <input type="text" class="form-control input-xxs" formControlName="bin" placeholder="Bin">
+                          <span class="err">{{ formValidator.validate_field('bin') }}</span>
+                      </div>
+                      <div class="col-md-4">
+                          <label>UOM <span class="text-danger">*</span> :</label>
+                          <input type="text"  class="form-control input-xxs"  formControlName="uom" placeholder="uom">
+                          <span class="err">{{ formValidator.validate_field('uom') }}</span>
+                      </div>
+                 </div>
+
+                 <div class="row">
+                     <div class="col-md-4">
+                       <label>Stock Balance <span class="text-danger">*</span> :</label>
+                       <input type="text" class="form-control input-xxs" formControlName="stock_balance" placeholder="stock_balance">
+                       <span class="err" > {{ formValidator.validate_field('stock_balance')  }} </span>
+                     </div>
+                     <div class="col-md-4">
+                         <label>Transfer Qty <span class="text-danger">*</span> :</label>
+                         <input type="text" class="form-control input-xxs" formControlName="trans_qty" placeholder="Transfer Qty">
+                         <span class="err">{{ formValidator.validate_field('trans_qty') }}</span>
+                     </div>
+
+                </div>
+
+
+
+
+                 </fieldset>
+
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b> Close</button>
+                 <button  type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroupDetails.invalid">
+                     <b><i class="icon-floppy-disk"></i></b> Save</button>
+                 </div>
+
+         </div>
+         </form>
+     </div>
+ </div>
+
+ <!-- popup -->
+ <div bsModal #filterModel="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" >
+   <div class="modal-dialog modal-lg"  style="width: 80%">
+     <div class="modal-content">
+       <div class="modal-header  bg-teal-300">
+         <button type="button"(click)="filterModel.hide()"class="close" >&times;</button>
+         <h5 class="modal-title">{{ filterModelTitle }}</h5>
+        </div>
+          <div class="modal-body">
+         <div class="row">
+
+           <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+             <hot-table
+               [hotId]="instanceSearchBox"
+               [settings]="hotOptionsSearchBox"
+               [(data)]="datasetSearchBox">
+           </hot-table>
+           </div>
+         </div>
+         </div>
+        <!-- <h5 class="modal-title">{{ modelTitle }}</h5>-->
+
+
+
+
+
+     </div>
+   </div>
+ </div>
+
+
+
+
+
+
+<!-- /input groups -->

@@ -1,0 +1,379 @@
+
+<form class="form-horizontal " [formGroup]="formGroup" (ngSubmit)="saveCustomer()"  autocomplete="off" style="margin-top:-25px">
+  <div class="panel panel-flat" style="border-style:none">
+    <div class="panel-body">
+      <div class="row" >
+        <div class="col-md-12" >
+
+          <div class="row">
+            <h6 style="color:#26A69A">Basic Information</h6>
+            <hr>
+          </div>
+
+          <input type="hidden" formControlName="customer_id" class="form-control input-xxs">
+
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Customer Code <span class="text-danger">* </span>:</label>
+              <span class="err" style="margin-top:25px" *ngIf="formGroup.get('customer_code').status === 'PENDING'"> Validating....</span>
+              <input type="text" formControlName="customer_code" class="form-control input-xxs" placeholder="Customer Code" upperCase>
+              <span class="err" *ngIf="formGroup.get('customer_code').errors && formGroup.get('customer_code').errors.remoteValidation">{{formGroup.get('customer_code').errors.remoteValidation}}</span>
+              <span class="err" > {{ formValidator.validate_field('customer_code') }} </span>
+            </div>
+            <div class="col-md-4">
+              <label>Customer Name <span class="text-danger">* </span>:</label>
+              <input type="text" class="form-control input-xxs" formControlName="customer_name" placeholder="Customer Name" upperCase>
+              <span class="err" > {{ formValidator.validate_field('customer_name')  }} </span>
+            </div>
+            <div class="col-md-4">
+              <label>Type Of Good/Service <span class="text-danger">* </span>:</label>
+              <select  class="form-control input-xxs" formControlName="type_of_service">
+                <option [ngValue]="null">... Select One ...</option>
+                <option *ngFor = "let goodsType of goodsTypes$ | async" [value]="goodsType.goods_type_id">
+                  {{ goodsType.goods_type_description }}
+                </option>
+              </select>
+              <!-- <span class="err">{{ formFields.type_of_service }}</span> -->
+              <span class="err" > {{ formValidator.validate_field('type_of_service')  }} </span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Business Registration No :</label>
+              <input type="text" class="form-control input-xxs" formControlName="business_reg_no" placeholder="Business Registration No" upperCase>
+              <span class="err" > {{ formValidator.validate_field('business_reg_no')  }} </span>
+            </div>
+            <div class="col-md-4">
+              <label>Business Registration Date :</label>
+              <div class="input-group">
+                <span class="input-group-addon  input-xxs"><i class="icon-calendar5"></i></span>
+                <input type="text" class="form-control input-xxs" bsDatepicker placement="left"
+                formControlName="business_reg_date" placeholder="Select Date&hellip;">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label>BOI Register No :</label>
+              <input type="text" class="form-control input-xxs" formControlName="boi_reg_no" placeholder="BOI Register No" upperCase>
+              <span class="err" > {{ formValidator.validate_field('boi_reg_no')  }} </span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>BOI Register Date :</label>
+              <div class="input-group">
+                <span class="input-group-addon input-xxs"><i class="icon-calendar5"></i></span>
+                <input type="text" class="form-control input-xxs" bsDatepicker placement="left"
+                formControlName="boi_reg_date" placeholder="Select Date&hellip;">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label>Address 1 <span class="text-danger">* </span>:</label>
+              <input type="text" class="form-control input-xxs" formControlName="customer_address1" placeholder="Address 1" upperCase>
+              <span class="err" > {{ formValidator.validate_field('customer_address1')  }} </span>
+            </div>
+            <div class="col-md-4">
+              <label>Address 2 (Lane/Road) :</label>
+              <input type="text" class="form-control input-xxs" formControlName="customer_address2" placeholder="Address 2" upperCase>
+              <span class="err" > {{ formValidator.validate_field('customer_address2')  }} </span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>City/Province <span class="text-danger">* </span>:</label>
+              <input type="text" class="form-control input-xxs" formControlName="customer_city" placeholder="City/Province" upperCase>
+              <span class="err" > {{ formValidator.validate_field('customer_city')  }} </span>
+            </div>
+            <div class="col-md-4">
+              <label>Postal Code :</label>
+              <input type="text" class="form-control input-xxs" formControlName="customer_postal_code" placeholder="Postal Code" upperCase>
+              <span class="err" > {{ formValidator.validate_field('customer_postal_code')  }} </span>
+            </div>
+            <div class="col-md-4">
+              <label>State/Territory :</label>
+              <input type="text" class="form-control input-xxs" formControlName="customer_state"placeholder="State/Territory" upperCase>
+              <span class="err" > {{ formValidator.validate_field('customer_state')  }} </span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label>Country <span class="text-danger">* </span>:</label>
+              <ng-select [items]="country$ | async"
+              placeholder = "Select Country"
+              [selectOnTab]="true"
+              bindLabel="country_description"
+              [loading]="countryLoading"
+              [typeahead]="countryInput$"
+              [(ngModel)]="selectedCountry"
+              formControlName="customer_country" (blur)="formValidate()">
+            </ng-select>
+            <span class="err">{{ formFields.customer_country }}</span>
+          </div>
+          <div class="col-md-4">
+            <label>VAT Register No :</label>
+            <input type="text" class="form-control input-xxs" formControlName="vat_reg_no" placeholder="VAT Register No" upperCase>
+            <span class="err" > {{ formValidator.validate_field('vat_reg_no')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>SVAT No :</label>
+            <input type="text" class="form-control input-xxs" formControlName="svat_no" placeholder="SVAT No" upperCase>
+            <span class="err" > {{ formValidator.validate_field('svat_no')  }} </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <label>Contact No 1 <span class="text-danger">* </span>:</label>
+            <input type="text" class="form-control input-xxs" formControlName="customer_contact1" (blur)="formValidate()" placeholder="Contact No 1">
+            <span class="err" > {{ formValidator.validate_field('customer_contact1')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Contact No 2 :</label>
+            <input type="text" class="form-control input-xxs" formControlName="customer_contact2" placeholder="Contact No 2">
+            <span class="err" > {{ formValidator.validate_field('customer_contact2')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Contact No 3 :</label>
+            <input type="text" class="form-control input-xxs" formControlName="customer_contact3" placeholder="Contact No 3">
+            <span class="err" > {{ formValidator.validate_field('customer_contact3')  }} </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <label>E-mail Address Book :</label>
+            <input type="text" class="form-control input-xxs" formControlName="customer_email" placeholder="E-mail Address Book">
+            <span class="err" > {{ formValidator.validate_field('customer_email')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Google Maps Location :</label>
+            <input type="text" class="form-control input-xxs" formControlName="customer_map_location" placeholder="Google Maps Location" >
+            <span class="err" > {{ formValidator.validate_field('customer_map_location')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Buyer Web Site :</label>
+            <input type="text" class="form-control input-xxs" formControlName="customer_website" placeholder="Buyer Web Site">
+            <span class="err" > {{ formValidator.validate_field('customer_website')  }} </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <label>Managing Director Name :</label>
+            <input type="text" class="form-control input-xxs" formControlName="managing_director_name" placeholder="Managing Director Name" upperCase>
+            <span class="err" > {{ formValidator.validate_field('managing_director_name')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Managing Director E-mail :</label>
+            <input type="text" class="form-control input-xxs" formControlName="managing_director_email"placeholder="Managing Director E-mail">
+            <span class="err" > {{ formValidator.validate_field('managing_director_email')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Finance Director Name :</label>
+            <input type="text" class="form-control input-xxs" formControlName="finance_director_name" placeholder="Finance Director Name" upperCase>
+            <span class="err" > {{ formValidator.validate_field('finance_director_name')  }} </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <label>Finance Director E-mail :</label>
+            <input type="text" class="form-control input-xxs" formControlName="finance_director_email" placeholder="Finance Director E-mail">
+            <span class="err" > {{ formValidator.validate_field('finance_director_email')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Finance Director's Contact No :</label>
+            <input type="text" class="form-control input-xxs" formControlName="finance_director_contact" placeholder="Finance Director's Contact No">
+            <span class="err" > {{ formValidator.validate_field('finance_director_contact')  }} </span>
+          </div>
+        </div>
+
+
+        <div class="row" style="margin-top:10px">
+          <h6 style="color:#26A69A">Financial Information</h6>
+          <hr>
+        </div>
+
+        <div class="row" >
+          <div class="col-md-4">
+            <label>Company Code :</label>
+            <input type="text" class="form-control input-xxs" formControlName="company_code" placeholder="Company Code" upperCase>
+            <span class="err" > {{ formValidator.validate_field('company_code')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Short Name <span class="text-danger">* </span>:</label>
+            <input type="text" class="form-control input-xxs"  formControlName="customer_short_name" placeholder="Short Name" upperCase>
+            <span class="err" > {{ formValidator.validate_field('customer_short_name')  }} </span>
+
+          </div>
+          <div class="col-md-4">
+            <label>Bank Account No :</label>
+            <input type="text" class="form-control input-xxs" formControlName="bank_acc_no" placeholder="Bank Account No">
+            <span class="err" > {{ formValidator.validate_field('bank_acc_no')  }} </span>
+          </div>
+        </div>
+
+
+
+        <div class="row" >
+          <div class="col-md-4">
+            <label>Bank Name :</label>
+            <input type="text" class="form-control input-xxs" formControlName="bank_name" placeholder="Bank Name" upperCase>
+            <span class="err" > {{ formValidator.validate_field('bank_name')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Bank Branch :</label>
+            <input type="text" class="form-control input-xxs" formControlName="bank_branch" placeholder="Bank Branch" upperCase>
+            <span class="err" > {{ formValidator.validate_field('bank_branch')  }} </span>
+          </div>
+          <div class="col-md-4">
+            <label>Operations Start Date :</label>
+            <div class="input-group">
+              <span class="input-group-addon input-xxs"><i class="icon-calendar5"></i></span>
+              <input type="text" class="form-control input-xxs" bsDatepicker placement="left"
+              formControlName="operation_start_date" placeholder="Select Date&hellip;">
+            </div>
+          </div>
+        </div>
+
+        <div class="row" >
+          <div class="col-md-4">
+            <label>Currency <span class="text-danger">* </span>:</label>
+            <ng-select [items]="currency$ | async"
+            placeholder = "Select Currency"
+            [selectOnTab]="true"
+            bindLabel="currency_code"
+            [loading]="currencyLoading"
+            [typeahead]="currencyInput$"
+            [(ngModel)]="selectedCurrency"
+            formControlName="currency" (blur)="formValidate()">
+          </ng-select>
+          <span class="err">{{ formFields.currency }}</span>
+        </div>
+        <div class="col-md-4">
+          <label>Bank Code :</label>
+          <input type="text" class="form-control input-xxs" formControlName="bank_code" placeholder="Bank Code">
+          <span class="err" > {{ formValidator.validate_field('bank_code')  }} </span>
+        </div>
+        <div class="col-md-4">
+          <label>Bank Swift/Sort Code :</label>
+          <input type="text" class="form-control input-xxs" formControlName="bank_swift" placeholder="Bank Swift/Sort Code">
+          <span class="err" > {{ formValidator.validate_field('bank_swift')  }} </span>
+        </div>
+      </div>
+
+
+      <div class="row" >
+        <div class="col-md-4">
+          <label>IBAN :</label>
+          <input type="text" class="form-control input-xxs" formControlName="bank_iban" placeholder="IBAN">
+          <span class="err" > {{ formValidator.validate_field('bank_iban')  }} </span>
+        </div>
+        <div class="col-md-4">
+          <label>Bank Contact No :</label>
+          <input type="text" class="form-control input-xxs" formControlName="bank_contact" placeholder="Bank Contact No">
+          <span class="err" > {{ formValidator.validate_field('bank_contact')  }} </span>
+        </div>
+        <div class="col-md-4">
+          <label>Intermediary Bank Name :</label>
+          <input type="text" class="form-control input-xxs" formControlName="intermediary_bank_name" placeholder="Intermediary Bank Name" upperCase>
+          <span class="err" > {{ formValidator.validate_field('intermediary_bank_name')  }} </span>
+        </div>
+      </div>
+
+
+      <div class="row" >
+        <div class="col-md-4">
+          <label>Intermediary Bank Address :</label>
+          <input type="text" class="form-control input-xxs" formControlName="intermediary_bank_address" placeholder="Intermediary Bank Address" upperCase>
+        </div>
+        <div class="col-md-4">
+          <label>Intermediary Bank Contact No :</label>
+          <input type="text" class="form-control input-xxs" formControlName="intermediary_bank_contact" placeholder="Intermediary Bank Contact No">
+          <span class="err" > {{ formValidator.validate_field('intermediary_bank_contact')  }} </span>
+        </div>
+        <div class="col-md-4">
+          <label>Buyer Posting Group :</label>
+          <input type="text" class="form-control input-xxs" formControlName="buyer_posting_group" placeholder="Buyer Posting Group" upperCase>
+          <span class="err" > {{ formValidator.validate_field('buyer_posting_group')  }} </span>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div class="col-md-4">
+          <label>Business Posting Group :</label>
+          <input type="text" class="form-control input-xxs" formControlName="business_posting_group" placeholder="Business Posting Group" upperCase>
+          <span class="err" > {{ formValidator.validate_field('business_posting_group')  }} </span>
+
+        </div>
+        <div class="col-md-4">
+          <label>Ship Terms Agreed To :</label>
+          <select class="form-control input-xxs" formControlName="ship_terms_agreed">
+            <option [ngValue]="null">... Select One ...</option>
+            <option *ngFor = "let shipTerm of shipTerms$ | async" [value]="shipTerm.ship_term_id">
+              {{ shipTerm.ship_term_code }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>Payment Terms :</label>
+          <select class="form-control input-xxs" formControlName="payemnt_terms">
+            <option [ngValue]="null">... Select One ...</option>
+            <option *ngFor = "let paymentTerm of paymentTerms$ | async" [value]="paymentTerm.payment_term_id">
+              {{ paymentTerm.payment_code }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div class="col-md-4">
+          <label>Payment Mode :</label>
+          <select class="form-control input-xxs" formControlName="payment_mode">
+            <option [ngValue]="null">... Select One ...</option>
+            <option *ngFor = "let paymentMethod of paymentMethods$ | async" [value]="paymentMethod.payment_method_id">
+              {{ paymentMethod.payment_method_code }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>Additional Comments / Remarks :</label>
+          <input type="text" class="form-control input-xxs" formControlName="additional_comments" placeholder="Additional Comments / Remarks" upperCase>
+          <span class="err" > {{ formValidator.validate_field('additional_comments')  }} </span>
+        </div>
+        <!--  <div class="col-md-4">
+        <label>Approved By:</label>
+        <input type="text" class="form-control input-xxs" placeholder="Approved By">
+      </div>-->
+    </div>
+
+    <div class="row" >
+      <div class="col-md-4">
+        <label>System Updated By :</label>
+        <input type="text" class="form-control input-xxs"placeholder="System Updated By" upperCase>
+      </div>
+      <div class="col-md-4">
+        <label>Buyer Creation Form :</label>
+        <input type="text" class="form-control input-xxs" placeholder="Buyer Creation Form" upperCase>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div class="modal-footer">
+  <div [hasPermission]="['CUSTOMER_CREATE']">
+  <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="new()"><b><i class="icon-plus3"></i></b> New</button>
+  <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+    <b><i class="icon-floppy-disk"></i></b> Save</button>
+    </div>
+
+  </div>
+</form>

@@ -1,0 +1,168 @@
+<form class="form-horizontal" [formGroup]="formGroup">
+  <div class="panel-body">
+    <div class="row">
+
+        <fieldset class="content-group">
+
+          <!-- <div class="col-md-3">
+            <label>MRN No :</label>
+            <ng-select [items]="mrn$ | async"
+                placeholder = "[Select MRN]"
+                [selectOnTab]="true"
+                bindLabel="mrn_no"
+                [loading]="mrnLoading"
+                [typeahead]="mrnInput$"
+                formControlName="mrn_no">
+            </ng-select>
+            <span class="err">{{ formFields.mrn_no }}</span>
+          </div> -->
+
+          <div class="col-md-3">
+            <label>Issue No :</label>
+            <ng-select [items]="issue$ | async"
+                placeholder = "Select Issue No"
+                [selectOnTab]="true"
+                bindLabel="issue_no"
+                [loading]="issueLoading"
+                [typeahead]="issueInput$"
+                formControlName="issue_no">
+            </ng-select>
+            <!-- <span class="err">{{ formFields.issue_no }}</span> -->
+            <span class="err" > {{ formValidator.validate_field('issue_no') }} </span>
+          </div>
+
+        </fieldset>
+
+        <fieldset class="content-group">
+          <div class="col-md-12">
+            <div class="text-right">
+              <button type="button" id="load"class="btn bg-teal-400 btn-labeled btn-primary btn-xs" [disabled]="formGroup.invalid || formGroup.pending" (click)="searchFromData($event);detailModal.show()">
+              <b><i class="icon-search4"></i></b>Search</button>&nbsp;&nbsp;
+              <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="reset_feilds()"><b><i class="icon-redo"></i></b>Clear</button>&nbsp;
+
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="content-group">
+          <!-- <legend class="text-bold text-center">Inventory Ageing Details</legend> -->
+          <div class="col-md-12">
+            <div class="row overflow-auto">
+
+              <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                <hot-table
+                  [hotId]="tblDetail"
+                  [settings]="detailTable"
+                  [data]="mainDataSet">
+                </hot-table>
+              </div>
+
+            </div>
+          </div>
+        </fieldset>
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending || processing" (click)="return_stock()"><b><i class="icon-floppy-disk"></i></b> Save</button>
+  </div>
+
+</form>
+
+
+<div bsModal #detailModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" (onShow)="showEvent($event)" >
+   <div class="modal-dialog modal-lg" style="width:80%;">
+       <div class="modal-content">
+           <form class="form-horizontal" [formGroup]="formGroupGrid">
+              <div class="modal-header  bg-teal-300">
+                 <button type="button" class="close" (click)="detailModal.hide()">&times;</button>
+                 <h5 class="modal-title">{{ modelTitle }}</h5>
+              </div>
+              <div class="modal-body">
+               <div class="row">
+
+                 <fieldset class="content-group">
+                   <div class="col-md-3">
+                     <label>Roll NO/Box NO From :</label>
+                     <input type="text" class="form-control input-xxs" formControlName="roll_from" placeholder="Roll NO/Box NO From">
+                   </div>
+
+                   <div class="col-md-3">
+                     <label>Roll NO/Box NO To :</label>
+                     <input type="text" class="form-control input-xxs" formControlName="roll_to" placeholder="Roll NO/Box NO To">
+                   </div>
+
+                   <div class="col-md-3">
+                     <label>Lab Comments :</label>
+                     <input type="text" class="form-control input-xxs" formControlName="lab_comments" placeholder="Lab Comments">
+                   </div>
+
+                   <div class="col-md-3">
+                     <label>Shade :</label>
+                     <input type="text" class="form-control input-xxs" formControlName="shade" placeholder="Shade">
+                   </div>
+
+                   <div class="col-md-3">
+                     <label>Item Code :</label>
+                     <ng-select [items]="item$ | async"
+                         placeholder = "Select Item Code"
+                         [selectOnTab]="true"
+                         bindLabel="master_code"
+                         [loading]="itemLoading"
+                         [typeahead]="itemInput$"
+                         formControlName="item_code" >
+                     </ng-select>
+                   </div>
+
+                   <div class="col-md-3">
+                     <label>Batch :</label>
+                     <ng-select [items]="batch$ | async"
+                         placeholder = "Select Batch"
+                         [selectOnTab]="true"
+                         bindLabel="batch_no"
+                         [loading]="batchLoading"
+                         [typeahead]="batchInput$"
+                         formControlName="batch">
+                     </ng-select>
+                   </div>
+
+                   <div class="col-md-3">
+                     <label>Inspection Status :</label>
+                     <ng-select [items]="status$ | async"
+                         placeholder = "Select Inspection Status"
+                         [selectOnTab]="true"
+                         bindLabel="status_name"
+                         [loading]="statusLoading"
+                         [typeahead]="statusInput$"
+                         formControlName="ins_status">
+                     </ng-select>
+                   </div>
+                 </fieldset>
+
+                 <fieldset class="content-group">
+                   <div class="text-right">
+                     <div class="col-md-12">
+                        <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="reset_search_feilds()"><b><i class="icon-loop3"></i></b> Refresh </button>&nbsp;&nbsp;
+                        <button type="button" id="filter" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="searchFromData($event)"><b><i class="icon-search4"></i></b> Search</button>
+                     </div>
+                   </div>
+                 </fieldset>
+
+                 <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                   <hot-table
+                     [hotId]="modalDetail"
+                     [settings]="modalTable"
+                     [data]="modalDataSet">
+                   </hot-table>
+                 </div>
+
+               </div>
+              </div>
+              <div class="modal-footer">
+                 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="detailModal.hide()"><b><i class="icon-cross"></i></b> Close</button>
+              </div>
+            </form>
+      </div>
+    </div>
+</div>

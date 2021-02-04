@@ -1,0 +1,198 @@
+<div class="panel panel-flat">
+  <div class="panel-heading">
+
+    <h5 class="panel-title">Bin Configuration</h5>
+    <div class="heading-elements">
+      <ul class="icons-list">
+        <li><a data-action="collapse"></a></li>
+        <li><a data-action="reload"></a></li>
+        <li><a data-action="close"></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <form class="form-horizontal form-validate-jquery" [formGroup]="formGroup">
+      <div class="row">
+
+        <div class=" col-md-12">
+          <fieldset class="content-group">
+          <div class="col-md-6">
+            <label>Store <span class="text-danger">* </span>:</label>
+            <ng-select
+                [items]="storeList$ | async"
+                placeholder="Select Store"
+                bindLabel="store_name"
+                [hideSelected]="true"
+                formControlName="store_id"
+                (change)="loadSubCat($event)">
+">
+            </ng-select>
+            <!-- <span class="err">{{formFields.store_id}}</span> -->
+            <span class="err" > {{ appFormValidator.validate_field('store_id') }} </span>
+          </div>
+          <div class="col-md-6">
+            <label>Sub Store <span class="text-danger">* </span>:</label>
+            <ng-select
+                [items]="subStoreList$ | async"
+                placeholder="Select Sub Store"
+                bindLabel="substore_name"
+                [hideSelected]="true"
+                formControlName="substore_id"
+                (change)="loadBins()">
+            </ng-select>
+            <!-- <span class="err">{{ formFields.substore_id }}</span> -->
+            <span class="err" > {{ appFormValidator.validate_field('substore_id') }} </span>
+          </div>
+
+          </fieldset>
+        </div>
+
+
+
+      </div>
+
+    </form>
+
+    <div class="row" style="min-height: 350px;">
+      <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col"><b>Bin Name</b></th>
+              <th scope="col"><b>Description</b></th>
+              <!-- <th scope="col"><b>Status</b></th> -->
+              <th scope="col"><b>Action</b></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bin of binList$">
+              <td>{{bin.store_bin_name}}</td>
+              <td>{{bin.store_bin_description}}</td>
+              <!-- <td> <span class="badge badge-success" *ngIf="bin.allocation_id">Configured</span> <span class="badge badge-danger" *ngIf="!bin.allocation_id">Pending</span> </td> -->
+              <td><button class="btn btn-xs btn-primary" type="button"  (click)="configurPopup(bin.store_bin_id)">Edit</button></td>
+            </tr>
+
+            <tr *ngIf="binList$ == null || !binList$">
+              <td colspan="3">No matching records found...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div bsModal #binModel="bs-modal" [config]="{backdrop: 'static'}" class="modal fade">
+  <div class="modal-dialog modal-full">
+    <div class="modal-content">
+      <form class="form-horizontal form-validate-jquery" [formGroup]="formCapacity" (ngSubmit)="saveCapacity()">
+        <div class="modal-header bg-teal-300">
+          <button type="button" class="close" (click)="hideModel()">&times;</button>
+          <h5 class="modal-title">{{ modelTitle }}</h5>
+        </div>
+
+        <div class="modal-body">
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <fieldset class="content-group">
+
+                  <div class="col-md-4">
+                    <label>Category <span class="text-danger">* </span>:</label>
+                    <input type="hidden" formControlName="bin_id" [(ngModel)]="binId" >
+                    <input type="hidden" formControlName="allocation_id" >
+                    <ng-select [items]="categoryList$ | async" placeholder="Select Category" bindLabel="category_name" [hideSelected]="true" formControlName="category_name" (change)="loadItemGategories()">
+                    </ng-select>
+                    <!-- <span class="err">{{formFields.category_name}}</span> -->
+                    <span class="err" > {{ appFormValidator2.validate_field('category_name') }} </span>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label>Zone Name <span class="text-danger">* </span>:</label>
+                    <input type="text"  formControlName="zone_name" placeholder="Zone Name" class="form-control input-xxs" upperCase>
+                    <span class="err" > {{ appFormValidator2.validate_field('zone_name') }} </span>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Rack Name <span class="text-danger">* </span>:</label>
+                    <input type="text"  formControlName="rack_name" placeholder="Rack Name" class="form-control input-xxs" upperCase>
+                    <span class="err" > {{ appFormValidator2.validate_field('rack_name') }} </span>
+                  </div>
+                </fieldset>
+            </div>
+
+
+            <div class="col-md-12">
+
+
+              <div class="row"  class="col-md-6">
+                <legend class="text-bold">List Details</legend>
+                <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                   <hot-table
+                     [hotId]="instance"
+                     [settings]="hotOptions"
+                     [data]="dataset">
+                 </hot-table>
+                </div>
+              </div>
+
+              <div class="row"  class="col-md-6">
+                <legend class="text-bold">Added Details</legend>
+                <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                  <hot-table
+                      [hotId]="instanceSaved"
+                      [settings]="hotOptionsSaved"
+                      [data]="datasetSaved">
+                  </hot-table>
+                </div>
+              </div>
+
+
+            </div>
+
+
+            <!-- <div class="col-md-12">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                  <th>Select</th>
+                  <th width="25%">Sub Category</th>
+                  <th>Inventory UOM</th>
+                  <th>Min Qty</th>
+                  <th>Max Qty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container formArrayName="items" *ngIf="formCapacity.get('category_name').value">
+                    <tr *ngFor="let ctrl of formCapacity.get('items')['controls']; let i = index" [formGroupName]="i">
+                      <td><input type="hidden" formControlName="subCategoryId"><input type="checkbox" formControlName="itemCheckedbox" class="styled" [checked]=""></td>
+                      <td>{{formCapacity.get('items')['controls'][i]['controls']['subcategory_name']['value'] }}<input type="hidden" formControlName="subcategory_name" class="form-control input-xxs"></td>
+                      <td><input type="number" formControlName="capacity" class="form-control input-xxs"></td>
+                      <td><input type="number" formControlName="width" class="form-control input-xxs"></td>
+                      <td><input type="number" formControlName="height" class="form-control input-xxs"></td>
+                    </tr>
+                  </ng-container>
+                  <tr *ngIf="!formCapacity.get('category_name').value">
+                    <td colspan="5">Please select a categoty</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div> -->
+
+
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="hideModel()"><b><i class="icon-cross"></i></b>Close</button>
+          <!-- <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formCapacity.invalid"><b><i class="icon-floppy-disk"></i></b> Save</button> -->
+
+        </div>
+      </form>
+    <!--  <pre>{{formCapacity.value | json}}</pre> -->
+    </div>
+  </div>

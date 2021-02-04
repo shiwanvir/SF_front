@@ -1,0 +1,32 @@
+<div class="panel panel-flat">
+  <div class="panel-heading">
+
+    <h5 class="panel-title">{{component_name}}</h5>
+    <div class="heading-elements">
+      <ul class="icons-list">
+        <li><a data-action="collapse"></a></li>
+        <li><a data-action="reload"></a></li>
+        <li><a data-action="close"></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <tabset #financeTabs [justified]="true">
+
+      <tab heading="Payment Term" (select)="onSelect($event)">
+        <app-payment-term></app-payment-term>
+      </tab>
+
+      <tab heading="Cost Center" (select)="onSelect($event)">
+        <app-cost-center></app-cost-center>
+      </tab>
+
+      <tab heading="Payment Method" (select)="onSelect($event)">        
+        <app-payment-method></app-payment-method>
+      </tab>
+
+    </tabset>
+
+  </div>
+</div>

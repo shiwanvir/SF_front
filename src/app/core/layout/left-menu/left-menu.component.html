@@ -1,0 +1,247 @@
+<!-- Main sidebar -->
+<!--<div class="sidebar sidebar-main">-->
+<div class="sidebar sidebar-main sidebar-fixed">
+<div class="sidebar-content">
+
+  <!-- User menu -->
+  <!-- <div class="sidebar-user">
+    <div class="category-content">
+      <div class="media">
+        <a href="#" class="media-left"><img src="assets/images/avatar5.jpg" class="img-circle img-sm" alt=""></a>
+        <div class="media-body">
+          <span class="media-heading text-semibold">Admin</span>
+          <div class="text-size-mini text-muted">
+            <i class="icon-pin text-size-small"></i> &nbsp;Kelaniya , Sri Lanka
+          </div>
+        </div>
+
+        <div class="media-right media-middle">
+          <ul class="icons-list">
+            <li>
+              <a href="#"><i class="icon-cog3"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- /user menu -->
+
+
+  <!-- Main navigation -->
+  <div class="sidebar-category sidebar-category-visible">
+    <div class="category-content no-padding">
+      <ul class="navigation navigation-main navigation-accordion">
+
+        <li class="navigation-header" style="margin-top:20px" >
+          <div class="form-group form-group-feedback form-group-feedback-right" id="global_search">
+            <input type="search" class="form-control bg-light-alpha border-transparent" style="background-color:#273246;color:#fff" placeholder="Search" (keyup)="searchMenu($event)">
+            <div class="form-control-feedback">
+              <i class="icon-search4 font-size-sm"></i>
+            </div>
+          </div>
+        </li>
+
+        <li class="navigation-header"><span>Main </span> <i class="icon-menu" title="" data-original-title="Main pages"></i></li>
+        <!-- Main -->
+        <li [ngClass]="{'active': menuLevels()['level1'] == 'DASHBOARD'}">
+          <a (click)="changeMenu(1,'DASHBOARD',$event)" routerLink="/dashboard/dashboard" ><i class="icon-home4">
+          </i> <span>Dashboard</span></a></li>
+
+        <ng-template #recursiveList let-list>
+          <li *ngFor="let menu of list" [ngClass]="{'active': menuLevels()['level'+menu.level] == menu.code}">
+            <a *ngIf="menu.sub_menus.length > 0" class="has-ul" (click)="changeMenu(menu.level,menu.code,$event)">
+              <i [class]="menu.icon"></i> <span>{{ menu.name }}</span></a>
+            <ul *ngIf="menu.sub_menus.length > 0" [ngClass]="(menuLevels()['level'+menu.level] == menu.code) ? 'show-menu':'hide-menu'">
+              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menu.sub_menus }"></ng-container>
+            </ul>
+            <a *ngIf="menu.sub_menus.length <= 0 && menu.url != null" [routerLink]="menu.url" [ngClass]="{'left-menu-a-active': menuLevels()['level'+menu.level] == menu.code}" (click)="changeMenu(menu.level,menu.code,$event)"><i [class]="menu.icon" ></i>{{ menu.name }}</a>
+          </li>
+        </ng-template>
+        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menus.sub_menus }"></ng-container>
+
+
+        <!-- [ngClass]="{active: activeRoute('home')}"  -->
+        <!--<li [ngClass]="{'active': menuLevels().level1 == 'CATALOG'}">
+        <a class="has-ul" (click)="changeMenu(1,'CATALOG',$event)"><i class="icon-table2"></i> <span>Catalogue</span></a>
+        <ul [ngClass]="(menuLevels().level1 == 'CATALOG') ? 'show-menu':'hide-menu'">
+        <li [ngClass]="{'active':menuLevels().level2 == 'APP_BASIC_SETUP'}">
+        <a class="has-ul" (click)="changeMenu(2,'APP_BASIC_SETUP',$event)"><i class="icon-arrow-right5" ></i>Application Basic Setup</a>
+        <ul [ngClass]="(menuLevels().level2 == 'APP_BASIC_SETUP') ? 'show-menu':'hide-menu'">
+        <li> <a routerLink="/org/source"  routerLinkActive="active"><i class="icon-arrow-right5" ></i>Parent company</a> </li>
+        <li> <a routerLink="/org/cluster"><i class="icon-arrow-right5" ></i>Cluster</a> </li>
+        <li> <a routerLink="/org/company"><i class="icon-arrow-right5" ></i>Company</a> </li>
+        <li> <a routerLink="/org/location"><i class="icon-arrow-right5" ></i>Location</a> </li>
+        <li> <a routerLink="/org/customer"><i class="icon-arrow-right5" ></i>Customer</a> </li>
+        <li> <a routerLink="/org/section"  routerLinkActive="active"><i class="icon-arrow-right5" ></i>Section</a> </li>
+        <li> <a routerLink="/org/department" ><i class="icon-arrow-right5" ></i>Department</a> </li>
+        <li><a routerLink="/org/stores"><i class="icon-arrow-right5" ></i>Store Creation</a></li>
+        <li> <a routerLink="/org/product-specification"><i class="icon-arrow-right5" ></i>Product Specification</a> </li>
+        <li> <a routerLink="/org/silhouette-classification"><i class="icon-arrow-right5" ></i>Silhouette Classification</a> </li>
+        <li> <a routerLink="/merchandising/customer-size-grid"><i class="icon-arrow-right5" ></i>Customer Size Grid</a> </li>
+        <li> <a routerLink="/merchandising/color-options"><i class="icon-arrow-right5" ></i>Color Options</a> </li>
+        <li> <a routerLink="/merchandising/cut-direction"><i class="icon-arrow-right5" ></i>Cut Direction</a> </li>
+        <li> <a routerLink="/org/supplier"><i class="icon-arrow-right5" ></i>Supplier</a> </li>
+        <li> <a routerLink="/org/uom"><i class="icon-arrow-right5" ></i>Unit Of Maesure</a> </li>
+        <li> <a routerLink="/org/division"><i class="icon-arrow-right5" ></i>Customer Division</a> </li>
+        <li> <a routerLink="/org/cancellation"><i class="icon-arrow-right5" ></i>Cancellation Reason</a> </li>
+        <li> <a routerLink="/org/cancellation"><i class="icon-arrow-right5" ></i>Cancelation Category</a> </li>
+        <li> <a routerLink="/org/feature"><i class="icon-arrow-right5" ></i>Product Feature</a> </li>
+        <li> <a routerLink="/org/silhouette"><i class="icon-arrow-right5" ></i>Product Silhouette</a> </li>
+        <li> <a routerLink="/org/cancellation"><i class="icon-arrow-right5" ></i>Cancelation Category</a> </li>
+        <li> <a routerLink="/org/garmentoptions"><i class="icon-arrow-right5" ></i>Garment Options</a> </li>
+        <li> <a routerLink="/merchandising/bom-stage"><i class="icon-arrow-right5" ></i>BOM Stage</a> </li>
+        <li> <a routerLink="/merchandising/round"><i class="icon-arrow-right5" ></i>Round</a> </li>
+        <li> <a routerLink="/ie/service-types"><i class="icon-arrow-right5" ></i>Service Types</a> </li>
+
+        <li> <a routerLink="/org/country"><i class="icon-arrow-right5" ></i>Country</a> </li>
+        <li> <a routerLink="/org/designation"><i class="icon-arrow-right5" ></i>Designation</a> </li>
+      </ul>
+    </li>
+    <li [ngClass]="{'active': menuLevels().level2 == 'FINANCE'}">
+    <a class="has-ul" (click)="changeMenu(2,'FINANCE',$event)" ><i class="icon-arrow-right5"></i>Financials</a>
+    <ul [ngClass]="(menuLevels().level2 == 'FINANCE') ? 'show-menu':'hide-menu'">
+    <li> <a routerLink="/finance/accounting-rules"  routerLinkActive="active"><i class="icon-arrow-right5" ></i>Cost Center</a> </li>
+    <li> <a routerLink="/finance/accounting-rules"><i class="icon-arrow-right5" ></i>Payment Term</a> </li>
+    <li> <a routerLink="/org/currency"><i class="icon-arrow-right5" ></i>Currency</a> </li>
+    <li> <a routerLink="/finance/accounting-rules"><i class="icon-arrow-right5" ></i>Payment Method</a> </li>
+    <li> <a routerLink="/org/origin-type"><i class="icon-arrow-right5" ></i>Orgin Type</a> </li>
+    <li> <a routerLink="/finance/goods-type"><i class="icon-arrow-right5" ></i>Goods Type</a> </li>
+    <li> <a routerLink="/finance/shipment-term"><i class="icon-arrow-right5" ></i>Shipment Term</a> </li>
+    <li> <a routerLink="/finance/fin-transaction"><i class="icon-arrow-right5" ></i>Transactions</a> </li>
+    <li> <a routerLink="/finance/exchange-rate"><i class="icon-arrow-right5" ></i>Exchange Rate</a> </li>
+  </ul>
+</li>
+
+<li [ngClass]="{'active': menuLevels().level2 == 'MERCHANDISING'}">
+<a class="has-ul" (click)="changeMenu(2,'MERCHANDISING',$event)"><i class="icon-arrow-right5"></i>Merchandising</a>
+<ul [ngClass]="(menuLevels().level2 == 'MERCHANDISING') ? 'show-menu':'hide-menu'">
+<li [ngClass]="{'active': menuLevels().level3 == 'STYLE_CREATION'}"> <a routerLink="merchandising/style-creation" (click)="changeMenu(3,'STYLE_CREATION',$event)"><i class="icon-arrow-right5" ></i>Style Creation</a> </li>
+<li [ngClass]="{'active': menuLevels().level3 == 'BUYER_PO'}"> <a routerLink="/merchandising/style-buyer-po" (click)="changeMenu(3,'BUYER_PO',$event)"><i class="icon-arrow-right5" ></i>Style Buyer PO</a> </li>
+<li> <a routerLink="/merchandising/tna-master"><i class="icon-arrow-right5" ></i>Action Master</a> </li>
+<li [ngClass]="{'active': menuLevels().level3 == 'BULK_COSTING'}"> <a routerLink="/merchandising/bulk" (click)="changeMenu(3,'BULK_COSTING',$event)"><i class="icon-arrow-right5" ></i>Bulk Costing</a> </li>
+</ul>
+</li>
+
+<li [ngClass]="{'active': menuLevels().level2 == 'STORES'}">
+<a class="has-ul" (click)="changeMenu(2,'STORES',$event)"><i class="icon-arrow-right5"></i>Stores</a>
+<ul [ngClass]="(menuLevels().level2 == 'STORES') ? 'show-menu':'hide-menu'">
+<li [ngClass]="{'active': menuLevels().level3 == 'SUB_STRORE_CREATION'}"> <a routerLink="/stores/substore" (click)="changeMenu(3,'SUB_STRORE_CREATION',$event)"><i class="icon-arrow-right5" ></i>Sub Store Creation</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'BIN_CREATION'}"> <a routerLink="/stores/storebin" (click)="changeMenu(3,'BIN_CREATION',$event)"><i class="icon-arrow-right5" ></i>Bin Creation</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'BIN_CONGFIG'}"> <a routerLink="/stores/bin-config" (click)="changeMenu(3,'BIN_CONGFIG',$event)"><i class="icon-arrow-right5" ></i>Bin Configuration</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'ROLE_PLAN'}"> <a routerLink="/stores/roll-plan" (click)="changeMenu(3,'ROLE_PLAN',$event)"><i class="icon-arrow-right5" ></i>Roll Plan</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'GENERAL_MRN'}"> <a routerLink="/stores/generalpr" (click)="changeMenu(3,'GENERAL_MRN',$event)"><i class="icon-arrow-right5" ></i>General Mrn</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'STYLE_MRN'}"> <a routerLink="/stores/mrn" (click)="changeMenu(3,'STYLE_MRN',$event)"><i class="icon-arrow-right5" ></i>Style Mrn</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'TRANSFER_LOCATION'}"> <a routerLink="/stores/transfer-location" (click)="changeMenu(3,'TRANSFER_LOCATION',$event)"><i class="icon-arrow-right5" ></i>Location Transfer</a> </li>
+<li  [ngClass]="{'active': menuLevels().level3 == 'BIN_TRANSFER'}"> <a routerLink="/stores/bin-transfer" (click)="changeMenu(3,'BIN_TRANSFER',$event)"><i class="icon-arrow-right5" ></i>Bin Transfer</a> </li>
+</ul>
+</li>
+
+<li [ngClass]="{'active': menuLevels().level2 == 'ADMIN'}">
+<a class="has-ul" (click)="changeMenu(2,'ADMIN',$event)"><i class="icon-arrow-right5"></i>Admin</a>
+<ul [ngClass]="(menuLevels().level2 == 'ADMIN') ? 'show-menu':'hide-menu'">
+<li [ngClass]="{'active': menuLevels().level3 == 'ROLE'}"> <a routerLink="/admin/role" (click)="changeMenu(3,'ROLE',$event)"><i class="icon-arrow-right5" ></i>Role</a> </li>
+<li [ngClass]="{'active': menuLevels().level3 == 'USER'}"> <a routerLink="/admin/user" (click)="changeMenu(3,'USER',$event)"><i class="icon-arrow-right5" ></i>Register</a> </li>
+<li [ngClass]="{'active': menuLevels().level3 == 'USERS'}"> <a routerLink="/admin/users" (click)="changeMenu(3,'USERS',$event)"><i class="icon-arrow-right5" ></i>Users</a> </li>
+</ul>
+</li>
+</ul>
+</li>-->
+
+<!--<li [ngClass]="{'active': menuLevels().level1 == 'PRODUCT_DEVELOPMENT'}">
+<a class="has-ul" (click)="changeMenu(1,'PRODUCT_DEVELOPMENT',$event)"><i class="icon-copy"></i> <span>Product Development</span></a>
+<ul [ngClass]="(menuLevels().level1 == 'PRODUCT_DEVELOPMENT') ? 'show-changeMenu':'hide-menu'">
+<li [ngClass]="{'active': menuLevels().level2 == 'INVENTORY_PART'}">
+<a class="has-ul" (click)="changeMenu(2,'INVENTORY_PART',$event)"><i class="icon-arrow-right5"></i>Inventory Part</a>
+<ul [ngClass]="(menuLevels().level2 == 'INVENTORY_PART') ? 'show-menu':'hide-menu'">
+<li> <a routerLink="/org/color"><i class="icon-arrow-right5" ></i>Color</a> </li>
+<li> <a routerLink="/org/size"><i class="icon-arrow-right5" ></i>Size</a> </li>
+<li> <a routerLink="/org/season"><i class="icon-arrow-right5" ></i>Season</a> </li>
+<li [ngClass]="{'active': menuLevels().level3 == 'STYLE_ITEM_CREATION'}">
+<a class="has-ul" (click)="changeMenu(3,'STYLE_ITEM_CREATION',$event)" ><i class="icon-arrow-right5"></i>Style Item Creation</a>
+<ul [ngClass]="(menuLevels().level3 == 'STYLE_ITEM_CREATION') ? 'show-menu':'hide-menu'">
+
+<li><a routerLink="/itemcreation/itemgroup"><i class="icon-arrow-right5" ></i>Item Creation</a></li>
+<li><a routerLink="/itemcreation/assignproperty"><i class="icon-arrow-right5" ></i>Properties Assign to Sub Category</a></li>
+<li><a routerLink="/itemcreation/subcategory"><i class="icon-arrow-right5" ></i>Sub Category</a></li>
+</ul>
+</li>
+
+</ul>
+</li>
+<li [ngClass]="{'active': menuLevels().level2 == 'IE'}">
+<a class="has-ul" (click)="changeMenu(2,'IE',$event)" ><i class="icon-arrow-right5"></i>IE</a>
+<ul [ngClass]="(menuLevels().level2 == 'IE') ? 'show-menu':'hide-menu'">
+<li> <a routerLink="/ie/smvupdate"><i class="icon-arrow-right5" ></i>SMV Update</a> </li>
+<li> <a routerLink="/ie/smvupdate-costing"><i class="icon-arrow-right5" ></i>SMV Update for Costing</a> </li>
+</ul>
+</li>
+<li>
+<a class="has-ul">Merchandising</a>
+<ul>
+<li><a class="has-ul"><i class="icon-arrow-right5" ></i>Costings</a>
+<ul>
+<li><a routerLink="/merchandising/flashcosting"><i class="icon-arrow-right5" ></i>Flash</a></li>
+<li><a routerLink="/itemcreation/itemgroup"><i class="icon-arrow-right5" ></i>Bulk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>-->
+
+<!--<li>
+<a class="has-ul"><i class="icon-cart5"></i> <span>Production Manufacturing</span></a>
+<ul>
+</ul>
+</li>
+
+<li [ngClass]="{'active': menuLevels()['level1'] == 'WAREHOUSE'}">
+<a class="has-ul"  (click)="changeMenu(1,'WAREHOUSE',$event)"><i class="icon-store"></i> <span>Warehouse Management</span></a>
+<ul [ngClass]="(menuLevels()['level1'] == 'WAREHOUSE') ? 'show-changeMenu':'hide-menu'">
+<li> <a routerLink="/stores/roll-plan"><i class="icon-arrow-right5"></i>Roll Plan</a> </li>
+</ul>
+</li>
+
+<li>
+<a class="has-ul"><i class="icon-statistics"></i> <span>Supply Chain Management</span></a>
+<ul>
+</ul>
+</li>
+
+<li>
+<a class="has-ul"><i class="icon-link"></i> <span>Surface Integration Service</span></a>
+<ul>
+</ul>
+</li>
+
+<li>
+<a class="has-ul"><i class="icon-hour-glass"></i> <span>Performance Management</span></a>
+<ul>
+</ul>
+</li>
+
+<li>
+<a class="has-ul"><i class="icon-files-empty2"></i> <span>Surface DMS</span></a>
+<ul>
+</ul>
+</li>
+
+<li>
+<a class="has-ul"><i class="icon-stats-dots"></i> <span>Reports</span></a>
+<ul>
+</ul>
+</li>-->
+
+</ul>
+</div>
+</div>
+<!-- /main navigation -->
+
+</div>
+
+
+</div>
+
+<!--</div>-->
+<!-- /main sidebar -->

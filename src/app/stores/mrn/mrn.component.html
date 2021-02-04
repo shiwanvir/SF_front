@@ -1,0 +1,418 @@
+
+<!--<div class="panel panel-flat">-->
+<div class="panel-body">
+  <form class="form-horizontal" [formGroup]="mrnGroup">
+    <input type="hidden" formControlName="mrn_id" class="form-control input-xxs">
+    <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-4">
+            <label>MRN No <span class="text-danger">*</span> :</label>
+            <input type="text" class="form-control input-xxs" formControlName="mrn_no" (blur)="formValidate()">
+
+          </div>
+
+          <div class="col-md-4">
+            <label >GRN Type <span class="text-danger">*</span> :</label>
+            <ng-select [items]="grnTypelist$ | async"
+            placeholder="Select GRN Type"
+            [selectOnTab]="true"
+            bindLabel="grn_type_code"
+            [loading]="grnTypeLoading"
+            [typeahead]="grnTypeInput$"
+            [(ngModel)]="selectedGrnType"
+            formControlName="grn_type_code"
+             (change)="changeFiledsSettings();changeSearchButtonStatus()"
+             (keypress)="changeSearchButtonStatus()"
+            >
+
+          </ng-select>
+
+          <!-- <span class="err" *ngIf="mrnGroup.get('grn_type_code').errors"></span> -->
+          <span class="err">{{ formFields.grn_type_code}}</span>
+          <span *ngIf="formFields.validation_error != ''" (blur)="formValidate()" class="err">{{formFields.validation_error}}</span>
+
+        </div>
+
+          <div class="col-md-4">
+            <fieldset>
+              <label>Item Code <span *ngIf="isManul" class="text-danger">*</span>:</label>
+              <ng-select [items]="itemCode$ | async"
+              placeholder="Select Item Code"
+              [selectOnTab]="true"
+              bindLabel="master_code"
+              [loading]="itemCodeLoading"
+              [typeahead]="itemCodeInput$"
+              [(ngModel)]="selecteditemCode"
+              formControlName="item_code"
+              (change)="changeSearchButtonStatus()">
+            </ng-select>
+            <span class="err">{{ formFields.style_no}}</span>
+            <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+          </fieldset>
+
+
+        </div>
+
+
+
+
+      </div>
+  </div>
+      <div class="col-md-12">
+          <div class="row">
+
+            <div class="col-md-4">
+              <fieldset>
+                <label>Line No <span class="text-danger"> </span> :</label>
+                <input type="text" formControlName="line_no" class="form-control input-xxs"
+                placeholder="Line No" (blur)="formValidate();changeSearchButtonStatus()">
+                <span class="err">{{ formFields.line_no }}</span>
+                <span *ngIf="formFields.validation_error != ''" (keypress)="changeSearchButtonStatus()" class="err">{{formFields.validation_error}}</span>
+              </fieldset>
+            </div>
+
+
+            <div class="col-md-4">
+              <label>Request Type <span class="text-danger">*</span> :</label>
+              <ng-select [items]="requestType$ | async"
+              placeholder="Select Request Type"
+              [selectOnTab]="true"
+              bindLabel="request_type"
+              [loading]="requestTypeLoading"
+              [typeahead]="requestTypeInput$"
+              [(ngModel)]="selectedRequestType"
+              formControlName="request_type" (blur)="formValidate()"(change)="changeSearchButtonStatus()">
+            </ng-select>
+            <span class="err">{{ formFields.request_type }}</span>
+            <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+          </div>
+
+          <div class="col-md-4">
+            <label>Style No<span *ngIf="!isManul" class="text-danger">*</span> :</label>
+            <ng-select [items]="styleNo$ | async"
+            placeholder="Select Style No"
+            [selectOnTab]="true"
+            bindLabel="style_no"
+            [loading]="styleNoLoading"
+            [typeahead]="styleNoInput$"
+            [(ngModel)]="selectedStyleNo"
+            formControlName="style_no" (blur)="formValidate()" (change)="changeSearchButtonStatus()">
+          </ng-select>
+          <span class="err">{{ formFields.style_no}}</span>
+          <span class="err" *ngIf="mrnGroup.get('style_no').errors"></span>
+          <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+        </div>
+        <!---->
+
+
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="row">
+    <div class="col-md-4">
+      <label>Shop Order ID<span *ngIf="!isManul" class="text-danger">*</span> :</label>
+      <ng-select  [items]="shopOrder$ | async"
+      placeholder = "Select Shop Order ID"
+      [selectOnTab]="true"
+      bindLabel="shop_order_id"
+      [loading]="shopOrderLoading"
+      [typeahead]="shopOrderInput$"
+      [(ngModel)]="selectedShopOrder"
+      formControlName="shop_order_id" (blur)="formValidate()" (change)="changeSearchButtonStatus()">
+    </ng-select>
+    <span class="err">{{ formFields.style_no}}</span>
+    <span class="err" *ngIf="mrnGroup.get('style_no').errors"></span>
+    <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+  </div>
+
+  <div class="col-md-4">
+    <fieldset>
+      <label>Cut Qty <span class="text-danger">*</span> :</label>
+      <input type="number" formControlName="cut_qty" class="form-control input-xxs"
+      placeholder="Cut Qty" (blur)="formValidate();formatDecimals($event)" (keypress)="changeSearchButtonStatus()">
+      <span class="err" *ngIf="mrnGroup.get('cut_qty').errors"></span>
+      <span class="err">{{ formFields.cut_qty }}</span>
+      <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+    </fieldset>
+  </div>
+
+<div class="col-md-4">
+  <fieldset>
+    <label>Section <span class="text-danger">*</span> :</label>
+
+    <ng-select [items]="section$ | async" placeholder="Select Section" bindLabel="section_name" [hideSelected]="true" formControlName="sec_name" (blur)="formValidate()"(ngModelChange)="changeSearchButtonStatus()">
+    </ng-select>
+
+    <span class="err">{{ formFields.sec_name }}</span>
+    <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+  </fieldset>
+</div>
+</div>
+</div>
+
+<!--<div class="heading-btn pull-right" style="margin-top:20px;float:right:10px">
+<button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+(click)="searchDetails();MRNDetailtModel.show()">
+<b><i class="icon-search4"></i></b> Search
+</button>
+</div>
+
+<div class="heading-btn pull-right" style="margin-top:20px;">
+<button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+(click)="searchDetails();MRNDetailtModel.show()">
+<b><i class="icon-search4"></i></b> Add new
+</button>
+</div>-->
+<div div class="heading-btn pull-right"style="margin-top:20px;float:right:10px">
+  <div class="heading-btn pull-right" style="margin-top:20px;float:right:10px">
+    <button type="submit"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs"  style="float: right;" (click)="clearData()"  ><b><i class="icon-redo"></i></b>Clear</button>
+
+  </div>
+  <div class="heading-btn pull-right" style="margin-top:20px;margin-right:10px">
+    <button type="submit"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs" style="text-align:right"   [disabled]="dissableSerachButton" (click)="searchDetails();MRNDetailtModel.show()"><b><i class="icon-search4"></i></b>Search</button>
+
+
+  </div>
+</div>
+
+
+
+
+<!--  <div class="row">
+<div class="col-md-12">
+<div class="row">
+<div class="col-md-4">
+<label>Order Id<span class="text-danger">*</span></label>
+<ng-select [items]="soDetailId$ | async"
+placeholder="[Select Request Type]"
+[selectOnTab]="true"
+bindLabel="details_id"
+[loading]="soDetailIdLoading"
+[typeahead]="soDetailIdInput$"
+[(ngModel)]="selectedSoDetailId"
+formControlName="so_detail_id" (blur)="formValidate()">
+</ng-select>
+<span class="err">{{ formFields.request_type }}</span>
+<span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+</div>
+
+<div class="col-md-4">
+<fieldset>
+<label>Order Qty:</label>
+<input type="text" formControlName="order_qty" class="form-control input-xxs"
+placeholder="Order Qty" (blur)="formValidate()">
+<span class="err">{{ formFields.order_qty }}</span>
+<span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+</fieldset>
+</div>
+
+<div class="col-md-4">
+<label>Main Category <span class="text-danger">*</span> :</label>
+<select formControlName="category_code" class="form-control input-xxs set-select-general-200"  (change)='loadSubCategory($event.target.value)'>
+<option [ngValue]="null">... Select One ...</option>
+<option *ngFor="let com of mainCategory$ | async" [value]="com.category_id" class='space-option'>
+{{com.category_name}}
+</option>
+</select>
+<span class="err" > {{ itemFormValidator.validate_field('category_code')  }} </span>
+</div>
+</div>
+</div>
+</div>-->
+<!--  <div class="row">
+<div class="col-md-12">
+<div class="row">
+<div class="col-md-4">
+<label>Sub Category <span class="text-danger">*</span> :</label>
+<select formControlName="sub_category_code" id="sub_category_code" class="form-control input-xxs set-select-general-200">
+<option [ngValue]="null">... Select One ...</option>
+<option *ngFor="let subCat of subCategory$ | async" [value]="subCat.subcategory_id" class="space-option">
+{{subCat.subcategory_name}}
+</option>
+</select>
+<span class="err" > {{ itemFormValidator.validate_field('sub_category_code')  }} </span>
+</div>
+
+<div class="col-md-4">
+<fieldset>
+<label>Request Qty:</label>
+<input type="text" formControlName="req_qty" class="form-control input-xxs"
+placeholder="Request Qty" (blur)="formValidate()">
+<span class="err">{{ formFields.order_qty }}</span>
+<span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+</fieldset>
+</div>
+
+<div class="col-md-4">
+<label>Color<span class="text-danger">*</span></label>
+<ng-select [items]="color$ | async"
+placeholder = "[Select Color]"
+[selectOnTab]="true"
+bindLabel="color_name"
+[loading]="colorLoading "
+[typeahead]="colorInput$"
+[(ngModel)]="selectedColor"
+formControlName="color" (blur)="formValidate()">
+</ng-select>
+</div>
+</div>
+</div>
+</div
+-->
+<!--    <div class="row">
+<div class="col-md-12">
+<div class="row">
+
+<div class="col-md-4">
+
+<label>Coustomer Po<span class="text-danger">*</span></label>
+<ng-select [items]="customerPo$ | async"
+placeholder="[Select Customer Po]"
+[selectOnTab]="true"
+bindLabel="po_no"
+[loading]="customerPoLoading"
+[typeahead]="customerPoInput$"
+[(ngModel)]="selectedCustomerPo"
+formControlName="customer_po" (blur)="formValidate()">
+</ng-select>
+<span class="err">{{ formFields.customer_po}}</span>
+<span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+
+</div>
+</div>
+</div>
+</div>-->
+
+<!--  <div class="col-md-4">
+<div class="heading-btn pull-right" style="margin-top:20px;float:right:10px">
+<button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+(click)="searchDetails();MRNDetailtModel.show()">
+<b><i class="icon-search4"></i></b> Search
+</button>
+</div>
+
+</div>-->
+
+
+<div class="modal-footer">
+  <br clear="all"><!--  <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"><b><i class="icon-plus3"></i></b> New</button>-->
+  <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+  (click)="searchDetails();MRNDetailtModel.show()">
+  <b><i class="icon-search4"></i></b> Search
+</button>-->
+</div>
+
+
+<div class="row">
+
+  <div class="col-md-12">
+    <legend class="text-bold" style="margin-top:20px">Material Details</legend>
+    <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+      <hot-table
+      [hotId]="instance"
+      [settings]="hotOptions"
+      [(data)]="dataset">
+    </hot-table>
+  </div>
+</div>
+</div>
+<div class="heading-btn pull-right" style="margin-top:20px;float:right:10px">
+
+  <button type="button"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs" style="margin-top:20px;float:right:10px"  [disabled]="mrnGroup.invalid" (click)="saveMrnDetails()"><b><i class="icon-floppy-disk"></i></b>Save</button>
+</div>
+<!--  </div>
+
+
+
+<!--  </div>-->
+</form>
+
+
+</div>
+
+
+<!-- popup -->
+<div bsModal #MRNDetailtModel="bs-modal" [config]="{backdrop: 'static'}"
+class="modal fade" (onShow)="showEvent($event)">
+<div class="modal-dialog modal-lg" style="width: 80%">
+  <div class="modal-content">
+    <form class="form-horizontal" [formGroup]="modalGroup">
+      <div class="modal-header  bg-teal-300">
+        <button type="button" class="close" (click)="MRNDetailtModel.hide()">&times;</button>
+        <h5 class="modal-title">{{ modelTitle }}</h5>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" formControlName="filter_id" class="form-control input-xxs">
+          <div class="row">
+            <div class="col-md-12" style="padding: 10px;">
+              <div class="col-md-4">
+                <label>Item Code <span class="text-danger"></span> :</label>
+                <ng-select [items]="itemCodeFilter$ | async"
+                placeholder="Select Item Code"
+                [selectOnTab]="true"
+                bindLabel="master_code"
+                [loading]="itemCodefilterLoading"
+                [typeahead]="itemCodefilterInput$"
+                [(ngModel)]="selecteditemCodefilter"
+                (change)="loadSCList()"
+                formControlName="item_code_filter" (ngModelChange)="filterData()">
+              </ng-select>
+              <span class="err">{{ formFields.style_no}}</span>
+              <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+            </div>
+        <div class="col-md-4">
+          <label>Customer PO <span class="text-danger"></span> :</label>
+          <ng-select [items]="customerPoFilter$ | async"
+          placeholder="Select Customer PO"
+          [selectOnTab]="true"
+          bindLabel="po_no"
+          [loading]="customerPoFilterLoading"
+          [typeahead]="customerPoFilterInput$"
+          [(ngModel)]="selectedCustomerPoFilter"
+          formControlName="customer_po_filter" (ngModelChange)="filterData()">
+        </ng-select>
+        <span class="err">{{ formFields.customer_po}}</span>
+        <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+    </div>
+    <!--  <div class="col-md-4">
+        <br>
+      <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="mrnGroup.invalid">
+        <b><i class="icon-search4"></i></b>Search
+      </button>
+      </div>-->
+    </div>
+
+  </div>
+
+
+<!---table-->
+<legend class="text-bold" style="margin-top:20px">Material Details</legend>
+<div class="row">
+
+  <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+    <hot-table
+    [hotId]="instanceSearchBox"
+    [settings]="hotOptionsSearchBox"
+    [(data)]="datasetSearchBox">
+  </hot-table>
+</div>
+</div>
+
+
+
+
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"
+  (click)="MRNDetailtModel.hide()"><b><i class="icon-cross"></i></b> Close
+</button>
+
+</div>
+
+
+</form>
+</div>
+</div>
+
+</div>

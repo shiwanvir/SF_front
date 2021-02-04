@@ -1,0 +1,52 @@
+<form [formGroup]="formGroup" (ngSubmit)="save()">
+		<!--<legend class="text-bold">Role Details</legend>-->
+		<div class="row">
+
+        <input type="hidden" formControlName="role_id">
+
+				<div class=" col-md-3">
+						<label>Role Name <span class="text-danger">*</span> :</label>
+						<span class="err" *ngIf="formGroup.get('role_name').status === 'PENDING'"> Validating....</span>
+						<input type="text" class="form-control input-xxs" formControlName="role_name" placeholder="Role Name">
+						<span class="err" *ngIf="formGroup.get('role_name').errors && formGroup.get('role_name').errors.remoteValidation">{{formGroup.get('role_name').errors.remoteValidation}}</span>
+            <span class="err">{{ formValidator.validate_field('role_name')  }}</span>
+				</div>
+        <div class=" col-md-6">
+					<div [hasPermission]="['PERMISSION_ROLE_CREATE']">
+          <div class="heading-btn" style="margin-top:20px">
+            <button *ngIf="!processing" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid"><b><i class="icon-floppy-disk"></i></b> Save</button>
+            <button type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-left:15px" (click)="newRole()"><b><i class="icon-plus22"></i></b> New Role</button>
+					</div>
+					</div>
+        </div>
+
+		</div>
+
+		<legend class="text-bold" *ngIf="formGroup.get('role_id').value != null">Permissions</legend>
+		<div class="row" *ngIf="formGroup.get('role_id').value != null">
+
+			<div class="col-md-6">
+				<h6>Permission Category</h6>
+				<div class="list-group" style="height:400px;overflow-y: scroll;cursor:pointer">
+					<span class="list-group-item" *ngFor = "let category of categories$ | async" (click)="changeCategory(category.code)">
+						{{ category.description }}
+					</span>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h6>Permissions</h6>
+				<div class="list-group" style="height:400px;overflow-y: scroll">
+					<span class="list-group-item" *ngFor = "let permission of permissions$ | async">
+						<input type="checkbox" (change)="changePermission($event, permission.code)"
+							[checked]="permission.status == 1"> {{ permission.description }}
+					</span>
+				</div>
+			</div>
+
+		</div>
+
+  </form>
+
+
+<ng-snotify class="simple"></ng-snotify>
+  <!--<ng-snotify class="simple"></ng-snotify>-->

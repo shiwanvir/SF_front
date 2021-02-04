@@ -1,0 +1,189 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+			<div class="panel-heading">
+				<h6 class="panel-title">Costing YY Update</h6>
+				<div class="heading-elements">
+					<ul class="icons-list">
+	             <li><a data-action="collapse"></a></li>
+	             <li><a data-action="reload"></a></li>
+	             <li><a data-action="close"></a></li>
+	        </ul>
+	      </div>
+			</div>
+
+      <div class="panel-body">
+        <fieldset class="content-group">
+        <div class="row">
+            <form class="form-horizontal" [formGroup]="formGroup">
+              <div class="col-md-12">
+
+                  <div class="row">
+
+                    <div class="col-md-3">
+                      <label>Customer <span class="text-danger">*</span> :</label>
+                      <ng-select [items]="customer$ | async"
+                          placeholder = "Select Customer"
+                          [selectOnTab]="true"
+                          bindLabel="customer_name"
+                          [loading]="customerLoading"
+                          [typeahead]="customerInput$"
+                          [(ngModel)]="selectedCustomer"
+                          formControlName="customer_id"
+                          (change)="getDivisions($event)">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('customer_id') }} </span>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Item Category :</label>
+                      <ng-select
+                        placeholder = "Select Item Category"
+                        [items]="itemCategories$ | async"
+                        bindLabel="category_name"
+                        [hideSelected]="true"
+                        [(ngModel)]="selectedItemCategory"
+                        formControlName="item_category">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('item_category') }} </span>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                      <label>Lot No :</label>
+                      <input type="text" class="form-control input-xxs" formControlName="lot_no" placeholder="Lot No">
+                      <span class="err" > {{ appValidator.validate_field('lot_no') }} </span>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                      <label>BOM Stage :</label>
+                      <ng-select
+                        placeholder = "Select BOM Stage"
+                        [items]="bomStage$ | async"
+                        bindLabel="bom_stage_description"
+                        [hideSelected]="true"
+                        [(ngModel)]="selectedBOMStge"
+                        formControlName="bom_stage_id">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('bom_stage_id') }} </span>
+                    </div>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Product Component :</label>
+                      <ng-select
+                          placeholder = "Select Product Component"
+                          [items]="productComponents$ | async"
+                          bindLabel="product_component_description"
+                          [hideSelected]="true"
+                          [(ngModel)]="selectedProductComponent"
+                          formControlName="product_component">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('product_component') }} </span>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Buy Name :</label>
+                      <ng-select
+                          placeholder = "Select Buy Name"
+                          [items]="buyNames$ | async"
+                          bindLabel="buy_name"
+                          [hideSelected]="true"
+                          [(ngModel)]="selectedBuyName"
+                          formControlName="buy_id">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('buy_id') }} </span>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Division :</label>
+                      <ng-select
+                        placeholder = "Select Division"
+                        [items]="customerDivisions"
+                        bindLabel="division_description"
+                        [hideSelected]="true"
+                        formControlName="division_id">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('division_id') }} </span>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Color Type :</label>
+                      <ng-select
+                          placeholder = "Select Color Type"
+                          [items]="colorTypes$ | async"
+                          bindLabel="color_option"
+                          [hideSelected]="true"
+                          [(ngModel)]="selectedColorType"
+                          formControlName="color_type_id">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('color_type_id') }} </span>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Merchandiser : </label>
+                      <input type="text" class="form-control input-xxs" formControlName="merchant" placeholder="Merchandiser">
+                      <span class="err" > {{ appValidator.validate_field('merchant') }} </span>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Style No :</label>
+                      <ng-select [items]="style$ | async"
+                          placeholder = "Select Style"
+                          [selectOnTab]="true"
+                          bindLabel="style_no"
+                          [loading]="styleLoading"
+                          [typeahead]="styleInput$"
+                          [(ngModel)]="selectedStyle"
+                          formControlName="style_id">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('style_id') }} </span>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Costing ID :</label>
+                      <ng-select [items]="costing$ | async"
+                          placeholder = "Select Costing"
+                          [selectOnTab]="true"
+                          bindLabel="id"
+                          [loading]="costingLoading"
+                          [typeahead]="costingInput$"
+                          [(ngModel)]="selectedCosting"
+                          formControlName="costing_id">
+                      </ng-select>
+                      <span class="err" > {{ appValidator.validate_field('costing_id') }} </span>
+                    </div>
+                    <div class="col-md-3" style="text-align:right">
+                        <div class="row">
+                          <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-top:18px" [disabled]="formGroup.invalid"
+                          (click)="search()"><b><i class="icon-search4"></i></b>Search</button>
+                        </div>
+                    </div>
+                  </div>
+
+
+                  <div class="row" style="margin-top:15px">
+                    <div class="col-md-12" style="border-style:solid;border-width:1px;border-color:#DCDCDC;margin-top:15px">
+                        <hot-table
+                          [hotId]="tblRM"
+                          [settings]="settingsRM"
+                          [data]="dataRM">
+                        </hot-table>
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top:15px;text-align:right">
+                      <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="validateAllItems()" [disabled]="formGroup.invalid"><b><i class="icon-floppy-disk"></i></b> Save</button>
+
+                      <button type="button" class="btn btn-labeled btn-primary btn-xs" (click)="resetAllData()"><b><i class="icon-redo"></i></b>Clear All</button>
+
+                      <button type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-right:5px" [disabled]="dataRM.length <= 0" (click)="notifyMerchant()"><b><i class="icon-arrow-right6"></i></b>Notify Merchant</button>
+                  </div>
+
+                </div><!-- End col-md-12 -->
+              </form>
+            </div>
+          </fieldset>
+
+      </div><!-- End panel-body -->
+
+  </div>
+</div>

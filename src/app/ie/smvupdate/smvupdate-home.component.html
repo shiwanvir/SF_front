@@ -1,0 +1,30 @@
+<div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">{{pageHeader}}</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload" ></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    <tabset #smvupdateTabs [justified]="true">
+
+                      <tab heading="SMV Update" (select)="onSelect($event)">
+                          <app-smvupdate></app-smvupdate>
+                      </tab>
+
+                      <tab heading="SMV History" (select)="onSelect($event)">
+                          <app-smvupdate-history></app-smvupdate-history>
+                      </tab>
+
+
+                    </tabset>
+
+                </div>
+            </div>

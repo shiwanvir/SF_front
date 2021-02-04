@@ -1,0 +1,41 @@
+<div class="col-md-12">
+  <div class="panel ">
+
+    <div class="panel-heading">
+      <h6 class="panel-title">Manual Purchase Order</h6>
+      <div class="heading-elements">
+        <ul class="icons-list">
+          <li><a data-action="collapse"></a></li>
+          <li><a data-action="reload"></a></li>
+          <li><a data-action="close"></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <tabset #manualPoTabs [justified]="true">
+
+        <tab heading="Inventory Part PO List" (select)="onSelect($event)">
+          <app-inventory-part-po-list></app-inventory-part-po-list>
+        </tab>
+
+        <tab heading="Inventory Part PO">
+          <app-inventory-part-po></app-inventory-part-po>
+        </tab>
+
+        <tab heading="Non Inventory PO List" (select)="onSelect($event)">
+          <app-non-inventory-po-list></app-non-inventory-po-list>
+        </tab>
+
+        <tab heading="Non Inventory PO">
+          <app-non-inventory-po></app-non-inventory-po>
+        </tab>
+
+      </tabset>
+
+
+    </div>
+
+  </div>
+</div>

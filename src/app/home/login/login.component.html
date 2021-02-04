@@ -1,0 +1,79 @@
+<div class="login-container bg-slate-800" style="height:700px">
+<div class="page-container">
+
+	<!-- Page content -->
+	<div class="page-content">
+
+		<!-- Main content -->
+		<div class="content-wrapper">
+
+			<!-- Content area -->
+			<div class="content">
+
+				<!-- Advanced login -->
+
+				<div class="panel panel-body login-form">
+					<div class="text-center">
+						<div class="icon-object " style="color:#FFF;margin-bottom:-20px">
+							<!--<i class="icon-people"></i>-->
+							<img style="width:110%;margin-left:-10px" src="assets/images/logod004.png">
+						</div>
+						<h5 class="content-group-lg">Login to your account <small class="display-block">Enter your credentials</small></h5>
+					</div>
+					<!-- if there are login errors, show them here -->
+
+						<div *ngIf="loginStatus==401" class="alert alert-danger">{{ loginError }}</div>
+
+          <form class="form-group" [formGroup]="loginFormGroup" (ngSubmit)="login()">
+
+  					<div class="form-group has-feedback has-feedback-left">
+              <input class="form-control" formControlName="user_name" type="text" id="forcusfield" style="text-transform: none;" placeholder="Username">
+  						<div class="form-control-feedback">
+  							<i class="icon-user text-muted"></i>
+  						</div>
+  					</div>
+
+  					<div class="form-group has-feedback has-feedback-left">
+  						<input class="form-control" formControlName="password" type="password" placeholder="Password">
+  						<div class="form-control-feedback">
+  							<i class="icon-lock2 text-muted"></i>
+  						</div>
+  					</div>
+
+						<div class="form-group login-options">
+							<div class="row">
+								<div class="col-sm-6">
+
+								</div>
+
+								<div class="col-sm-6 text-right">
+
+									<a href="#/forgot-password">Forgot password?</a>
+
+								</div>
+							</div>
+						</div>
+
+  					<input type="submit" class="btn bg-blue btn-block" [disabled]="loginFormGroup.invalid" value="Login">
+
+
+
+					</form>
+
+
+
+				<!-- /advanced login -->
+
+				</div>
+				<!-- /content area -->
+
+			</div>
+			<!-- /main content -->
+
+		</div>
+		<!-- /page content -->
+
+	</div>
+	<!-- /page container -->
+</div>
+</div>

@@ -1,0 +1,178 @@
+      <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveStyle()">
+        <input type="hidden" formControlName="style_id" class="form-control input-xxs">
+
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-md-6">
+
+                  <label>Style No <span class="text-danger">* </span>:</label>
+                  <span class="err" *ngIf="formGroup.get('style_no').status === 'PENDING'"> Validating....</span>
+                  <input type="text" class="form-control input-xxs" formControlName="style_no" placeholder="Style No" upperCase>
+                  <span class="err" *ngIf="formGroup.get('style_no').errors && formGroup.get('style_no').errors.remoteValidation">
+                    {{formGroup.get('style_no').errors.remoteValidation}}</span>
+                  <span class="err" > {{ appFormValidator.validate_field('style_no') }} </span>
+
+
+                </div>
+                <div class="col-md-4">
+                  <label>Product Feature <span class="text-danger">* </span>:</label>
+                  <!-- <ng-select [items]="ProductFeature$ | async"
+                             bindLabel="product_feature_description"
+                             [multiple]="true"
+                             [hideSelected]="true"
+                             [loading]="ProductFeatureLoading"
+                             [typeahead]="ProductFeatureInput$"
+                             [(ngModel)]="selectedProductFeature"
+                             formControlName="ProductFeature"
+                             placeholder="Select Product Feature">
+                  </ng-select> -->
+                  <input type="hidden" class="form-control input-xxs" formControlName="ProductFeature" disabled placeholder="Product Feature" id="ProductFeature">
+                  <input type="text" class="form-control input-xxs" formControlName="ProductFeatureDes" disabled placeholder="Product Feature" id="ProductFeatureDes">
+                  <span class="err" > {{ appFormValidator.validate_field('ProductFeature') }} </span>
+                </div>
+
+                <div class="col-md-2">
+                  <br>
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="OpenPop()">
+                  <b><i class="icon-popout"></i></b>Open</button>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Style No 2 :</label>
+                  <input type="text"  formControlName="Remarks" placeholder="Style No 2" class="form-control input-xxs" upperCase>
+
+                </div>
+                <div class="col-md-6">
+                  <label>Product Type <span class="text-danger">* </span>:</label>
+                  <ng-select [items]="ProductCategory$ | async"
+                             bindLabel="prod_cat_description"
+                             [multiple]="false"
+                             [hideSelected]="true"
+                             [loading]="ProductCategoryLoading"
+                             [typeahead]="ProductCategoryInput$"
+                             [(ngModel)]="selectedProductCategory"
+                             formControlName="ProductCategory"
+                             placeholder="Select Product Type">
+                  </ng-select>
+                  <span class="err" > {{ appFormValidator.validate_field('ProductCategory') }} </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Style Description <span class="text-danger">* </span>:</label>
+                  <input type="text" formControlName="style_description" placeholder="Style Description" class="form-control input-xxs" upperCase>
+                  <span class="err" > {{ appFormValidator.validate_field('style_description') }} </span>
+                </div>
+                <div class="col-md-6">
+                  <label>Silhouette Classification <span class="text-danger">* </span>:</label>
+                  <ng-select [items]="ProductSilhouette$ | async"
+                             bindLabel="product_silhouette_description"
+                             [multiple]="false"
+                             [hideSelected]="true"
+                             [loading]="ProductSilhouetteLoading"
+                             [typeahead]="ProductSilhouetteInput$"
+                             [(ngModel)]="selectedProductSilhouette"
+                             formControlName="ProductSilhouette"
+                             placeholder="Select Silhouette Classification">
+                  </ng-select>
+                  <span class="err" > {{ appFormValidator.validate_field('ProductSilhouette') }} </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Customer <span class="text-danger">* </span>:</label>
+                  <ng-select [items]="customer$ | async"
+                             bindLabel="customer_name"
+                             [multiple]="false"
+                             [hideSelected]="true"
+                             [loading]="customerLoading"
+                             [typeahead]="customerInput$"
+                             [(ngModel)]="selectedCustomer"
+                             formControlName="customer"
+                             placeholder="Select Customer" (change)="load_divition($event)">
+                  </ng-select>
+                  <span class="err" > {{ appFormValidator.validate_field('customer') }} </span>
+                </div>
+                <!-- <div class="col-md-6">
+                  <label>Pack Type<span class="text-danger">*</span></label>
+                  <ng-select [items]="productType$ | async"
+                             bindLabel="pack_type_description"
+                             [multiple]="false"
+                             [hideSelected]="true"
+                             [loading]="productTypeLoading"
+                             [typeahead]="productTypeInput$"
+                             [(ngModel)]="selectedproductType"
+                             formControlName="ProductType"
+                             placeholder="Select Pack Type" >
+                  </ng-select>
+                  <span class="err" > {{ appFormValidator.validate_field('ProductType') }} </span>
+                </div> -->
+                <div class="col-md-6">
+                  <label>Division <span class="text-danger">* </span>:</label>
+
+                  <select class="form-control input-xxs" formControlName="division">
+                      <option [ngValue]="null">Select Division</option>
+                      <option *ngFor="let divisions of customerDivisions" [value]="divisions.division_id" [selected]="divisions.division_id == formGroup.get('division').value">
+                        {{ divisions.division_description }}
+                      </option>
+                  </select>
+                  <span class="err" > {{ appFormValidator.validate_field('division') }} </span>
+                </div>
+              </div>
+              <div class="row">
+
+                <div class="col-md-6">
+                  <label>Remark :</label>
+                  <input type="text" formControlName="Remarks_pack" placeholder="Remark Pack type" class="form-control input-xxs" upperCase>
+                </div>
+                <div class="col-md-6">
+                  <label>Pack type :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="ProductPackType" disabled placeholder="Pack Type" id="ProductPackType" upperCase>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-3">
+              <div class="col-md-12 " >
+                <div class="form-group">
+                  <img [src]="imgSrc" class="img-rounded img" alt="Cinque Terre" width="200" height="200">
+                  <label for="avatar" class="custom-file-upload" style="cursor:pointer">
+                    <i class="icon-file-upload" ></i> Click here to upload style image
+                  </label>
+                  <input type="file" id="avatar" class="btn hide"  (change)="onFileChange($event)" #fileInput accept=".png, .jpg, .jpeg" >
+                  <input type="hidden" formControlName="avatarHidden" class="form-control input-xxs" >
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-sm-12" style="padding-top:20px;">
+
+             <div class="btn-group" style="float:left">
+
+               <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="imageCrop()">
+               <b><i class="icon-crop2"></i></b>Crop Photo</button> -->
+
+             </div>
+
+             <div class="btn-group" style="float:right">
+                   <div [hasPermission]="['STYLE_CREATE']">
+
+                    <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="newStyle()">
+                    <b><i class="icon-plus22"></i></b> New Style</button>
+                    <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b>Close</button> -->
+                    <button type="submit"  style="margin-left:5px;" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || processing || formGroup.pending">
+                    <b><i class="icon-floppy-disk"></i></b> Save</button>
+                    <button type="button" *ngIf="saveStatus == 'UPDATE' && canNotify == true" style="margin-left:5px;" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="notifyUsers()" [disabled]="processing">
+                    <b><i class="icon-floppy-disk"></i></b> Notify</button>
+                    </div>
+              </div>
+
+            </div>
+
+
+      </form>

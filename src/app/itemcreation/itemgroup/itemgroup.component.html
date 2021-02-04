@@ -1,0 +1,47 @@
+<div class="panel panel-flat">
+            <div class="panel-heading">
+
+                <h5 class="panel-title">Item Creation</h5>
+                <div class="heading-elements">
+                    <ul class="icons-list">
+                        <li><a data-action="collapse"></a></li>
+                        <li><a data-action="reload"></a></li>
+                        <li><a data-action="close"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="panel-body">
+
+
+              <tabset #locationTabs [justified]="true">
+
+                <tab heading="Material Listing" (select)="onSelect($event)">
+                  <app-itemlisting></app-itemlisting>
+                </tab>
+
+                <tab heading="Material Creation">
+                    <app-material-wizard></app-material-wizard>
+                </tab>
+
+                <tab heading="Item Listing" (select)="onSelect($event)">
+                    <app-inventory-item-list></app-inventory-item-list>
+                </tab>
+
+                <tab heading="Item Creation" (select)="onSelect($event)">
+                    <app-itemcreationwizard></app-itemcreationwizard>
+                </tab>
+
+                <tab heading="Item Creation Edit" (select)="onSelect($event)">
+                    <app-itemcreationwizard-edit></app-itemcreationwizard-edit>
+                </tab>
+
+              </tabset>
+
+
+            </div>
+
+
+
+        </div>

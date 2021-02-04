@@ -1,0 +1,650 @@
+  <div class="panel-body">
+    <fieldset class="content-group">
+    <div class="row">
+        <form class="form-horizontal" [formGroup]="formGroup">
+          <div class="col-md-12">
+            <input type="hidden" formControlName="id" class="form-control input-xxs">
+            <div class="col-md-8">
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Costing ID : </label>
+                  <input type="text" class="form-control input-xxs" formControlName="id" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Style <span class="text-danger">*</span> :</label>
+                  <ng-select [items]="style$ | async"
+                      placeholder = "Select Style"
+                      [selectOnTab]="true"
+                      bindLabel="style_no"
+                      [loading]="styleLoading"
+                      [typeahead]="styleInput$"
+                      [(ngModel)]="selectedStyle"
+                      formControlName="style_id"
+                      (change)="onStyleChange($event)"
+                      (clear)="onStyleClear()">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('style_id') }} </span>
+                </div>
+
+                <div class="col-md-3">
+                  <label>BOM Stage <span class="text-danger">*</span> :</label>
+                  <ng-select
+                    placeholder = "Select BOM Stage"
+                    [items]="BomStage$ | async"
+                    bindLabel="bom_stage_description"
+                    [hideSelected]="true"
+                    [(ngModel)]="selectedBOMStge"
+                    formControlName="bom_stage_id"
+                    (change)="onBomStageChange($event)">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('bom_stage_id') }} </span>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                  <label>Season <span class="text-danger">*</span> :</label>
+                  <ng-select
+                    placeholder = "Select Season"
+                    [items]="seasonList$ | async"
+                    bindLabel="season_name"
+                    [hideSelected]="true"
+                    [(ngModel)]="selectedSeason"
+                    formControlName="season_id">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('season_id') }} </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Color Type <span class="text-danger">*</span> :</label>
+                  <ng-select
+                      placeholder = "Select Color Type"
+                      [items]="colorTypes$ | async"
+                      bindLabel="color_option"
+                      [hideSelected]="true"
+                      [(ngModel)]="selectedColorType"
+                      formControlName="color_type_id"
+                      (change)="onColorTypeChange()">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('color_type_id') }} </span>
+                </div>
+                <div class="col-md-3">
+                  <label>Buy Name :</label>
+                  <ng-select
+                      placeholder = "Select Buy Name"
+                      [items]="buyNames$ | async"
+                      bindLabel="buy_name"
+                      [hideSelected]="true"
+                      [(ngModel)]="selectedBuyName"
+                      formControlName="buy_id"
+                      (change)="onBuyChange()">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('buy_id') }} </span>
+                </div>
+                <div class="col-md-3">
+                  <label>Lot Number :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="lot_no" placeholder="Lot No">
+                  <span class="err" > {{ appValidator.validate_field('lot_no') }} </span>
+                </div>
+                <div class="col-md-3">
+                  <label>Design Source <span class="text-danger">*</span> :</label>
+                  <ng-select
+                      placeholder = "Select Design Source"
+                      [items]="designSource$ | async"
+                      bindLabel="design_source_name"
+                      [hideSelected]="true"
+                      [(ngModel)]="selectedDesignSource"
+                      formControlName="design_source_id">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('design_source_id') }} </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>FOB $ <span class="text-danger">*</span> : </label>
+                  <input type="number" class="form-control input-xxs" formControlName="fob" placeholder="FOB $">
+                  <span class="err" > {{ appValidator.validate_field('fob') }} </span>
+                </div>
+                <div class="col-md-3">
+                  <label>Order Qty <span class="text-danger">*</span> :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="total_order_qty" placeholder="Order Qty" (change)="onOrderQtyChange()">
+                  <span class="err" > {{ appValidator.validate_field('total_order_qty') }} </span>
+                </div>
+                <div class="col-md-3">
+                  <label>PCD :</label>
+                  <input type="text" class="form-control input-xxs"
+                    [minDate]="minDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                    formControlName="pcd" placeholder="Enter PCD">
+                </div>
+                <div class="col-md-3">
+                  <label>Planned Efficiency % <span class="text-danger">*</span> : </label>
+                  <input type="number" class="form-control input-xxs" formControlName="planned_efficiency" placeholder="Planned Efficency"
+                    (keyup)="onPlannedEffiencyChanged($event)" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Pack Type <span class="text-danger">*</span> :</label>
+                  <ng-select
+                      placeholder = "Select Pack Type"
+                      [items]="packType$ | async"
+                      bindLabel="style_type_name"
+                      [hideSelected]="true"
+                      [(ngModel)]="selectedPackType"
+                      formControlName="style_type">
+                  </ng-select>
+                  <span class="err" > {{ appValidator.validate_field('style_type') }} </span>
+                </div>
+                <div class="col-md-3">
+                  <label>Currency <span class="text-danger">*</span> :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="currency_code" disabled>
+                  <!--<ng-select
+                      placeholder = "Select Currency"
+                      [items]="currency$ | async"
+                      bindLabel="currency_code"
+                      [hideSelected]="true"
+                      [(ngModel)]="selectedCurrency"
+                      formControlName="currency_code">
+                  </ng-select>-->
+                  <span class="err" > {{ appValidator.validate_field('currency_code') }} </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Up Charge Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="upcharge" placeholder="Up Charge Cost">
+                  <span class="err"> {{ appValidator.validate_field('upcharge') }} </span>
+                </div>
+                <input type="hidden" formControlName="upcharge_reason">
+                <div class="col-sm-6 col-md-6" (click)="onUpchargeReasonClick()">
+                  <label>Up Charge Reason <span class="text-danger">*</span> :</label>
+                  <textarea class="form-control input-xxs" formControlName="upcharge_reason_description" placeholder="Up Charge Reason" readonly></textarea>
+                  <span class="err"> {{ appValidator.validate_field('upcharge_reason_description') }} </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Customer :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="customer" placeholder="Customer" readonly>
+                </div>
+
+                <div class="col-md-3">
+                  <label>Division :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="division" placeholder="Division" readonly>
+                </div>
+
+                <div class="col-md-3">
+                  <label>Style Description :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="style_description" placeholder="Style description" readonly>
+                </div>
+
+                <div class="col-md-3">
+                  <label>Style No 2 :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="style_remarks" placeholder="Style No 2" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Fabric Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="fabric_cost" placeholder="Fabric Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Elastic Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="elastic_cost" placeholder="Elastic Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Trim Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="trim_cost" placeholder="Trim Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Packing Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="packing_cost" placeholder="Packing Cost" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Other Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="other_cost" placeholder="Other Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Total RM Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="total_rm_cost" placeholder="Total RM Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Total Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="total_cost" placeholder="Total Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Corporate Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="coperate_cost" placeholder="Corporate Cost" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <!--<div class="col-md-3">
+                  <label>CPMF</label>
+                  <input type="number" class="form-control input-xxs" formControlName="cpms" placeholder="CPMF" readonly>
+                </div>-->
+                <div class="col-md-3">
+                  <label>Labour Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="labour_cost" placeholder="Labour Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Finace Cost % :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="finance_charges" placeholder="Finace Cost %" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Finance Cost $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="finance_cost" placeholder="Finance Cost" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Cost Per Std Minute $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="cost_per_std_min" placeholder="Cost Per Std Minute" readonly>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Cost Per Utilized Minute $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="cost_per_utilised_min" placeholder="CPUM" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>CPM Factory $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="cpm_factory" placeholder="CPM Factory" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>EPM $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="epm" placeholder="EPM" readonly>
+                </div>
+
+                <div class="col-md-3">
+                  <label>NP Margin % :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="np_margine" placeholder="NP Margine" readonly>
+                </div>
+              </div>
+
+
+              <div class="row">
+
+                <div class="col-md-3">
+                  <label>Total SMV :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="total_smv" placeholder="Total SMV" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>CPM Front End $ :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="cpm_front_end" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Revision No :</label>
+                  <input type="number" class="form-control input-xxs" formControlName="revision_no" placeholder="Revision No" readonly>
+                </div>
+                <div class="col-md-3">
+                  <label>Status :</label>
+                  <input type="text" class="form-control input-xxs" formControlName="status" placeholder="Status" readonly>
+                </div>
+              </div>
+
+
+              <div class="row" style="margin-top:15px">
+
+                  <button *ngIf="showEditButton" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="edit()"><b><i class="icon-floppy-disk"></i></b> Edit</button>
+
+                  <button *ngIf="showSaveButton && hasSMV" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="save()" [disabled]="formGroup.invalid || processing"><b><i class="icon-floppy-disk"></i></b> Save</button>
+
+                  <button *ngIf="showNewButton" type="button" class="btn btn-labeled btn-primary btn-xs" (click)="newCosting()"><b><i class="icon-plus22"></i></b> New Costing</button>
+
+                  <!--<button *ngIf="saveStatus == 'UPDATE' && !canSendToApproval" type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-right:5px" (click)="generateBom()"><b><i class="icon-plus22"></i></b>Generate BOM</button>-->
+
+                  <button *ngIf="showSendButton && !processing" type="button" class="btn bg-teal-400 btn-labeled btn-warning btn-xs" style="margin-left:5px" (click)="sentToApproval()"><b>
+                    <i class="icon-arrow-right6"></i></b>Send For Approval</button>
+
+                  <button *ngIf="showExitButton" type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-right:5px" (click)="exitEditMode()"><b><i class="icon-exit"></i></b>Exit</button>
+                  <button *ngIf="showNotifyButton" type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-right:5px" (click)="notifyCadTeam()"><b><i class="icon-arrow-right6"></i></b>Notify CAD / IE Team</button>
+                  <!--<button *ngIf="canNotifyMerchant" [hasPermission]="['COSTING_NET_CONSUMPTION_CHANGE']" type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-right:5px" (click)="notifyMerchant()"><b><i class="icon-arrow-right6"></i></b>Notify Merchant</button>-->
+              </div>
+
+            </div><!-- End col-md-8 -->
+
+            <div class="col-md-4">
+              <div class="row">
+
+                  <div class="" style="margin-bottom: 5px;text-align:center;vertical-align:middle">
+                    <img [src]="imgSrc" alt="" style="height: 160px;width: auto" />
+                  </div>
+
+              </div>
+            </div>
+
+          </div><!-- End col-md-12 -->
+        </form>
+      </div>
+      </fieldset>
+
+
+      <fieldset class="content-group" *ngIf="saveStatus=='UPDATE'">
+      <legend class="text-bold">Costing Details</legend>
+      <div class="col-md-12 tab-panel">
+        <div class="row">
+          <tabset #cutDocketTab>
+
+            <tab heading="Color" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <hot-table
+                        [hotId]="tblColor"
+                        [settings]="settingsColor"
+                        [data]="dataColor">
+                      </hot-table>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="showSaveButton">
+                    <div class="row">
+                      <div class="btn-group float-right">
+                        <div [hasPermission]="['COSTING_CREATE']">
+                        <!--<button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b> Close</button>-->
+                        <button class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="processingAddColor" (click)="saveColors()"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </tab>
+
+            <!--<tab heading="Size Chart" (select)="onSelect($event)">
+                <div class="row">
+                    <div class="row">
+                      <form class="form-horizontal" [formGroup]="formSizeChart">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Size Chart :</label>
+                            <ng-select
+                              placeholder = "Select Size Chart"
+                              [items]="sizeChart$ | async"
+                              bindLabel="chart_name"
+                              [hideSelected]="true"
+                              [loading]="sizeChartLoading"
+                              [typeahead]="sizeChartInput$"
+                              (change)="onSizeChartChange($event)"
+                              formControlName="size_chart_id">
+                            </ng-select>
+                            <span class="err"> {{ appSizeChartValidator.validate_field('size_chart_id') }} </span>
+                          </div>
+                          <div class="form-group">
+                            <label>Chart Description</label>
+                            <input type="text" class="form-control input-xxs" formControlName="chart_description" readonly>
+                          </div>
+                          <div class="form-group" *ngIf="showSaveButton">
+                            <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="saveSizeChart()" [disabled]="formSizeChart.invalid || processing"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <hot-table
+                            [hotId]="tblSize"
+                            [settings]="settingsSize"
+                            [data]="dataSize">
+                          </hot-table>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="row">
+                      <div class="btn-group float-right">
+                      </div>
+                    </div>
+                </div>
+            </tab>-->
+
+            <tab heading="Country" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <hot-table
+                        [hotId]="tblCountry"
+                        [settings]="settingsCountry"
+                        [data]="dataCountry">
+                      </hot-table>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="showSaveButton">
+                    <div class="row">
+                      <div class="btn-group float-right">
+                        <div [hasPermission]="['COSTING_CREATE']">
+                        <!--<button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b> Close</button>-->
+                        <button class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="processing" (click)="saveCountries()"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </tab>
+
+            <tab heading="SMV" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <hot-table
+                        [hotId]="tblSMV"
+                        [settings]="settingsSMV"
+                        [data]="dataSMV">
+                      </hot-table>
+                    </div>
+                  </div>
+                </div>
+            </tab>
+
+            <!--<tab heading="Value Added Services" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="row">
+                      <hot-table
+                        [hotId]="tblOperation"
+                        [settings]="settingsOperation"
+                        [data]="dataOperation">
+                      </hot-table>
+                    </div>
+                  </div>
+
+                  <div class="col-md-10" *ngIf="editStatus">
+                    <div class="row">
+                      <div class="btn-group float-right">
+
+                        <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </tab>-->
+
+            <!--<tab heading="Pre-Pack" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="row">
+                      <hot-table
+                        [hotId]="tblPP"
+                        [settings]="settingsPP"
+                        [data]="dataPP">
+                      </hot-table>
+                    </div>
+                  </div>
+
+                  <div class="col-md-10">
+                    <div class="row">
+                      <div class="btn-group float-right" *ngIf="editStatus">
+                        <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b> Close</button>
+                        <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </tab>-->
+
+            <tab heading="Item" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div style="margin-bottom:10px" *ngIf="featureComponentCount > 1">
+                      <input type="radio" id="radio-component-items" name="radio-items" (change)="onItemsTypeChange('COMPONENT')" checked> <label style="margin:7px" for="radio-component-items">Component Items</label>
+                      <input type="radio" style="margin-left:15px" id="radio-fng-items" name="radio-items" (change)="onItemsTypeChange('FNG')"> <label style="margin:7px" for="radio-fng-items">Finish Good Items</label>
+                    </div>
+                    <div *ngIf="selectedItemType == 'COMPONENT'">
+                      <hot-table
+                        [hotId]="tblProductComponents"
+                        [settings]="settingsProductComponents"
+                        [data]="dataProductComponents">
+                      </hot-table>
+                    </div>
+                  </div>
+
+                  <div class="col-md-5">
+                    <div class="table-responsive">
+          							<table class="table">
+          								<tbody>
+                            <tr>
+          										<td>Fabric Cost</td>
+          										<td class="item-summery-td">$ {{ fabricCost | number:'1.0-4' }} <span class="item-summery-span">{{ ((fabricCost / rmCost) * 100) | number:'1.0-2' }} %</span></td>
+          									</tr>
+                            <tr>
+          										<td>Elastic Cost</td>
+          										<td class="item-summery-td">$ {{ elastcCost | number:'1.0-4'}} <span class="item-summery-span">{{ ((elastcCost / rmCost) * 100) | number:'1.0-2' }} %</span></td>
+          									</tr>
+                            <tr>
+          										<td>Packing Cost</td>
+          										<td class="item-summery-td">$ {{ packingCost | number:'1.0-4'}} <span class="item-summery-span">{{ ((packingCost / rmCost) * 100) | number:'1.0-2' }} %</span></td>
+          									</tr>
+                            <tr>
+          										<td>Trim Cost</td>
+          										<td class="item-summery-td">$ {{ trimCost | number:'1.0-4'}} <span class="item-summery-span">{{ ((trimCost / rmCost) * 100) | number:'1.0-2' }} %</span></td>
+          									</tr>
+          									<tr>
+          										<td>Total RM Cost</td>
+          										<td class="item-summery-td">$ {{ rmCost }}</td>
+          									</tr>
+          								</tbody>
+          							</table>
+          						</div>
+                  </div>
+                  <div class="col-md-12" style="border-style:solid;border-width:1px;border-color:#DCDCDC;margin-top:15px">
+                      <hot-table
+                        [hotId]="tblRM"
+                        [settings]="settingsRM"
+                        [data]="dataRM">
+                      </hot-table>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="showSaveButton" style="margin-top:15px">
+                    <div class="row">
+                      <div class="btn-group float-right">
+                        <div [hasPermission]="['COSTING_CREATE']">
+                        <!--<button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs"><b><i class="icon-cross"></i></b> Close</button>-->
+                        <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="processing" (click)="validateAllItems()"><b><i class="icon-floppy-disk"></i></b> Save</button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+            </tab>
+
+            <tab heading="Finish Good Items" (select)="onSelect($event)">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <hot-table
+                        [hotId]="tblFG"
+                        [settings]="settingsFG"
+                        [data]="dataFG">
+                      </hot-table>
+                    </div>
+                  </div>
+                </div>
+            </tab>
+
+          </tabset>
+        </div>
+      </div>
+      </fieldset>
+
+  </div><!-- End panel-body -->
+
+
+  <div bsModal #revisionReasonModel="bs-modal" [config]="{backdrop: 'static'}"
+   class="modal fade">
+   <div class="modal-dialog modal-sm">
+       <div class="modal-content">
+           <form class="form-horizontal" [formGroup]="formRevisionReason" (ngSubmit)="saveHeaderData()">
+               <div class="modal-header  bg-teal-300">
+                   <button type="button" class="close" (click)="revisionReasonModel.hide()">&times;</button>
+                   <h5 class="modal-title">Select Revision</h5>
+               </div>
+               <div class="modal-body">
+                   <fieldset class="content-group">
+                     <label>Reason <span class="text-danger">*</span> :</label>
+                     <ng-select [items]="reason$ | async"
+                             placeholder = "Select Reason"
+                             [selectOnTab]="true"
+                             bindLabel="reason_description"
+                             [loading]="reasonLoading"
+                             [typeahead]="reasonInput$"
+                             formControlName="revision_reason">
+                   </ng-select>
+                   <span class="err" > {{ appRevisionValidator.validate_field('revision_reason') }} </span>
+                   </fieldset>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="revisionReasonModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                   <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="saveHeaderData()" [disabled]="formRevisionReason.invalid">
+                     <b><i class="icon-floppy-disk"></i></b>Save</button>
+               </div>
+               </form>
+           </div>
+       </div>
+   </div>
+
+
+
+<div bsModal #upchargeReasonModel="bs-modal" [config]="{backdrop: 'static'}"
+ class="modal fade">
+ <div class="modal-dialog modal-sm">
+     <div class="modal-content">
+         <form class="form-horizontal" [formGroup]="formUpchargeReason" (ngSubmit)="addUpchargeReason()">
+             <div class="modal-header  bg-teal-300">
+                 <button type="button" class="close" (click)="upchargeReasonModel.hide()">&times;</button>
+                 <h5 class="modal-title">Select Upcharge Reason</h5>
+             </div>
+             <div class="modal-body">
+                 <fieldset class="content-group">
+                   <label>Reason <span class="text-danger">*</span> :</label>
+                   <ng-select [items]="upchargeReason$ | async"
+                           placeholder = "Select Reason"
+                           [selectOnTab]="true"
+                           bindLabel="reason_description"
+                           [loading]="upchargeReasonLoading"
+                           [typeahead]="upchargeReasonInput$"
+                           formControlName="upcharge_reason">
+                 </ng-select>
+                 <span class="err" > {{ appUpchargeValidator.validate_field('upcharge_reason') }} </span>
+                 </fieldset>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="upchargeReasonModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                 <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formUpchargeReason.invalid">
+                   <b><i class="icon-floppy-disk"></i></b>Save</button>
+             </div>
+             </form>
+         </div>
+     </div>
+ </div>
+
+ <app-item-selector [searchType]="'INVENTORY_ITEMS'" (onItemSelected)="onSelectItem($event)"></app-item-selector>
+
+ <app-color-selector (onColorSelected)="onSelectColor($event)"></app-color-selector>
+
+ <app-country-selector (onCountrySelected)="onSelectCountry($event)"></app-country-selector>

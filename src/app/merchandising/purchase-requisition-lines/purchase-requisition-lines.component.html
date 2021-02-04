@@ -1,0 +1,49 @@
+<!-- Highlighted tabs -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-flat">
+								<div class="panel-heading">
+									<h6 class="panel-title">Purchase Order</h6>
+									<div class="heading-elements">
+										<ul class="icons-list">
+					                		<li><a data-action="collapse"></a></li>
+					                		<li><a data-action="reload"></a></li>
+					                		<li><a data-action="close"></a></li>
+					                	</ul>
+				                	</div>
+								</div>
+
+                <div class="panel-body">
+
+                  <tabset #potabs [justified]="true">
+
+                    <tab heading="Purchase Order Line list" (select)="onSelect($event)">
+                        <app-prl-list></app-prl-list>
+                    </tab>
+
+                    <tab heading="Purchase Order" (select)="onSelect($event)">
+                        <app-prl-home></app-prl-home>
+                    </tab>
+
+										<tab heading="Purchase Order Header List" (select)="onSelect($event)">
+                        <app-prl-po-list></app-prl-po-list>
+                    </tab>
+
+
+
+
+
+                  </tabset>
+
+
+                </div>
+
+								<app-prl-split></app-prl-split>
+
+
+							</div>
+						</div>
+
+
+					</div>
+					<!-- /highlighted tabs -->

@@ -1,0 +1,101 @@
+<form class="form-horizontal" [formGroup]="formGroup"  (ngSubmit)="saveStyle()">
+  <div class="panel panel-flat">
+    <div class="panel-heading">
+      <!--<h5 class="panel-title">Style Creation</h5>-->
+      <div class="row" style="text-align:center;">
+        <h6 style="background-color:#26A69A;font-weight:bold;color:#FFF">MRN</h6>
+      </div>
+      <div class="heading-elements">
+        <ul class="icons-list">
+          <li><a data-action="collapse"></a></li>
+          <li><a data-action="reload"></a></li>
+          <li><a data-action="close"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel-body" style="background-color:  #bbff99">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="col-md-6">
+          <label>Cutomer PO :</label>
+          <input type="text"  id="po_1" class="form-control input-xxs">
+          <label>Style :</label>
+          <input type="text"  id="style_1" class="form-control input-xxs">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="col-md-6">
+            <label>Cutomer PO :</label>
+            <input type="text"  id="po_2" class="form-control input-xxs">
+            <label>Style :</label>
+            <input type="text"  id="style_2" class="form-control input-xxs">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class=" text-right">
+
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  (click)="search()">
+            <b><i class="icon-floppy-disk"></i></b> Search</button>
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" ><b><i class="icon-cross"></i></b> Clear</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-body">
+      <div class="col-md-12">
+        <div class="row" style="min-height: 350px;">
+          <div class="col-md-12">
+            <form [formGroup]="form">
+            <table class="table sTable display datatable-basic" id="main_po_tbl">
+              <thead>
+              <tr>
+                <th class="text-center">Action</th>
+                <th>Item code</th>
+                <th>Description</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Bin</th>
+                <th>UOM</th>
+                <th>Stock Bal.</th>
+                <th>Trasfer Qty</th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              <ng-container formArrayName="item_info">
+                <tr *ngFor="let ctrl of form.get('item_info')['controls']; let i = index" [formGroupName]="i">
+                  <td><div class="checkbox">
+                    <label>
+                      <input type="checkbox" [id]="i" (change)="selectedItem($event)" class="control-success" >
+                    </label>
+                  </div></td>
+                  <td><input type="text" class="form-control"  [readonly]="true" formControlName="item_code"></td>
+                  <td><input type="text" class="form-control" formControlName="description"></td>
+                  <td><input type="text" class="form-control" formControlName="color"></td>
+                  <td><input type="text" class="form-control" formControlName="size" ></td>
+                  <td><input type="text" class="form-control" formControlName="bin" ></td>
+                  <td><input type="text" class="form-control" formControlName="UOM"></td>
+                  <td><input type="text" class="form-control" formControlName="stock_bal" ></td>
+                  <td><input type="text" class="form-control" [readonly]="true" [id]="i+'_trasfer_qty'" formControlName="trasfer_qty"></td>
+                </tr>
+              </ng-container>
+            </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="one" [innerHtml]="htmlToAdd"></div>-->
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="search()">
+      <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+  </div>
+</form>

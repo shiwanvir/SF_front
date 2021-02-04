@@ -1,0 +1,256 @@
+<div class="panel panel-flat">
+
+  <div class="panel-heading">
+    <h6 class="panel-title">OSR & Sales Report</h6>
+
+    <div class="heading-elements">
+      <ul class="icons-list">
+        <li><a data-action="collapse"></a></li>
+        <li><a data-action="reload"></a></li>
+        <li><a data-action="close"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+
+      <form class="form-horizontal" [formGroup]="formGroup">
+        <fieldset class="content-group">
+          <div class="col-md-4">
+            <label>Customer :</label>
+            <ng-select [items]="customer$ | async"
+            placeholder = "Select Customer"
+            [selectOnTab]="true"
+            bindLabel="customer_name"
+            [loading]="customerLoading"
+            [typeahead]="customerInput$"
+            formControlName="customer_name">
+          </ng-select>
+        </div>
+
+
+        <div class="col-md-4">
+          <label>Deliver Date Range :</label>
+          <input type="text" class="form-control input-xxs" placeholder = "Select Deliver Date Range" formControlName="pcd_date" bsDaterangepicker [bsConfig]= "{ rangeInputFormat : 'DD-MM-YYYY' }">
+        </div>
+
+        <div class="col-md-4">
+          <label>Status :</label>
+          <ng-select
+          placeholder = "Select Status"
+          [items]="POStatus$ | async"
+          bindLabel="status"
+          [hideSelected]="true"
+          formControlName="po_status" >
+        </ng-select>
+      </div>
+
+
+    </fieldset>
+
+    <fieldset class="content-group">
+      <div class="col-md-12">
+        <div class="text-right">
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="reset_feilds()"><b><i class="icon-loop3"></i></b> Refresh </button>&nbsp;&nbsp;
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="searchFrom()"><b><i class="icon-search4"></i></b> Search</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <fieldset class="content-group">
+    <legend class="text-bold text-center">OSR & Sales Order Details</legend>
+    <div class="col-md-12">
+      <div class="row overflow-auto">
+
+        <table class="table display datatable-basic" id="sales_tbl">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Customer Division</th>
+              <th>Sales Order No</th>
+              <th>SO Line No</th>
+              <th>Customer Wanted Date</th>
+              <th>Buy Name</th>
+              <!-- <th>ORDER TYPE</th> -->
+              <th>Country</th>
+              <th>Ship to Party</th>
+              <th>Bill to Party</th>
+              <th>Style No</th>
+              <th>Style No 2</th>
+              <th>Style Description</th>
+              <th>Color Code</th>
+              <th>Color Name</th>
+              <th>PO Date</th>
+              <th>Order Qty</th>
+              <!-- <th>REQUESTED GAC / AC</th>
+              <th>PO GAC</th>
+              <th>INITIAL CONFIRMED GAC / AC</th>
+              <th>REVISED/PROPOSED GAC / AC</th> -->
+              <th>Actual Ex-Factory Date</th>
+              <th>Shipment Mode</th>
+              <ng-container *ngFor = 'let size of getSizeQ;let i = index'>
+                <th>{{size.size}}</th>
+              </ng-container>
+              <th>Total Shipped Qty</th>
+              <th>To be Ship Qty</th>
+              <!-- <th>FULLFILMENT%</th> -->
+              <th>CPO No</th>
+              <!-- <th>VPO NO</th> -->
+              <th>Total PO Value</th>
+              <th>FOB $</th>
+              <th>Shop Order No</th>
+              <th>FNG #</th>
+              <th>Order Status</th>
+              <th>Season</th>
+              <th>Factory</th>
+              <!-- <th>HELA COMMENTS</th>
+              <th>CUSTOMER COMMENTS</th>
+              <th>HELA COMMENTS - 11/12</th> -->
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Customer</th>
+              <th>Customer Division</th>
+              <th>Sales order No</th>
+              <th>SO Line No</th>
+              <th>Customer Wanted Date</th>
+              <th>Buy Name</th>
+              <!-- <th>ORDER TYPE</th> -->
+              <th>Country</th>
+              <th>Ship to Party</th>
+              <th>Bill to Party</th>
+              <th>Style No</th>
+              <th>Style No 2</th>
+              <th>Style Description</th>
+              <th>Color Code</th>
+              <th>Color Name</th>
+              <th>Order Date</th>
+              <th>Order Qty</th>
+              <!-- <th>REQUESTED GAC / AC</th>
+              <th>PO GAC</th>
+              <th>INITIAL CONFIRMED GAC / AC</th> -->
+              <!-- <th>REVISED/PROPOSED GAC / AC</th> -->
+              <th>Actual Ex-Factory Date</th>
+              <th>Shipment Mode</th>
+              <th *ngFor = 'let size of getSizeQ;let i = index'>{{size.size}}</th>
+              <th>Total Shipped Qty</th>
+              <th>To be Ship Qty</th>
+              <!-- <th>FULLFILMENT%</th> -->
+              <th>CPO No</th>
+              <!-- <th>VPO NO</th> -->
+              <th>Total PO Value</th>
+              <th>FOB</th>
+              <th>Shop Order No</th>
+              <th>FNG #</th>
+              <th>Order Status</th>
+              <th>Season</th>
+              <th>Factory</th>
+              <!-- <th>HELA COMMENTS</th>
+              <th>CUSTOMER COMMENTS</th>
+              <th>HELA COMMENTS - 11/12</th> -->
+            </tr>
+          </tfoot>
+          <tbody>
+
+            <tr *ngFor="let s of getData">
+              <td>{{s.customer_name}}</td>
+              <td>{{s.division_description}}</td>
+              <td>{{s.order_code}}</td>
+              <td>{{s.details_id}}</td>
+              <td>{{s.planned_delivery_date}}</td>
+              <td>{{s.order_buy_name}}</td>
+              <!-- <td>{{s.order_type}}</td> -->
+              <td>{{s.country_description}}</td>
+              <td>{{s.ship_to}}</td>
+              <td>{{s.bill_to}}</td>
+              <td>{{s.style_no}}</td>
+              <td>{{s.remark_style}}</td>
+              <td>{{s.style_description}}</td>
+              <td>{{s.color_code}}</td>
+              <td>{{s.color_name}}</td>
+              <td>{{s.created_date}}</td>
+              <td>{{s.order_qty}}</td>
+              <!-- <td>{{s.ac_date}}</td>
+              <td>{{s.ac_date}}</td>
+              <td>{{s.ac_date}}</td>
+              <td>{{s.revised_delivery_date}}</td> -->
+              <td></td>
+              <td>{{s.ship_mode}}</td>
+
+              <!-- <ng-container *ngIf="getSizeQ.length > 0"> -->
+              <ng-container *ngFor="let r1 of getSizeQ;let j = index">
+                <ng-container *ngIf="r1.details_id == s.details_id">
+                  <td>{{r1.qua}}</td>
+                </ng-container>
+                <ng-container *ngIf="r1.details_id != s.details_id">
+                  <td></td>
+                </ng-container>
+              </ng-container>
+              <!-- </ng-container> -->
+
+              <!-- <ng-container *ngIf="getTotal.length > 0">
+              <ng-container *ngFor="let r2 of getTotal">
+              <ng-container *ngIf="s.details_id == r2.details_id; else showEmpty1">
+              <td>{{r2.total1}}</td>
+            </ng-container>
+            <ng-template #showEmpty1>
+            <td></td>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="getTotal.length === 0">
+      <td></td>
+    </ng-container>
+
+    <ng-container *ngIf="getTotal.length > 0">
+    <ng-container *ngFor="let r3 of getTotal">
+    <ng-container *ngIf="s.details_id == r3.details_id; else showEmpty2">
+    <td>{{r3.total2 - r3.total1}}</td>
+  </ng-container>
+  <ng-template #showEmpty2>
+  <td></td>
+</ng-template>
+</ng-container>
+</ng-container>
+<ng-container *ngIf="getTotal.length === 0">
+<td></td>
+</ng-container> -->
+
+<td></td>
+<td></td>
+<!-- <td>{{s.excess_presentage}}</td> -->
+<td>{{s.po_no}}</td>
+<!-- <td>{{s.po_no}}</td> -->
+<td>{{s.po_qty}}</td>
+<td>{{s.fob}}</td>
+<td>{{s.shop_order_id}}</td>
+<td>{{s.master_code}}</td>
+<td>{{s.active_status}}</td>
+<td>{{s.season_name}}</td>
+<td>{{s.loc_name}}</td>
+<!-- <td></td>
+<td></td>
+<td></td> -->
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+</fieldset>
+
+</div>
+</div>
+
+<!-- <div class="panel-footer">
+<div class="col-md-12">
+<div class="text-right">
+<button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="onBtExport()"><b><i class="icon-file-excel"></i></b> Export As Excel </button>
+</div>
+</div>
+</div> -->
+
+</div>

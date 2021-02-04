@@ -1,0 +1,43 @@
+<div class="panel-body">
+<form [formGroup]="form">
+<table class="table">
+<thead><tr> <th class="text-center">ROLL NO </th><th class="text-center">PURCHASE WEIGHT </th><th class="text-center"> ACTUAL WEIGHT</th><th class="text-center">  PURCHASE WIDTH  </th><th class="text-center">  ACTUAL WIDTH </th><th class="text-center">  OP COLOR </th><th class="text-center">  SHADE </th>
+<th class="text-center">  P GSM </th> <th class="text-center">  A GSM </th><th class="text-center">  FAULT RATE(%) </th><th class="text-center">  LENGTH (Y) </th><th class="text-center">  UOM </th><th class="text-center">  FRESH LENGTH </th><th class="text-center">  RELAXING LENGTH </th><th class="text-center">  COLOR INSPECTION </th>
+<th class="text-center">  DEFECT GRADING </th><th class="text-center">  TOTAL GRADING </th><th class="text-center">  REASON </th><th class="text-center">  SHADE GRADING </th><th class="text-center">   COMMENTS </th></tr></thead>
+<ng-container formArrayName="roll_info">
+<tr *ngFor="let ctrl of form.get('roll_info')['controls']; let i = index" [formGroupName]="i">
+<td><input type="text" class="form-control" formControlName="roll_no"></td>
+<td><input type="text" class="form-control" formControlName="purchase_weight"></td>
+<td><input type="text" class="form-control" formControlName="actual_weight"></td>
+<td><input type="text" class="form-control" formControlName="purchase_width"></td>
+<td><input type="text" class="form-control" formControlName="actual_width" ></td>
+<td><input type="text" class="form-control" formControlName="po_color" ></td>
+<td><input type="text" class="form-control" formControlName="shade" ></td>
+<td><input type="text" class="form-control" formControlName="p_gsm" ></td>
+<td><input type="text" class="form-control" formControlName="a_gsm"></td>
+<td><input type="text" class="form-control" formControlName="fault_rate"></td>
+<td><input type="text" class="form-control" formControlName="length_y"></td>
+<td><input type="text" class="form-control" formControlName="uom"></td>
+<td><input type="text" class="form-control" formControlName="fresh_length"></td>
+<td><input type="text" class="form-control" formControlName="relaxing_length"></td>
+<td><input type="hidden" class="form-control" formControlName="color_inspection">
+<ng-select  [items]="result"
+bindLabel="color"
+placeholder="Select"
+[(ngModel)]="selectedColor">
+</ng-select></td>
+<td><input type="text" class="form-control" formControlName="defect_grading"></td>
+<td><input type="text" class="form-control" formControlName="total_grading"></td>
+<td><input type="text" class="form-control" formControlName="reason"></td>
+<td><input type="text" class="form-control" formControlName="shade_grading"></td>
+<td><input type="text" class="form-control" formControlName="comments"></td>
+
+</tr>
+</ng-container>
+</table>
+</form>
+
+<pre>{{form.value | json}}</pre>
+
+
+</div>

@@ -1,0 +1,146 @@
+<div class="panel panel-flat">
+    <div class="panel-heading">
+        <h6 class="panel-title">Finance Cost</h6>
+
+        <div class="heading-elements">
+            <ul class="icons-list">
+                <li><a data-action="collapse"></a></li>
+                <li><a data-action="reload"></a></li>
+                <li><a data-action="close"></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-right" >
+              <div [hasPermission]="['FINANCE_COST_CREATE']">
+                <button type="button"  id="add_btn" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                [disabled]="disable" (click)="costModel.show()"><b><i class="icon-plus3"></i></b>Add New</button><br><br>
+                </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="row">
+         <div class="col-md-12">
+           <label> <B>Current Finance Cost</B></label>
+            <table class="table display datatable-basic" id="cost_tbl">
+                <thead>
+                    <tr>
+                        <th class="text-center">Action</th>
+                        <th>Status</th>
+                        <th>Finance Cost</th>
+                        <th>CPM Front End</th>
+                        <th>CPUM</th>
+                        <th>Effective From</th>
+                        <th>Effective To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table><br><br>
+        </div>
+      </div>
+
+      <div class="row">
+         <div class="col-md-12">
+           <label><B>Finance Cost History</B></label>
+            <table class="table display datatable-basic" id="cost_his_tbl">
+                <thead>
+                    <tr>
+                        <th>Finance Cost</th>
+                        <th>CPM Front End</th>
+                        <th>CPUM</th>
+                        <th>Effective From</th>
+                        <th>Effective To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table><br><br>
+        </div>
+      </div>
+
+      <!-- popup -->
+      <div bsModal #costModel="bs-modal" [config]="{backdrop: 'static'}"
+       class="modal fade" (onShow)="showEvent($event)" >
+       <div class="modal-dialog modal-lg">
+           <div class="modal-content">
+               <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveCost()">
+                   <div class="modal-header  bg-teal-300">
+                       <button type="button" class="close" (click)="costModel.hide()">&times;</button>
+                       <h5 class="modal-title">{{ modelTitle }}</h5>
+                   </div>
+                   <div class="modal-body">
+                       <input type="hidden" formControlName="fin_cost_id" class="form-control input-xxs">
+                       <input type="hidden" formControlName="fin_cost_his_id" class="form-control input-xxs">
+                       <fieldset class="content-group">
+
+                         <div class="row">
+                           <div class="col-md-4">
+                             <label> Finance Cost <span class="text-danger">*</span> :</label>
+                             <input type="number" step="0.0001" formControlName="finance_cost" class="form-control input-xxs" (change)="onmouseover($event)"  placeholder="Finance Cost">
+                               <span class="err" > {{ formValidator.validate_field('finance_cost')  }} </span>
+
+                           </div>
+                           <div class="col-md-4">
+                             <label>CPM Front End <span class="text-danger" onchange="toFixed())">*</span> :</label>
+                             <input type="number" step="0.0001" formControlName="cpmfront_end" class="form-control input-xxs"  (change)="onmouseover($event)"  placeholder="CPMFront End">
+                               <span class="err" > {{ formValidator.validate_field('cpmfront_end')  }} </span>
+                           </div>
+                           <div class="col-md-4">
+                             <label> CPUM <span class="text-danger">*</span> :</label>
+                             <input type="number" step="0.0001" formControlName="cpum" class="form-control input-xxs" (change)="onmouseover($event)"
+                              placeholder="CPUM">
+                               <span class="err" > {{ formValidator.validate_field('cpum')  }} </span>
+                           </div>
+                         </div>
+
+
+                        <div class="row">
+                           <div class=" col-md-6">
+                               <label>Effective From <span class="text-danger">*</span> :</label>
+                               <div class="input-group">
+                                   <span class="input-group-addon  input-xxs"><i class="icon-calendar5"></i></span>
+                                   <input type="text" formControlName="effective_from"
+                              placeholder="[Select Date]" class="form-control input-xxs"  bsDatepicker [minDate]="minimumDate" [maxDate]="today" placement="bottom" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" >
+
+                               </div>
+                               <span class="err">{{formFields.effective_from}}</span>
+                           </div>
+                           <div class=" col-md-6">
+                               <label>Effective To <span class="text-danger">*</span> :</label>
+                               <div class="input-group">
+                                   <span class="input-group-addon  input-xxs"><i class="icon-calendar5"></i></span>
+                                   <input type="text" formControlName="effective_to" placeholder="[Select Date]"
+                                   class="form-control input-xxs"  bsDatepicker [minDate]="today" placement="bottom" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }">
+
+                               </div>
+                               <!-- <span class="err">{{formFields.effective_to}}</span> -->
+                           </div>
+                          </div>
+                  </fieldset>
+
+
+                   </div>
+                    <div class="modal-footer">
+                       <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="costModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                       <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+                         <b><i class="icon-floppy-disk"></i></b> Save</button>
+                    </div>
+                   </form>
+                   <!---table-->
+
+
+
+                   <!--table-->
+
+
+               </div>
+           </div>
+
+          </div>
+        </div>
+      </div>

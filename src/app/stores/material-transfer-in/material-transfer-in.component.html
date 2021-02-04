@@ -1,0 +1,68 @@
+
+              <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="searchFrom()" style="margin-top:-25px">
+
+                        <div class="panel-body">
+
+
+                          <div class="row">
+
+                            <div class="col-md-4">
+                              <!--  <label>Gate Pass ID</label>
+                                <input type="text" class="form-control input-xxs" formControlName="gate_pass_no" placeholder = "Transfer ID" (blur)="formValidate()">
+                                <!-- <span class="err">{{ formFields.version }}</span> -->
+
+                                <label>Gate Pass ID <span class="text-danger">*</span> :</label>
+                                <ng-select [items]="gatePassNo$ | async"
+                                           placeholder=" Select Gate Pass "
+                                           [selectOnTab]="true"
+                                           bindLabel="gate_pass_no"
+                                           [loading]="gatePassNoLoading"
+                                           [typeahead]="gatePassNoInput$"
+                                           [(ngModel)]="selectedGatePassNo"
+                                           formControlName="gate_pass_no" (blur)="formValidate()">
+                                </ng-select>
+                               <span class="err">{{ formFields.gate_pass_no }}</span>
+                                <!-- <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span> -->
+
+
+                            </div>
+
+                          <div class="col-md-4">
+                            <br>
+                                <div class="text-center">
+                                <button type="button"  class="btn bg-teal-400 btn-labeled btn-primary btn-xs" style="margin-right:500px" [disabled]="formGroup.invalid" (click)="searchFrom()"><b><i class="icon-search4"></i></b> Search</button>
+                                <!-- <span class="err">{{ formFields.version }}</span> -->
+                              </div>
+                         </div>
+                          </div>
+
+                            </div>
+
+
+
+
+
+
+
+      <div>
+        <legend class="text-bold" style="margin-top:20px">Material Details</legend>
+        <div class="row">
+          <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+            <hot-table
+              [hotId]="instance"
+              [settings]="hotOptions"
+              [(data)]="dataset">
+          </hot-table>
+          </div>
+        </div>
+
+
+      </div>
+      <br>
+      <div class="modal-footer">
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" ><b><i class="icon-redo"></i></b> Clear</button>
+          <button  type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="isDisableSaveButton"  (click)="saveDetails()">
+              <b><i class="icon-floppy-disk"></i></b> Save</button>
+          </div>
+
+          </form>

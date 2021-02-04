@@ -1,0 +1,164 @@
+<form class="form-horizontal" [formGroup]="formGroup">
+
+<legend class="text-bold">Shop Order Header</legend>
+<div class="row">
+
+
+  <div class=" col-md-2">
+      <label>FNG No <span class="text-danger">*</span> :</label>
+      <!-- <ng-select [items]="fng$ | async"
+                 placeholder = "[Select FNG]"
+                 [selectOnTab]="true"
+                 bindLabel="master_code"
+                 [loading]="fngLoading"
+                 [typeahead]="fngInput$"
+                 formControlName="fg_id" (change)="loadSoData($event)">
+    </ng-select> -->
+      <input type="text" class="form-control input-xxs" value="{{fngnumber}}" disabled formControlName="fg_id">
+      <span class="err">{{ formValidatorHeader.validate_field('fg_id')  }}</span>
+  </div>
+
+  <div class=" col-md-2">
+    <label>Shop Order No <span class="text-danger">*</span> :</label>
+    <!-- <select class="form-control input-xxs" formControlName="shop_order_id" (change)="changeFngLoadData($event)">
+      <option [ngValue]="null">Select One ...</option>
+        <option *ngFor="let so_list of loadSONumber" [value]="so_list.shop_order_id" [selected]="so_list.shop_order_id == formHeader.get('shop_order_id').value">
+          {{ so_list.shop_order_id }}
+        </option>
+    </select> -->
+    <input type="text" class="form-control input-xxs" value="{{shoporder_id}}" disabled formControlName="shop_order_id">
+    <span class="err">{{ formValidatorHeader.validate_field('shop_order_id')  }}</span>
+  </div>
+
+  <div class=" col-md-4">
+      <label>Description :</label>
+      <input type="text" class="form-control input-xxs" value="{{desCription}}" disabled>
+  </div>
+  <div class=" col-md-2">
+      <label>Country :</label>
+      <input type="text" class="form-control input-xxs" value="{{country}}" disabled>
+  </div>
+  <div class=" col-md-2">
+      <label>BOM Stage :</label>
+      <input type="text" class="form-control input-xxs" value="{{orderTypes}}" disabled>
+  </div>
+
+
+
+</div>
+
+<div class="row">
+
+  <div class=" col-md-2">
+      <label>Order Qty :</label>
+      <input type="text" class="form-control input-xxs" value="{{orderQty}}" disabled>
+  </div>
+  <div class=" col-md-2">
+      <label>Planned Qty :</label>
+      <input class="form-control input-xxs"  value="{{planQty}}" disabled>
+  </div>
+  <div class=" col-md-2">
+      <label>Customer Wanted Date :</label>
+      <input class="form-control input-xxs"  value="{{deliveryDate}}" disabled>
+  </div>
+  <div class=" col-md-2">
+      <label>Sales Order Status :</label>
+      <input class="form-control input-xxs"  value="{{orderStatus}}" disabled>
+  </div>
+
+
+
+<div class=" col-md-12" style="margin-top:10px;">
+  <legend class="text-bold">Shop Order Details</legend>
+
+
+  <tabset #sotabs [justified]="true">
+
+    <tab heading="Material" (select)="onSelect($event)">
+      <div id="meterial_table">
+      <!-- <legend class="text-bold" style="margin-top:20px">{{ modelTableTitle }}</legend> -->
+      <div class="row">
+      <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+        <hot-table
+          [hotId]="instance"
+          [settings]="hotOptions"
+          [(data)]="dataset">
+      </hot-table>
+      </div>
+      </div>
+      </div>
+
+      <div class=" col-md-12">
+        <div class="heading-btn" style="margin-top:20px">
+
+          <div class="col-md-4 pull-left">
+              <!-- <label class="control-label col-md-5">TOTAL</label>
+              <div class="col-md-7">
+              <input type="text" class="form-control input-xs"  disabled id="sum_total">
+              </div> -->
+
+          </div>
+          <div class="col-md-8 ">
+            <div [hasPermission]="['SHOP_ORDER_EDIT']">
+            <div class=" pull-right" >
+              <button *ngIf="!processdetails" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"
+              [disabled]="formGroup.invalid"  (click)="updatedetails()" >
+              <b><i class="icon-floppy-disk"></i></b> Save </button>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+
+    <tab heading="Sales Orders" (select)="onSelect($event)">
+
+      <div id="sales_order_table">
+      <div class="row">
+      <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+        <hot-table
+          [hotId]="instance3"
+          [settings]="hotOptions3"
+          [(data)]="dataset3">
+      </hot-table>
+      </div>
+      </div>
+      </div>
+
+    </tab>
+
+    <!-- <tab heading="Value Added Service" (select)="onSelect($event)">
+
+    </tab>
+
+    <tab heading="Summery" (select)="onSelect($event)">
+
+    </tab> -->
+
+    <tab heading="Material History" (select)="onSelect($event)">
+      <div id="meterial_his_table">
+      <div class="row">
+      <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+        <hot-table
+          [hotId]="instance2"
+          [settings]="hotOptions2"
+          [(data)]="dataset2">
+      </hot-table>
+      </div>
+      </div>
+      </div>
+
+    </tab>
+
+  </tabset>
+
+
+
+
+</div>
+
+</div>
+
+
+</form>

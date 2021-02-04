@@ -1,0 +1,48 @@
+<div bsModal #splitModel="bs-modal" [config]="{backdrop: 'false'}"
+ class="modal fade" (onShown)="modelShowEvent($event)">
+ <div class="modal-dialog modal-lg">
+
+		 <div class="modal-content">
+
+						 <div class="modal-header  bg-teal-300">
+								 <button type="button" class="close" (click)="Model_hide()">&times;</button>
+								 <h5 class="modal-title">{{ modelTitle }}</h5>
+						 </div>
+						 <div class="modal-body">
+
+            <div class="row">
+
+              <div class="col-sm-12" class="form-control">
+                <input type="file" (change)="fileChangeEvent($event)" />
+              </div>
+
+              <div class="col-sm-6" style="padding-top:10px;">
+                <image-cropper
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="false"
+                    [resizeToWidth]="200"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (cropperReady)="cropperReady()"
+                    (loadImageFailed)="loadImageFailed()">
+                </image-cropper>
+              </div>
+
+              <div class="col-sm-6" style="padding-top:12px;">
+                <img [src]="croppedImage" />
+              </div>
+
+
+            </div>
+
+						 </div>
+             <div class="modal-footer">
+               <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="Model_hide()"><b><i class="icon-cross"></i></b>Close</button>
+
+             </div>
+
+				 </div>
+
+		 </div>
+ </div>

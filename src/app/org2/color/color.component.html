@@ -1,0 +1,124 @@
+
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Color</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                          <button type="button" [hasPermission]="['COLOR_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                          (click)="colorModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" [hasPermission]="['COLOR_VIEW']" style="min-height: 350px;">
+                  	 <div class="col-md-12">
+                      <table class="table  display datatable-basic" id="color_tbl">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">Action</th>
+                                  <th>Status</th>
+                                  <th>Color Code</th>
+                                  <th>Color Name</th>
+                                  <th>Color Category</th>
+                                  <th>Color Quality</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- popup -->
+                   <div bsModal #colorModel="bs-modal" [config]="{backdrop: 'static'}"
+                   	class="modal fade" (onShow)="showEvent($event)" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveColor()">
+                                <div class="modal-header  bg-teal-300">
+                                    <button type="button" class="close" (click)="colorModel.hide()">&times;</button>
+                                    <h5 class="modal-title">{{ modelTitle }}</h5>
+                                </div>
+                                <div class="modal-body">
+                                  <input type="hidden" formControlName="color_id" class="form-control input-xxs">
+                                  <div class="row">
+                                  <!--    <fieldset class="content-group">
+                                      <label>Color Category<span class="text-danger">*</span>:</label>
+                                      <input type="text" class="form-control input-xxs" formControlName="pantone_no" placeholder="Color Category" upperCase>
+                                      <span class="err">{{formValidator.validate_field('pantone_no')}}</span>
+                                      <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                                    </fieldset>-->
+                                    <fieldset class="content-group">
+                                    <label>Color Category<span class="text-danger"></span> : </label>
+                                    <select class="form-control input-xxs" formControlName="color_category" (blur)="formValidate()" placeholder="Color Category" (change)="load_color_qulity($event)">
+                                        <option [ngValue]="null">Select Color Category</option>
+                                        <option *ngFor = "let colorCategory of colorCategory$ | async" [value]="colorCategory.color_category_id">
+                                          {{ colorCategory.color_category }}
+                                        </option>
+                                    </select>
+                                    <span class="err">{{ formFields.color_category }}</span>
+                                    <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                                    </fieldset>
+
+                                    <fieldset class="content-group" *ngIf="isShown">
+                                  <!--    <label>Color Quality<span class="text-danger">*</span>:</label>
+                                      <input type="text" class="form-control input-xxs" formControlName="col_quality" placeholder="Color Quality" upperCase>
+                                      <span class="err">{{formValidator.validate_field('col_quality')}}</span>
+                                      <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                                      -->
+
+                                      <label>Color Quality<span class="text-danger" ></span> : </label>
+                                      <select class="form-control input-xxs" formControlName="col_quality"  id='ddlViewBy' (blur)="formValidate()" placeholder="Color Qulity" >
+                                          <option [ngValue]="null">Select Color Quality</option>
+                                          <option *ngFor = "let colorQulity of colorQulity" [value]="colorQulity.col_quality" [selected]="colorQulity.col_quality == formGroup.get('col_quality').value">
+                                            {{ colorQulity.col_quality }}
+                                          </option>
+                                      </select>
+                                      <span class="err">{{ formFields.col_quality }}</span>
+                                        <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                                    </fieldset>
+
+
+                                    <fieldset class="content-group">
+                                        <label>Color Code <span class="text-danger">*</span> :</label>
+                                        <span class="err" *ngIf="formGroup.get('color_code').status === 'PENDING'"> Validating....</span>
+                                        <input type="text" class="form-control input-xxs" formControlName="color_code" placeholder="Color Code" upperCase>
+                                        <span class="err" *ngIf="formGroup.get('color_code').errors && formGroup.get('color_code').errors.remoteValidation">{{formGroup.get('color_code').errors.remoteValidation}}</span>
+                                        <span class="err" > {{ formValidator.validate_field('color_code')  }} </span>
+                                        <!--<span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>-->
+                                    </fieldset>
+                                    <fieldset class="content-group">
+                                      <label>Color Name <span class="text-danger">*</span> :</label>
+                                      <input type="text" class="form-control input-xxs" formControlName="color_name" placeholder="Color Name" upperCase>
+                                      <span class="err" > {{ formValidator.validate_field('color_name')  }} </span>
+                                      <span class="err" *ngIf="formGroup.get('color_name').errors && formGroup.get('color_name').errors.remoteValidation">{{formGroup.get('color_name').errors.remoteValidation}}</span>
+                                      <!--<span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>-->
+                                    </fieldset>
+                                </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="colorModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending || processing">
+                                        <b><i class="icon-floppy-disk"></i></b> Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>

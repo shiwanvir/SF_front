@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="text-right">
+        <button type="button" [hasPermission]="['CANCEL_CATEGORY_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+        (click)="categoryModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+    </div>
+  </div>
+</div>
+
+<div class="row" [hasPermission]="['CANCEL_CATEGORY_VIEW']" style="min-height: 350px;">
+	 <div class="col-md-12">
+    <table class="table display datatable-basic" id="category_tbl">
+        <thead>
+            <tr>
+                <th class="text-center">Action</th>
+                <th>Status</th>
+                <th>Cancellation Category Code</th>
+                <th>Cancellation Category Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- popup -->
+ <div bsModal #categoryModel="bs-modal" [config]="{backdrop: 'static'}"
+ 	class="modal fade" (onShow)="showEvent($event)" >
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveCategory()">
+              <div class="modal-header  bg-teal-300">
+                  <button type="button" class="close" (click)="categoryModel.hide()">&times;</button>
+                  <h5 class="modal-title">{{ modelTitle }}</h5>
+              </div>
+              <div class="modal-body">
+                  <input type="hidden" formControlName="category_id" class="form-control input-xxs">
+                  <fieldset class="content-group">
+                      <label>Cancellation Category Code <span class="text-danger">*</span> :</label>
+                      <span class="err" *ngIf="formGroup.get('category_code').status === 'PENDING'"> Validating....</span>
+                      <input type="text" class="form-control input-xxs" formControlName="category_code" placeholder="Cancellation Category Code" upperCase>
+                      <span class="err" *ngIf="formGroup.get('category_code').errors && formGroup.get('category_code').errors.remoteValidation">{{formGroup.get('category_code').errors.remoteValidation}}</span>
+                       <span class="err">{{ formValidator.validate_field('category_code')}}</span>
+                  </fieldset>
+                  <fieldset>
+                    <label>Cancellation Category Name <span class="text-danger">*</span> :</label>
+                    <input type="text" formControlName="category_description" class="form-control input-xxs"
+                     placeholder="Cancellation Category Name" upperCase>
+                   <span class="err">{{ formValidator.validate_field('category_description')}}</span>
+                  </fieldset>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="categoryModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                  <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+                      <b><i class="icon-floppy-disk"></i></b> Save</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>

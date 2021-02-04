@@ -1,0 +1,207 @@
+<form class="form-horizontal form-validate-jquery"  [formGroup]="formGroup">
+
+<input type="hidden" class="form-control input-xxs set-select-general-200" formControlName="parent_item_id">
+
+<input type="hidden" class="form-control input-xxs set-select-general-200" formControlName="group_id">
+
+<div class="row">
+  <!--<div class="col-md-2">
+      <label>Material Code :</label>
+      <input class="form-control input-xxs set-select-general-200" formControlName="material_code" readonly>
+  </div>-->
+  <div class="col-md-6">
+      <label>Material Description :</label>
+      <input class="form-control input-xxs set-select-general-200" style="cursor:pointer" formControlName="material_description" placeholder="Click Here To Select Material"
+      readonly (click)="openModel()">
+  </div>
+  <div class="col-md-3">
+      <label>Main Category :</label>
+      <input class="form-control input-xxs set-select-general-200" formControlName="main_category" disabled>
+  </div>
+  <div class="col-md-3">
+    <label>Sub Category :</label>
+    <input class="form-control input-xxs set-select-general-200" formControlName="sub_category" disabled>
+  </div>
+</div>
+
+<div class="row">
+  <!--<div class="col-md-3">
+    <label>Fabric Composition <span class="text-danger">*</span> :</label>
+    <input class="form-control input-xxs set-select-general-200" formControlName="fabric_composition" disabled>
+  </div>-->
+  <div class="col-md-4">
+    <label>Color Type <span class="text-danger">*</span> :</label>
+    <ng-select [items]="colorOption$ | async"
+         placeholder = "Select Color Type"
+         bindLabel="color_option"
+         [multiple]="false"
+         formControlName="color_option">
+    </ng-select>
+    <!--<select class="form-control input-xxs set-select-general" formControlName="color_option">
+        <option [ngValue]="null">... Select One ...</option>
+        <option *ngFor="let colOption of colorOption$ | async" [value]="colOption.col_opt_id" class="space-option">
+              {{colOption.color_option}}
+        </option>
+    </select>-->
+    <span class="err" > {{ formValidator.validate_field('color_option') }} </span>
+  </div>
+  <div class="col-md-2">
+      <label>Inventory UOM <span class="text-danger">*</span> :</label>
+      <ng-select [items]="inventoryUomInput$ | async"
+          placeholder = "Select Inventory UOM"
+          [selectOnTab]="true"
+          bindLabel="uom_code"
+          formControlName="inventory_uom"
+          [(ngModel)]="default_val">
+      </ng-select>
+      <span class="err" > {{ formValidator.validate_field('inventory_uom') }} </span>
+  </div>
+
+  <div class="col-md-2">
+      <label>GSM <span class="text-danger">*</span> :</label>
+      <input type="number" class="form-control input-xxs set-select-general-200" formControlName="gsm" placeholder="GSM">
+      <span class="err" > {{ formValidator.validate_field('gsm') }} </span>
+  </div>
+
+  <div class="col-md-2">
+      <label>Cuttable Width <span class="text-danger">*</span> :</label>
+      <input  type="number" class="form-control input-xxs set-select-general-200" formControlName="width" placeholder="Cuttable Width">
+      <span class="err" > {{ formValidator.validate_field('width') }} </span>
+  </div>
+  <div class="col-md-2">
+      <label>Cuttable UOM <span class="text-danger">*</span> :</label>
+      <ng-select [items]="CuttableUomInput$ | async"
+          placeholder = "Select Cuttable UOM"
+          [selectOnTab]="true"
+          bindLabel="uom_code"
+          formControlName="Cuttable_uom">
+      </ng-select>
+      <span class="err" > {{ formValidator.validate_field('Cuttable_uom') }} </span>
+  </div>
+
+
+
+</div>
+
+
+<div class="row">
+  <div class="col-md-4">
+      <label>Supplier Name <span class="text-danger">*</span> :</label>
+      <ng-select [items]="supplier$ | async"
+           placeholder = "Select Supplier Name"
+           bindLabel="supplier_name"
+           [multiple]="false"
+           [hideSelected]="true"
+           [loading]="supplierLoading"
+           [typeahead]="supplierInput$"
+           (change) = "onSupplierChange($event)"
+           formControlName="supplier_id">
+      </ng-select>
+      <span class="err" > {{ formValidator.validate_field('supplier_id') }} </span>
+  </div>
+
+  <div class="col-md-3">
+      <label>Supplier Reference :</label>
+      <input class="form-control input-xxs set-select-general-200" formControlName="supplier_reference" (keyup)="supplierDisable()" upperCase placeholder="Supplier Reference">
+      <span class="err" > {{ formValidator.validate_field('supplier_reference') }} </span>
+  </div>
+
+  </div>
+
+
+<div class="row">
+  <div class="col-md-1" style="margin-top : 20px">
+      <input type="checkbox" formControlName="color_wise">
+      <label style="margin-left:5px">Color :</label>
+  </div>
+  <div class="col-md-1" style="margin-top : 20px">
+      <input type="checkbox" formControlName="size_wise">
+      <label style="margin-left:5px">Size :</label>
+  </div>
+</div>
+
+<div class="row" style="margin-top:15px">
+  <div class="col-md-6">
+    <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+      <hot-table
+              [hotId]="instanceColor"
+              [settings]="hotOptionsColor"
+              [data]="datasetColor">
+      </hot-table>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+      <hot-table
+              [hotId]="instanceSize"
+              [settings]="hotOptionsSize"
+              [data]="datasetSize">
+      </hot-table>
+    </div>
+  </div>
+  <!--<div class="col-md-4">
+    <label>UOM <span class="text-danger">*</span> :</label>
+    <ng-select [items]="UOMList$ | async"
+       bindLabel="uom_code"
+       placeholder="Select Section"
+       [multiple]="true"
+       [hideSelected]="true"
+       formControlName="uom">
+   </ng-select>
+   <span class="err" > {{ itemFormValidator.validate_field('uom')  }} </span>
+  </div>-->
+</div>
+
+<!-- <div class="btn-group" style="float:right;padding-top:20px;">
+  <div [hasPermission]="['ITEM_CREATION_CREATE']">
+  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="createItems()">
+      <b><i class="icon-add-to-list"></i></b>Create Items</button>
+</div>
+ </div> -->
+
+ <div class="row" style="margin-top:15px;float:right;">
+  <div class="col-md-4">
+    <div [hasPermission]="['ITEM_CREATION_CREATE']">
+    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="createItems()">
+        <b><i class="icon-add-to-list"></i></b>Create Items</button>
+  </div>
+  </div>
+</div>
+
+<div class="row" style="margin-top:60px">
+  <div style="border-style:solid;border-width:1px;border-color:#DCDCDC" id="sss">
+    <hot-table
+            [hotId]="instanceItem"
+            [settings]="hotOptionsItem"
+            [data]="datasetItem">
+    </hot-table>
+  </div>
+</div>
+
+<!-- <div class="row" style="margin-top:15px">
+  <div class="col-md-12">
+    <div [hasPermission]="['ITEM_CREATION_CREATE']">
+    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="clearAll()"><b><i class="icon-cross"></i></b>Clear All</button>
+    <button *ngIf="saveStatus == 'SAVE'" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-left:10px" (click)="saveItems()"><b><i class="icon-floppy-disk"></i></b> Save</button>
+    <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-left:10px" (click)="saveItems()"><b><i class="icon-floppy-disk"></i></b> Notify</button>
+  </div>
+  </div>
+</div> -->
+
+
+<div class="btn-group" style="float:right;padding-top:20px;">
+  <div [hasPermission]="['ITEM_CREATION_CREATE']">
+  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="clearAll()"><b><i class="icon-redo"></i></b>Clear All</button>
+  <button *ngIf="saveStatus == 'SAVE'" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-left:10px" (click)="saveItems()"><b><i class="icon-floppy-disk"></i></b> Save</button>
+  <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-left:10px" (click)="saveItems()"><b><i class="icon-floppy-disk"></i></b> Notify</button> -->
+</div>
+ </div>
+
+
+</form>
+
+<app-item-selector [searchType]="'MATERIAL_ITEMS'" (onItemSelected)="changeMainItem($event)"></app-item-selector>
+
+<app-color-selector (onColorSelected)="onAddColor($event)"></app-color-selector>
+
+<app-size-selector (onSizeSelected)="onAddSize($event)"></app-size-selector>

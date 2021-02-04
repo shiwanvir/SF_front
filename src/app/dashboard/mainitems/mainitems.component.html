@@ -1,0 +1,82 @@
+<!-- /.row-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="row">
+    <div class="col-lg-3 col-md-6" height="300vw">
+        <div class="panel panel-primaryy">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"><i class="fa fa-shopping-cart fa-5x"></i></div>
+                    <div class="col-xs-9 text-right">
+                        <h4>{{ salesvalues }} $</h4>
+                        <div> Sales </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row-->
+
+               <a (click)="myClickFunction($event)">
+                <div class="panel-footer" (click)="myClickFunction($event)"><span class="pull-left"  >&nbsp; View Details</span><span class="pull-right"><i class="fa fa-arrow-circle-right">&nbsp;</i></span>
+                    <div class="clearfix"></div>
+                </div>
+              </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"><i class="fa fa-tasks fa-5x"></i></div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ otd }}</div>
+                        <div>On Time Delivery </div>
+                    </div>
+                </div>
+            </div>
+            <a (click)="myClickFunctionOtd($event)">
+                <div class="panel-footer"><span class="pull-left">&nbsp;View Details</span><span class="pull-right"><i class="fa fa-arrow-circle-right">&nbsp;</i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"><i class="fa fa-archive fa-5x"></i></div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ rm }}</div>
+                        <div>RM In Date </div>
+                    </div>
+                </div>
+            </div>
+            <a (click)="myClickFunctionRM($event)">
+                <div class="panel-footer"><span class="pull-left">&nbsp;View Details</span><span class="pull-right"><i class="fa fa-arrow-circle-right">&nbsp;</i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"><i class="fa fa-support fa-5x"></i></div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ ival }} $</div>
+                        <div>Inventory Values </div>
+                    </div>
+                </div>
+            </div>
+            <a (click)="myClickFunctionInv($event)">
+                <div class="panel-footer"><span class="pull-left">&nbsp;View Details</span><span class="pull-right"><i class="fa fa-arrow-circle-right">&nbsp;</i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!-- /.row-->

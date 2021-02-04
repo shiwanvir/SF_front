@@ -1,0 +1,232 @@
+<form class="form-horizontal form-validate-jquery" [formGroup]="itemForm" >
+
+<div class="col-md-12">
+  <div class="col-md-3">
+    <div class="form-group">
+      <label>Main Category <span class="text-danger">*</span> :</label>
+      <select formControlName="category_code" class="form-control input-xxs set-select-general-200"  (change)='loadSubCategory($event.target.value)'>
+        <option [ngValue]="null">Select Main Category</option>
+        <option *ngFor="let com of mainCategory$ | async" [value]="com.category_id" class='space-option'>
+                {{com.category_name}}
+        </option>
+      </select>
+      <span class="err" > {{ itemFormValidator.validate_field('category_code')  }} </span>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <label>Sub Category <span class="text-danger">*</span> :</label>
+    <select formControlName="sub_category_code" id="sub_category_code" class="form-control input-xxs set-select-general-200" (change)='loadAssignProperties($event.target.value)'>
+      <option [ngValue]="null">Select Sub Category</option>
+      <option *ngFor="let subCat of subCategory$ | async" [value]="subCat.subcategory_id" class="space-option">
+            {{subCat.subcategory_name}}
+      </option>
+    </select>
+    <span class="err" > {{ itemFormValidator.validate_field('sub_category_code')  }} </span>
+  </div>
+
+  <div class="col-md-4" *ngIf="itemForm.get('category_code').value == 'FAB'">
+    <label>Fabric Composition <span class="text-danger">*</span> :</label>
+    <select formControlName="fabric_composition" class="form-control input-xxs set-select-general">
+        <option [ngValue]="null">Select Fabric Composition</option>
+        <option *ngFor="let compo of compositionsList$ | async" [value]="compo.content_code" class="space-option">{{compo.content_description}}</option>
+    </select>
+  </div>
+
+  <div class="col-md-2" *ngIf="itemForm.get('category_code').value == 'FAB'">
+    <button type="button" style="margin-top:15px" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" id="add_data" (click)="popUpFabricComposition()"><b><i class="icon-plus3"></i></b>Add New</button>
+  </div>
+
+</div>
+
+<div class="row" style="margin-top:20px" >
+  <div class="col-md-12">
+    <!-- <table class="table" id="tbl-properties" border="0"> -->
+      <table class="" id="tbl-properties">
+      <tbody>
+        <tr *ngFor="let item of assignedPropertyList; let i = index" style="height:30px; padding: 2px 5px;">
+          <td width='10%'>{{ item.property_name }}</td>
+          <td width=35%>
+            <select class='form-control input-xxs set-select-general' (change)="item.selected_property_value_id=$event.target.value;item.selected_property_value=$event.target.selectedOptions[0].text">
+              <option value="">... Select One ...</option>
+              <option *ngFor="let propvalue of item.property_values" value="{{propvalue.property_value_id}}">
+                {{propvalue.assign_value}}
+              </option>
+            </select>
+          </td>
+          <td width='2%'>&nbsp;</td>
+          <td width='5%'>
+            <button type='button' class='btn bg-teal-400 btn-labeled btn-primary btn-xs' (click)="popupAddPropertyValue(item.property_id, i)"><b><i class='icon-plus3'></i></b>Add New</button>
+          </td>
+          <td width='2%'>&nbsp;</td>
+          <td width='30%'>
+            <input type='hidden' class='form-control input-xxs' (input)="item.selected_property_value_data=$event.target.value"/>
+          </td>
+          <td width='1%'>&nbsp;</td>
+          <td width='15%'>
+            <select class='form-control input-xxs set-select-general' (change)="item.other_data_type=$event.target.value" style='display:none'>
+              <option value="AFTER">AFTER</option>
+              <option value="BEFORE">BEFORE</option>
+            </select></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row" style="margin-top:15px">
+  <div class="col-md-4">
+    <label>UOM <span class="text-danger">*</span> :</label>
+    <!--<select formControlName="uomCtrl" class="form-control input-xxs set-select-general-200">
+      <option value="-1" class="space-option">..................</option>
+      <option *ngFor="let uom of UOMList$ | async" [value]="uom.uom_id" class="space-option">
+              {{uom.uom_code}}
+          </option>
+    </select>-->
+    <ng-select [items]="UOMList$ | async"
+       bindLabel="uom_code"
+       placeholder="Select UOM"
+       [multiple]="true"
+       [hideSelected]="true"
+       formControlName="uom"
+       [(ngModel)]="default_val">
+   </ng-select>
+   <span class="err" > {{ itemFormValidator.validate_field('uom')  }} </span>
+  </div>
+
+  <div class="col-md-4" style="margin-top:20px">
+    <div [hasPermission]="['ITEM_CREATION_CREATE']">
+    <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" >
+        <b><i class="icon-cross"></i></b>Close</button>
+        &nbsp;&nbsp;&nbsp; -->
+    <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="saveItem()" [disabled]="itemForm.invalid">
+        <b><i class="icon-floppy-disk"></i></b> Save</button>
+        </div>
+  </div>
+</div>
+
+
+</form>
+
+
+  <div bsModal #compositionModel="bs-modal" [config]="{backdrop: 'static'}" class="modal fade">
+   <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-teal-300">
+                <button type="button" class="close" data-dismiss="modal" (click)="compositionModel.hide()">&times;</button>
+                <h5 class="modal-title">{{compositionTitle}}</h5>
+            </div>
+            <div class="modal-body" id="div-composition-model">
+                <div class=" col-source_hidmd-12">
+                    <fieldset class="content-group">
+                        <div class="form-group">
+                            <table width="100%" border="1" id="sss" class="table">
+                              <thead>
+                                <tr>
+                                   <th width="75%" class="header">&nbsp;Content Type</th>
+                                   <th width="15%" class="header">Composition</th>
+                                   <th width="5%">&nbsp;</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let contentType of contentTypeList">
+                                  <td class="tr-lineStyle">{{contentType.type_description}}</td>
+                                  <td class="tr-lineStyle"><input type="text" class="form-control input-xxs" [(ngModel)]="contentType.value" /></td>
+                                  <td class="align-center">%</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+              <div [hasPermission]="['ITEM_CREATION_CREATE']">
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" (click)="compositionModel.hide()">
+                    <b><i class="icon-cross"></i></b>Close</button>
+
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="saveComposition()">
+                    <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="popUpContent()">
+                    <b><i class="icon-floppy-disk"></i></b> Add Content</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div bsModal #contentModel="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" (onHidden)="onContentModelHidden($event)">
+   <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form class="form-horizontal" [formGroup]="contentForm">
+            <div class="modal-header bg-teal-300">
+                <button type="button" class="close" data-dismiss="modal" (click)="contentModel.hide()">&times;</button>
+                <h5 class="modal-title">{{contentTitle}}</h5>
+            </div>
+            <div class="modal-body">
+                <div class=" col-source_hidmd-12">
+                    <fieldset class="content-group">
+                        <div class="form-group">
+                            <label>Content Type <span class="text-danger">*</span> :</label>
+                            <input type="text" formControlName="type_description" id="type_description" class="form-control input-xxs" placeholder="Content Type" >
+                            <span class="err" > {{ contentFormValidator.validate_field('type_description')  }} </span>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="contentModel.hide()">
+                    <b><i class="icon-cross"></i></b>Close</button>
+
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="saveNewContent()" [disabled]="contentForm.invalid">
+                    <b><i class="icon-floppy-disk"></i></b> Save</button>
+            </div>
+          </form>
+      </div>
+        </div>
+    </div>
+
+
+  <div bsModal #propertyValueModel="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" (onHidden)="onPropertyValueModelHidden($event)">
+   <div class="modal-dialog modal-sm">
+     <form class="form-horizontal" [formGroup]="propertyValueForm">
+       <!-- <ng-template #tempPropertyValue id="tempValue" name="tempValue"> -->
+         <div id="propertyValue" >
+           <div class="modal-content">
+               <div class="modal-header bg-teal-300" >
+                   <button type="button" class="close" data-dismiss="modal" id="property_id" (click)="propertyValueModel.hide()">&times;</button>
+                   <h5 class="modal-title">New Property Value</h5>
+               </div>
+               <div class="modal-body">
+                   <div class="row">
+                       <fieldset class="content-group">
+                           <div class="form-group col-md-12">
+                               <label>Property Value <span class="text-danger">*</span> :</label>
+                               <input type="text" formControlName="assign_value" id="assign_value" class="form-control input-xxs" placeholder="Property Value" >
+                               <span class="err" > {{ propertyValueFormValidator.validate_field('assign_value')  }} </span>
+                               <!--<input type="hidden" id="hndPropertyId" />-->
+                               <input type="hidden" formControlName="property_id" />
+                           </div>
+                       </fieldset>
+                   </div>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" (click)="propertyValueModel.hide()">
+                       <b><i class="icon-cross"></i></b>Close</button>
+
+                   <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="savePropertyValue()" [disabled]="propertyValueForm.invalid">
+                       <b><i class="icon-floppy-disk"></i></b> Save</button>
+               </div>
+           </div>
+         </div>
+       </form>
+   </div>
+  </div>

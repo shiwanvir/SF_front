@@ -1,0 +1,46 @@
+<div class="row">
+ <div class="col-md-6 col-md-offset-3">
+     <div>
+       <canvas baseChart height="210vw" width="370vw"
+        [datasets]="barChartData1"
+        [labels]="barChartLabels1"
+        [options]="barChartOptions1"
+        [legend]="barChartLegend1"
+        [chartType]="barChartType1"
+        (chartClick)="chartClicked($event)"
+        [colors]="barChartColors1"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-1 ">
+      <div>
+        <canvas baseChart height="180vw" width="370vw"
+         [datasets]="barChartData5"
+         [labels]="barChartLabels5"
+         [options]="barChartOptions5"
+         [legend]="barChartLegend5"
+         [chartType]="barChartType5"
+         (chartClick)="chartClicked($event)"
+         [colors]="barChartColors5"
+         >
+         </canvas>
+      </div>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+      <div>
+        <canvas baseChart height="180vw" width="370vw"
+         [datasets]="barChartData6"
+         [labels]="barChartLabels6"
+         [options]="barChartOptions6"
+         [legend]="barChartLegend6"
+         [chartType]="barChartType6"
+         (chartClick)="chartClicked($event)"
+         [colors]="barChartColors6"
+         >
+         </canvas>
+      </div>
+    </div>
+  </div>

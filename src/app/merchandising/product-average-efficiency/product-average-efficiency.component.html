@@ -1,0 +1,33 @@
+<div class="col-md-12">
+  <div class="panel ">
+
+    <div class="panel-heading">
+      <h6 class="panel-title">Product Average Efficiency</h6>
+      <div class="heading-elements">
+        <ul class="icons-list">
+          <li><a data-action="collapse"></a></li>
+          <li><a data-action="reload"></a></li>
+          <li><a data-action="close"></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <tabset #EffTabs [justified]="true">
+
+        <tab heading="Product Average Efficiency" (select)="onSelect($event)">
+          <app-product-average-efficiency-list></app-product-average-efficiency-list>
+        </tab>
+
+        <tab heading="Product Average Efficiency History" (select)="onSelect($event)">
+          <app-product-average-efficiency-history></app-product-average-efficiency-history>
+        </tab>
+
+      </tabset>
+
+
+    </div>
+
+  </div>
+</div>

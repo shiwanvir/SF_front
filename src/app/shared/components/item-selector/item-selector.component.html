@@ -1,0 +1,67 @@
+ <div bsModal #itemModel="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" (onShow)="showEvent($event)" (onHide)="hideEvent($event)">
+  <div class="modal-dialog  modal-lg">
+       <div class="modal-content">
+           <div class="modal-header bg-teal-300 model-header-custom">
+               <button type="button" class="close" data-dismiss="modal" (click)="itemModel.hide()">&times;</button>
+               <h5 class="modal-title">Select Material</h5>
+           </div>
+           <div class="modal-body modal-body-custom" id="div-composition-model">
+             <div class="row">
+               <form class="form-horizontal" [formGroup]="formGroup" >
+                   <div class="col-md-2">
+                     <input type="text" class="form-control input-xxs" formControlName="search_text" placeholder="Search keyword...">
+                   </div>
+                   <div class="col-md-2">
+                     <ng-select
+                       placeholder = "Select Category"
+                       [items]="categoryList$ | async"
+                       bindLabel="category_name"
+                       [hideSelected]="true"
+                       formControlName="category"
+                       (change)="onCategoryChange($event)">
+                     </ng-select>
+                   </div>
+                   <div class="col-md-3">
+                     <ng-select [items]="subCategoryList$ | async"
+                         placeholder = "Select Sub Category"
+                         [selectOnTab]="true"
+                         bindLabel="subcategory_name"
+                         formControlName="sub_category">
+                     </ng-select>
+                   </div>
+
+                   <div class="col-md-3">
+                     <ng-select [items]="supplier$ | async"
+                          placeholder = "Select Supplier"
+                          bindLabel="supplier_name"
+                          [multiple]="false"
+                          [hideSelected]="true"
+                          [loading]="supplierLoading"
+                          [typeahead]="supplierInput$"
+                          formControlName="supplier_id">
+                     </ng-select>
+
+                   </div>
+                   <div class="col-md-2">
+                     <button type="button" class="btn bg-teal-400 btn-labeled btn-info btn-xs" (click)="search($event)"><b><i class="icon-search4"></i></b> Search</button>
+                   </div>
+               </form>
+              </div>
+
+              <div class="row" style="margin-top:15px">
+                <div style="border-style:solid;border-width:1px;border-color:#DCDCDC" id="item-selector-table-div">
+                  <hot-table
+                          [hotId]="instance"
+                          [settings]="hotOptions"
+                          [data]="dataset">
+                  </hot-table>
+                </div>
+              </div>
+           </div>
+           <div class="modal-footer">
+              <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="selectItem()">
+                   <b><i class="icon-floppy-disk"></i></b> Select</button> -->
+           </div>
+       </div>
+   </div>
+ </div>

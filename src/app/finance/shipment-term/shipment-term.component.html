@@ -1,0 +1,85 @@
+<div class="panel panel-flat">
+            <div class="panel-heading">
+
+                <h5 class="panel-title">Shipment Term</h5>
+                <div class="heading-elements">
+                    <ul class="icons-list">
+                        <li><a data-action="collapse"></a></li>
+                        <li><a data-action="reload"></a></li>
+                        <li><a data-action="close"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="text-right">
+										<button type="button" [hasPermission]="['SHIP_TERM_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+											(click)="shipTermModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="row" [hasPermission]="['SHIP_TERM_VIEW']" style="min-height: 350px;">
+								<div class="col-md-12">
+									<table class="table display compact" id="ship_term_tbl">
+										<thead>
+											<tr>
+												<th style="text-align:left">Action</th>
+                        <th>Status</th>
+                        <th>Shipment Term Code</th>
+												<th>Shipment Term Description</th>
+												</tr>
+										</thead>
+										<tbody>
+										</tbody>
+										</table>
+								</div>
+							</div>
+
+							<div bsModal #shipTermModel="bs-modal"
+								[config]="{backdrop: 'static'}"
+							  class="modal fade" (onShow)="showEvent($event)">
+							    <div class="modal-dialog modal-md">
+							        <div class="modal-content">
+							            <form class="form-horizontal form-validate-jquery" [formGroup]="formGroup" (ngSubmit)="saveShipTerm()">
+							                <div class="modal-header bg-teal-300">
+							                    <button type="button" class="close" (click)="shipTermModel.hide()">&times;</button>
+							                    <h5 class="modal-title">{{ modelTitle }}</h5>
+							                </div>
+
+							                <div class="modal-body">
+
+												<input type="hidden" formControlName="ship_term_id">
+
+                        <fieldset class="content-group">
+                          <label>Shipment Term Code <span class="text-danger">*</span> :</label>
+                          <span class="err" *ngIf="formGroup.get('ship_term_code').status === 'PENDING'"> Validating....</span>
+                          <input type="text" class="form-control input-xxs" formControlName="ship_term_code" placeholder="Shipment Term Code" upperCase>
+                          <span class="err" *ngIf="formGroup.get('ship_term_code').errors && formGroup.get('ship_term_code').errors.remoteValidation">{{formGroup.get('ship_term_code').errors.remoteValidation}}</span>
+                          <span class="err">{{ formValidator.validate_field('ship_term_code')}}</span>
+                        </fieldset>
+
+												<fieldset class="content-group">
+													<label>Shipment Term Description <span class="text-danger">*</span> :</label>
+													<input type="text" formControlName="ship_term_description" class="form-control input-xxs"
+														placeholder="Shipment Term Description" (blur)="formValidate()" upperCase>
+													<span class="err" > {{ formValidator.validate_field('ship_term_description')  }} </span>
+												</fieldset>
+
+											</div>
+
+							        <div class="modal-footer">
+							            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="shipTermModel.hide()"><b><i class="icon-cross"></i></b>Close</button>
+							            <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+							                <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+							            </div>
+							        </form>
+							    </div>
+							</div>
+							</div>
+
+            </div>
+        </div>

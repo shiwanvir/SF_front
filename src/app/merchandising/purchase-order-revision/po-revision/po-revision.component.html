@@ -1,0 +1,297 @@
+<div class="panel-body">
+<form [formGroup]="formHeader" >
+<input type="hidden" formControlName="po_id" [(ngModel)]="poid">
+  <div class="row">
+    <div class=" col-md-12">
+      <div class=" col-md-12">
+        <div class=" col-md-3">
+          <label>BOM Stage <span class="text-danger">*</span> :</label>
+          <input type="text" class="form-control input-xxs"
+          placement="bottom" formControlName="po_type" disabled placeholder="BOM Stage">
+
+        <span class="err">{{ formValidatorHeader.validate_field('po_type')  }}</span>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <label>PO Date :</label>
+            <input type="text" class="form-control input-xxs" bsDatepicker placement="left"
+               formControlName="po_date" disabled   [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" placeholder="PO Date">
+            <span class="err">{{ formValidatorHeader.validate_field('po_date')  }}</span>
+
+        </div>
+
+        <div class=" col-md-3">
+          <label>Supplier Name :</label>
+          <input type="text" class="form-control input-xxs" placement="left"
+             formControlName="supplier" disabled placeholder="supplier Name">
+
+        <span class="err">{{ formValidatorHeader.validate_field('supplier')  }}</span>
+        </div>
+
+        <!-- <input type="hidden" formControlName="order_customer" [(ngModel)]="customerId"> -->
+
+        <div class=" col-md-3">
+          <label>Currency :</label>
+          <input type="text" class="form-control input-xxs" placement="left"
+             formControlName="currency" disabled placeholder="Currency">
+
+        <span class="err">{{ formValidatorHeader.validate_field('currency')  }}</span>
+        </div>
+
+
+
+
+
+      </div>
+      <div class=" col-md-12">
+
+        <div class="col-md-3">
+
+            <label>Delivery Date :</label>
+            <input type="text" class="form-control input-xxs" bsDatepicker placement="bottom"
+               formControlName="delivery_date" placeholder="Select Date"  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" placeholder="Select Delivery Date">
+            <span class="err">{{ formValidatorHeader.validate_field('delivery_date')  }}</span>
+
+        </div>
+
+        <div class=" col-md-3">
+          <label>Deliver To :</label>
+          <ng-select [items]="deliverto$ | async"
+                  placeholder = "Select Location"
+                  [selectOnTab]="true"
+                  bindLabel="loc_name"
+                  [loading]="delivertoLoading"
+                  [typeahead]="delivertoInput$"
+                  [(ngModel)]="selectedDeliverto"
+                  formControlName="deliverto" >
+        </ng-select>
+        <span class="err">{{ formValidatorHeader.validate_field('deliverto')  }}</span>
+        </div>
+
+        <div class=" col-md-3">
+          <label>Invoice To :</label>
+          <ng-select [items]="invoiceto$ | async"
+                  placeholder = "Select Location"
+                  [selectOnTab]="true"
+                  bindLabel="company_name"
+                  [loading]="invoicetoLoading"
+                  [typeahead]="invoicetoInput$"
+                  [(ngModel)]="selectedInvoiceto"
+                  formControlName="invoiceto" >
+        </ng-select>
+        <span class="err">{{ formValidatorHeader.validate_field('invoiceto')  }}</span>
+        </div>
+
+        <div class=" col-md-3">
+          <label>Special Instruction :</label>
+          <input type="text" class="form-control input-xxs" formControlName="special_ins" placeholder="Special Instructions">
+
+        </div>
+
+
+
+
+
+      </div>
+
+        <div class=" col-md-12">
+
+          <div class=" col-md-2">
+            <label>Payment Method :</label>
+
+            <select class="form-control input-xxs" formControlName="pay_mode">
+              <option [ngValue]="null">Payment Method</option>
+                <option *ngFor="let pay_m of paymodeDivisions" [value]="pay_m.payment_mode"
+                [selected]="pay_m.payment_mode == formHeader.get('pay_mode').value">
+                  {{ pay_m.payment_method_description }}
+                </option>
+            </select>
+
+        <span class="err">{{ formValidatorHeader.validate_field('pay_mode')  }}</span>
+        </div>
+
+          <div class=" col-md-2">
+            <label>Payment Term :</label>
+            <select class="form-control input-xxs" formControlName="pay_term">
+              <option [ngValue]="null">Payment Term</option>
+                <option *ngFor="let pay_t of paytermDivisions" [value]="pay_t.payemnt_terms"
+                [selected]="pay_t.payemnt_terms == formHeader.get('pay_term').value">
+                  {{ pay_t.payment_description }}
+                </option>
+            </select>
+        <span class="err">{{ formValidatorHeader.validate_field('pay_term')  }}</span>
+        </div>
+
+          <div class=" col-md-2">
+            <label>Shipment Mode :</label>
+            <ng-select [items]="ship_mode$ | async"
+                    placeholder = "Select Shipment Method"
+                    [selectOnTab]="true"
+                    bindLabel="ship_mode"
+                    [loading]="ship_modeLoading"
+                    [typeahead]="ship_modeInput$"
+                    [(ngModel)]="selectedShip_mode"
+                    formControlName="ship_mode" >
+          </ng-select>
+          <span class="err">{{ formValidatorHeader.validate_field('ship_mode')  }}</span>
+
+          </div>
+
+          <div class=" col-md-2">
+            <label>Shipment Term :</label>
+            <select class="form-control input-xxs" formControlName="ship_term">
+              <option [ngValue]="null">Shipment Term</option>
+                <option *ngFor="let ship_t of shiptermDivisions" [value]="ship_t.ship_terms_agreed"
+                [selected]="ship_t.ship_terms_agreed == formHeader.get('ship_term').value">
+                  {{ ship_t.ship_term_description }}
+                </option>
+            </select>
+        <span class="err">{{ formValidatorHeader.validate_field('ship_term')  }}</span>
+        </div>
+
+          <div class=" col-md-2">
+            <label>PO # :</label>
+            <input type="text" class="form-control input-xxs" formControlName="po_number" disabled placeholder="Auto Generate">
+            <!-- <span class="err">{{formFields.po_name}}</span> -->
+          </div>
+
+          <div class=" col-md-2">
+            <label>Status :</label>
+            <input type="text" class="form-control input-xxs" formControlName="po_status"  disabled id="status" placeholder="Status">
+            <span class="err"></span>
+          </div>
+
+          <div class=" col-md-1">
+            <label></label>
+            <input type="hidden" class="form-control input-xxs" formControlName="prl_id" disabled id="status">
+            <input type="hidden" class="form-control input-xxs" formControlName="approval_status" disabled id="status">
+            <span class="err"></span>
+          </div>
+
+
+
+        </div>
+
+    </div>
+
+
+  <!-- <div class=" col-md-12">
+    <div class="heading-btn pull-right" style="margin-top:20px">
+
+      <div class="col-md-6">
+        <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  [disabled]="formHeader.invalid" >
+        <b><i class="icon-floppy-disk"></i></b> Update Header</button>
+
+      </div>
+    </div>
+  </div> -->
+
+  </div>
+</form>
+
+<div class=" col-md-12" style="margin-top:10px;">
+  <legend class="text-bold" style="margin-top:20px">{{ modelTableTitle }}</legend>
+
+  <tabset #sotabs [justified]="true">
+
+    <tab heading="Purchase Orders" (select)="onSelect($event)">
+
+      <div id="por_table">
+      <div class="row">
+        <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+          <hot-table
+            [hotId]="instance"
+            [settings]="hotOptions"
+            [(data)]="dataset">
+        </hot-table>
+        </div>
+
+
+        <div class=" col-md-12">
+          <div class="heading-btn" style="margin-top:20px">
+
+            <div class="col-md-4 pull-left">
+                <label class="control-label col-md-5">TOTAL ( {{ currency_load }} ) </label>
+        				<div class="col-md-7">
+        				<input type="text" class="form-control input-xs" disabled id="sum_total">
+        				</div>
+
+            </div>
+
+
+
+            <div class="col-md-8 ">
+
+              <div class=" pull-right" >
+
+                <button *ngIf="!processdetails" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"
+                [disabled]="formHeader.invalid"  (click)="updatedetails()" >
+                <b><i class="icon-floppy-disk"></i></b> Update</button>
+                <button *ngIf="!processingConfirm" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs"
+                [disabled]="formHeader.invalid" (click)="confirmdetails()" style="margin-left:15px">
+                <b><i class="icon-checkbox-checked2"></i></b> Confirm </button>
+                <button *ngIf="!processingprint" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs"
+                [disabled]="formHeader.invalid" (click)="printdetails()" style="margin-left:15px">
+                <b><i class="icon-printer"></i></b> Print </button>
+                <button *ngIf="!processsendtoapp" type="submit" class="btn bg-teal-400 btn-labeled btn-info btn-xs"
+                [disabled]="formHeader.invalid"  (click)="send_to_approval()" >
+                <b><i class="icon-envelop4"></i></b> Send for Approval</button>
+
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      </div>
+
+    </tab>
+
+
+    <tab heading="Purchase Orders History" (select)="onSelect($event)">
+      <div id="po_his_table">
+      <div class="row">
+
+        <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+          <hot-table
+            [hotId]="instance2"
+            [settings]="hotOptions2"
+            [(data)]="dataset2">
+        </hot-table>
+        </div>
+
+      </div>
+      </div>
+
+    </tab>
+
+  </tabset>
+
+
+
+
+</div>
+
+<!-- <div id="por_table">
+<legend class="text-bold" style="margin-top:20px">{{ modelTableTitle }}</legend>
+<div class="row">
+<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+  <hot-table
+    [hotId]="instance"
+    [settings]="hotOptions"
+    [(data)]="dataset">
+</hot-table>
+</div>
+</div>
+</div> -->
+
+
+
+
+
+</div>
+<ng-snotify class="simple"></ng-snotify>

@@ -1,0 +1,10 @@
+.box {
+  border:1px solid grey;
+  background-color:#93baa9;
+  padding: 30px;
+}
+.boxWhite {
+  border:1px solid white;
+  background-color:#ffffff;
+  padding: 30px;
+}

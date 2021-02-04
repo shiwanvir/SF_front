@@ -1,0 +1,32 @@
+<div>
+  <button (click)="openSearch()">Advanmced Searching 2</button>
+</div>
+
+<div bsModal #searchingModel="bs-modal" [config]="{backdrop: 'static'}"
+ class="modal fade" (onShow)="showEvent($event)" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+                <div class="modal-header  bg-teal-300">
+                    <button type="button" class="close" (click)="searchingModel.hide()">&times;</button>
+                    <h5 class="modal-title">Customer order search</h5>
+                </div>
+                <div class="modal-body" style="overflow-y: scroll; height:400px;">
+
+                  <query-builder [(ngModel)]='query' [config]='config' [classNames]='classNames'></query-builder>
+
+                  <div>
+                      {{ query | json }}
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="clear()"><b><i class="icon-cross"></i></b> Clear</button>
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="searchingModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                  <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="false" (click)="search()">
+                    <b><i class="icon-floppy-disk"></i></b> Search</button>
+                </div>
+
+        </div>
+      </div>
+  </div>

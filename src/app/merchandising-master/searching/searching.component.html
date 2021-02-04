@@ -1,0 +1,191 @@
+<div>
+  <button class="btn bg-teal btn-xs" (click)="openSearch()">Advanmced Searching</button>
+</div>
+
+<div bsModal #searchingModel="bs-modal" [config]="{backdrop: 'static'}"
+ class="modal fade" (onShow)="showEvent($event)" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+                <div class="modal-header  bg-teal-300">
+                    <button type="button" class="close" (click)="searchingModel.hide()">&times;</button>
+                    <h5 class="modal-title">{{ modelTitle }}</h5>
+                </div>
+                <div class="modal-body" style="min-height:150px;max-height:400px;overflow-y:scroll">
+
+
+                      <!-- <form [formGroup]="formGroupSearching" (ngSubmit)="addNewCondition()">-->
+                        <div class="row" style="margin-bottom:15px">
+                          <div class="col-lg-6">
+                            <ng-select [items]="fields"
+                                 bindLabel="field_description"
+                                 bindValue="field"
+                                 (change)="changeField($event)">
+                            </ng-select>
+
+                          </div>
+                          <div class="col-sm-1">
+                            <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs btn-icon" (click)="addField()"><i class="icon-plus2"></i></button>
+                          </div>
+                          <div class="col-sm-1">
+                            <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs btn-icon" (click)="clear()"><i class="icon-reload-alt"></i></button>
+                          </div>
+                          <div class="col-sm-1">
+                            <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs btn-icon" (click)="countSearch()"><i class="icon-calculator4"></i></button>
+                          </div>
+                          <div class="col-sm-2">
+                            <button class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="false" (click)="search()">
+                              <b><i class="icon-floppy-disk"></i></b> Search</button>
+                          </div>
+                        </div>
+
+
+                        <div *ngFor="let x of addedFields; index as i" class="row" style="margin-top:10px">
+                          <div class="col-md-3">
+                            <label>{{ x.field_description }}</label>
+                          </div>
+                          <div class="col-md-3">
+                            <select class="form-control input-xxs" (change)="changeOperator($event, i)">
+                              <option value=""></option>
+                              <option *ngFor="let op of operators" [value]="op.operator">{{ op.description }}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6">
+                            <input type="text" class="form-control input-xxs" [(ngModel)]="x.query">
+                          </div>
+                        </div>
+
+
+                        <!--<div class="row">
+
+                          <div class="col-lg-6">
+                            <select type="text" class="form-control input-xxs" >
+                              <option></option>
+                              <option value="%">% (Like)</option>
+                              <option value="!%">!% (Not like)</option>
+                              <option value=">">> (Grater Than) </option>
+                              <option value="<">< (Less than)</option>
+                              <option value="=">= (Equal)</option>
+                              <option value=">=">>= (Equal or grater)</option>
+                              <option value="<=">=<= (Equal or less)</option>
+                              <option value="!=">!= (Not equal)</option>
+                              <option value="...">... (Between)</option>
+                              <option value=";">; (or)</option>
+                            </select>
+                          </div>
+                        </div>-->
+
+                        <!--<div class="row">
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control input-xxs" >
+                          </div>
+
+                          <div class="col-lg-3">
+                            <button  type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" ><b><i class="icon-floppy-disk"></i></b> Save</button>
+                          </div>
+                        </div>-->
+
+                    <!--  </form>-->
+
+                      <!--<ul *ngFor="let key of objectKeys(queryObject)"> {{ key }}
+                        <li *ngFor="let a of queryObject[key]"> {{ a.operator }} {{ a.operator_value }}</li>
+                      </ul>-->
+
+                    <!--  <div class="form-group row">
+                        <fieldset *ngFor="let item of fields; index as i" class="content-group">
+                            <label class="col-lg-3 col-form-label" >{{ item.field_description }}</label>
+                            <div class="col-lg-3">
+                              <select type="text" class="form-control input-xxs" (change)="addOperator($event, i)">
+                                <option></option>
+                                <option value="%">% (Like)</option>
+                                <option value="!%">!% (Not like)</option>
+                                <option value=">">> (Grater Than) </option>
+                                <option value="<">< (Less than)</option>
+                                <option value="=">= (Equal)</option>
+                                <option value="=>">=> (Equal or grater)</option>
+                                <option value=">=">=< (Equal or less)</option>
+                                <option value="!=">!= (Not equal)</option>
+                                <option value="...">... (Between)</option>
+                                <option value=";">; (or)</option>
+                              </select>
+                            </div>
+                            <div class="col-lg-2">
+                              <input type="text" class="form-control input-xxs" [(ngModel)]="fields[i]['query']">
+                            </div>
+                            <div class="col-lg-3">
+                              <input type="text" class="form-control input-xxs" >
+                            </div>
+                            <div *ngIf="item.foreign_key != undefined" class="col-lg-1" (click)="loadList(item.foreign_key, item.field_description)">
+                              <span class="input-group-text" style="cursor:pointer"><i class="icon-menu6"></i></span>
+                            </div>
+                        </fieldset>
+                      </div>-->
+
+
+
+
+                </div>
+               <div class="modal-footer">
+                  <!--<button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="searchingModel.hide()"><b><i class="icon-cross"></i></b> Close</button>-->
+
+                </div>
+
+        </div>
+      </div>
+  </div>
+
+
+  <div bsModal #dataListModel="bs-modal" [config]="{backdrop: 'static'}"
+   class="modal fade" (onShow)="showEvent($event)" >
+      <div class="modal-dialog">
+          <div class="modal-content">
+
+                  <div class="modal-header  bg-teal-300">
+                      <button type="button" class="close" (click)="dataListModel.hide()">&times;</button>
+                      <h5 class="modal-title">{{ modelTitle }}</h5>
+                  </div>
+                  <div class="modal-body">
+
+
+
+                        <div class="form-group row">
+                          <fieldset *ngFor="let item of fields" class="content-group">
+                              <label class="col-lg-3 col-form-label" >{{ item.field_description }}</label>
+                              <div class="col-lg-3">
+          											<select type="text" class="form-control input-xxs">
+                                  <option></option>
+                                  <option>% (Like)</option>
+                                  <option>!% (Not like)</option>
+                                  <option>> (Grater Than) </option>
+                                  <option>< (Less than)</option>
+                                  <option>= (Equal)</option>
+                                  <option>=> (Equal or grater)</option>
+                                  <option>=< (Equal or less)</option>
+                                  <option>!= (Not equal)</option>
+                                  <option>... (Between)</option>
+                                  <option>; (or)</option>
+                                </select>
+          										</div>
+                              <div class="col-lg-5">
+          											<input type="text" class="form-control input-xxs">
+          										</div>
+                              <div *ngIf="item.foreign_key != undefined" class="col-lg-1" (click)="loadList(item.foreign_key)">
+          											<span class="input-group-text" style="cursor:pointer"><i class="icon-menu6"></i></span>
+          										</div>
+                          </fieldset>
+                      	</div>
+
+
+
+
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="searchingModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="false">
+                      <b><i class="icon-floppy-disk"></i></b> Search</button>
+                  </div>
+
+          </div>
+        </div>
+    </div>

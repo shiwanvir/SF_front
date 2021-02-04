@@ -1,0 +1,143 @@
+<div class="panel-body">
+    <form [formGroup]="bomForm" >
+        <div class="row">
+          <div class="col-md-3">
+            <label>FNG # :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="fng_code">
+          </div>
+          <div class="col-md-9">
+            <label>Finish Good Description :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="fng">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <label>BOM ID :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="bom_id">
+          </div>
+          <div class="col-md-3">
+            <label>Costing ID :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="costing_id">
+          </div>
+          <div class="col-md-3">
+            <label>Revision :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="revision">
+          </div>
+          <div class="col-md-3">
+            <label>Status :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="status">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <label>Country :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="country">
+          </div>
+          <div class="col-md-3">
+            <label>FOB :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="fob">
+          </div>
+          <div class="col-md-3">
+            <label>Total SMV :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="total_smv">
+          </div>
+          <div class="col-md-3">
+            <label>Fabric Cost :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="fabric_cost">
+          </div>
+        </div>
+
+
+
+        <div class="row">
+          <div class="col-md-3">
+            <label>Elastic Cost :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="elastic_cost">
+          </div>
+          <div class="col-md-3">
+            <label>Trim Cost :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="trim_cost">
+          </div>
+          <div class="col-md-3">
+            <label>Packing Cost :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="packing_cost">
+          </div>
+          <div class="col-md-3">
+            <label>Other Cost :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="other_cost">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <label>Total RM Cost :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="total_rm_cost">
+          </div>
+          <div class="col-md-3">
+            <label>EPM :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="epm">
+          </div>
+          <div class="col-md-3">
+            <label>NP Margin % :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="np_margin">
+          </div>
+          <div class="col-md-3">
+            <label>FNG Color :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="fng_color">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <label>Currency :</label>
+            <input type="text" class="form-control input-xxs" readonly="readonly" formControlName="currency_code">
+          </div>
+
+          <input type="hidden" formControlName="finance_charges">
+          <input type="hidden" formControlName="cpm_factory">
+          <input type="hidden" formControlName="labour_cost">
+          <input type="hidden" formControlName="coperate_cost">
+        </div>
+
+    </form>
+
+    <div class="col-sm-12" style="padding-top:20px;">
+      <tabset #bomDetailTabs >
+        <tab heading="Items" >
+          <hot-table
+             [hotId]="tblRM"
+             [settings]="settingsRM"
+             [data]="dataRM">
+          </hot-table>
+        </tab>
+        <!--<tab heading="SMV">
+
+        </tab>
+        <tab heading="Operation">
+
+        </tab>-->
+      </tabset>
+    </div>
+
+    <div *ngIf="bomForm.get('bom_id').value > 0 && permissionService.hasDefined('BOM_EDIT')" class="col-md-12" style="margin-top:15px;text-align:right">
+      <button *ngIf="showEditButton" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" (click)="edit()"><b><i
+            class="icon-floppy-disk"></i></b>Edit</button>
+            <div [hasPermission]="['BOM_CREATE']">
+      <button *ngIf="showSaveButton" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-left:15px" [disabled]="dataRM.length <= 0 || processing" (click)="saveAll()"><b><i
+            class="icon-floppy-disk"></i></b>Save</button>
+      <button *ngIf="showConfirmButton && dataRM.length > 0" type="button" class="btn bg-teal-400 btn-labeled btn-warning btn-xs" style="margin-left:15px" [disabled]="processing" (click)="confirmBom()"><b><i
+            class="icon-floppy-disk"></i></b>Confirm</button>
+      <button *ngIf="showSendButton && dataRM.length > 0" type="button" class="btn bg-teal-400 btn-labeled btn-warning btn-xs" style="margin-left:15px" [disabled]="processing" (click)="sendForApproval()"><b><i
+            class="icon-floppy-disk"></i></b>Send For Approval</button>
+      <button *ngIf="showNotifyButton" type="button" class="btn btn-labeled btn-primary btn-xs" style="margin-left:15px" (click)="notifyCadTeam()"><b>
+          <i class="icon-arrow-right6"></i></b>Notify CAD / IE Team</button>
+      <!--<button *ngIf="showExitButton" type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" style="margin-left:15px" (click)="exitEditMode()"><b><i
+              class="icon-floppy-disk"></i></b>Exit Edit Mode</button>-->
+    </div>
+    </div>
+
+</div>
+
+<app-item-selector [searchType]="'INVENTORY_ITEMS'" (onItemSelected)="onSelectItem($event)"></app-item-selector>

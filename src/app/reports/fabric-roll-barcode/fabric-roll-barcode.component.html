@@ -1,0 +1,208 @@
+<style media="screen">
+  .left{
+    text-align:left;
+    margin: 0;
+  }
+  .col-md-4,.col-md-9{
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .col-md-8{
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .col-md-3{
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .col-md-2{
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+</style>
+
+<div class="panel panel-flat">
+
+  <div class="panel-heading">
+    <h6 class="panel-title">Barcode Print</h6>
+
+    <div class="heading-elements">
+      <ul class="icons-list">
+        <li><a data-action="collapse"></a></li>
+        <li><a data-action="reload"></a></li>
+        <li><a data-action="close"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+
+      <form class="form-horizontal" [formGroup]="formGroup">
+        <fieldset class="content-group">
+
+          <div class="col-md-3">
+            <label>PO Type <span class="text-danger">* </span>:</label>
+            <select  class="form-control input-xxs" formControlName="type_of_po">
+              <option value="auto" [selected]="true">Auto</option>
+              <option value="manual">Manual</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label>Material Type <span class="text-danger">* </span>:</label>
+            <select  class="form-control input-xxs" formControlName="type_of_barcode">
+              <option value="">Select Material Type</option>
+              <option value="fabric">Fabric</option>
+              <option value="trim">Trim</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label>PO NO :</label>
+            <!-- <input type="text" class="form-control input-xxs" formControlName="po_number" placeholder="PO Number"> -->
+            <ng-select [items]="po_no$ | async"
+            placeholder = "Select PO NO"
+            [selectOnTab]="true"
+            bindLabel="po_number"
+            [loading]="poNoLoading"
+            [typeahead]="poNoInput$"
+            formControlName="po_number" >
+          </ng-select>
+        </div>
+
+        <div class="col-md-3">
+          <label>Invoice Number :</label>
+          <!-- <input type="text" class="form-control input-xxs" formControlName="invoice_no" placeholder="Invoice Number"> -->
+          <ng-select [items]="invoiceNo$ | async"
+          placeholder = "Select Invoice NO"
+          [selectOnTab]="true"
+          bindLabel="inv_number"
+          [loading]="invoiceNoLoading"
+          [typeahead]="invoiceNoInput$"
+          formControlName="invoice_no" >
+        </ng-select>
+      </div>
+
+
+    </fieldset>
+
+    <fieldset class="content-group">
+      <div class="col-md-8">
+        <label class="col-md-3">Barcode Range :</label>
+        <div class="col-md-9">
+          <div class="col-md-6">
+            <label>From :</label>
+            <input type="number" class="form-control input-xxs" formControlName="barcode_from" placeholder="From">
+          </div>
+          <div class="col-md-6">
+            <label>To :</label>
+            <input type="number" class="form-control input-xxs" formControlName="barcode_to" placeholder="To">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" style="top: 20px;">
+        <input type="checkbox" id="selectAll" data-md-icheck (change)="toggleVisibility($event)"><label style="margin-left:5px;font-weight: 400;" for="selectAll"><span></span>Select All</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="content-group">
+      <div class="col-md-12">
+        <div class="text-right">
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="searchFrom()"><b><i class="icon-floppy-disk"></i></b> Create</button>&nbsp;&nbsp;
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="viewBarcodes()" [disabled]="getData == undefined || getData.length <= 0"><b><i class="icon-file-text"></i></b> View</button>&nbsp;&nbsp;
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="downloadBarcodes()" [disabled]="getData == undefined || getData.length <= 0"><b><i class="icon-download"></i></b> Download</button>&nbsp;&nbsp;
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="printBarcodes()" [disabled]="getData == undefined || getData.length <= 0"><b><i class="icon-printer"></i></b> Print</button>
+          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" (click)="refreshPage()" style="margin-left: 5px;"><b><i class="icon-loop3"></i></b> Refresh</button>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="content-group">
+      <div class="row">
+        <div class="col-md-12">
+          <!--<table class="table display datatable-basic" id="barcodes_tbl">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Action</th>
+                <th>Barcode No</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor = 'let dataSet of getData;index as x'>
+                <td>{{x+1}}</td>
+
+                <td>
+                  <i class="icon-bin" (click) = deleteBarcode(dataSet.rm_plan_id,dataSet.batch_no); style="border-style:solid; border-width: 1px;padding:2px;cursor:pointer" [id]="x"></i>
+                  <input style="margin-left: 10px;" type="checkbox" [id]="x"><label [for]="x"></label>
+                </td>
+                <td>{{dataSet.po_number}}{{dataSet.batch_no}}{{dataSet.roll_or_box_no}}</td>
+
+            </tr>
+          </tbody>
+        </table>-->
+
+
+        <hot-table
+           [hotId]="tblBarcode"
+           [settings]="settingsBarcode"
+           [data]="getData">
+        </hot-table>
+
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="content-group">
+    <div class="col-md-12" style="text-align: center;"><p><b>Barcodes view here</b></p></div>
+    <div id="hiddenContent" class="col-md-12" style="text-align: center;">
+      <div [id]="'pdf'+i" *ngFor = 'let dataSet of printData;index as i' class="col-md-6 print">
+        <div style="width: 101.6mm;height: 76.2mm;border: 1px solid black;margin:5px;padding-left:5px;font-size:10px;">
+          <div class="row">
+            <div class="col-md-3"><p class="left"><b>MATERIAL CODE</b></p><p class="left">{{dataSet.master_code}}</p></div>
+            <div class="col-md-9"><p class="left"><b>MATERIAL DESCRIPTION</b></p><p class="left" style="word-wrap: break-word;">{{dataSet.master_description}}</p></div>
+          </div>
+          <div class="row">
+            <div class="col-md-3"><p class="left"><b>SUPPLIER CODE</b></p><p class="left">{{dataSet.supplier_code}}</p></div>
+            <div class="col-md-6"><p class="left"><b>SUPPLIER</b></p><p class="left">{{dataSet.supplier_name}}</p></div>
+            <div class="col-md-3"><p class="left"><b>SUPPLIER REF#</b></p><p class="left">{{dataSet.supplier_reference}}</p></div>
+          </div>
+          <div class="row">
+            <div class="col-md-3"><p class="left"><b>PO#</b></p><p class="left">{{dataSet.po_number}}</p></div>
+            <div class="col-md-3"><p class="left"><b>VENDOR BATCH</b></p><p class="left">{{dataSet.batch_no}}</p></div>
+            <div class="col-md-2"><p class="left"><b>ROLL NO/BOX NO</b></p><p class="left"><b>{{dataSet.roll_or_box_no}}</b></p></div>
+            <!-- <div *ngIf="dataSet.roll_plan_id != undefined" class="col-md-2"><p class="left"><b>ROLL NO/BOX NO</b></p><p class="left"><b>{{dataSet.roll_no}}</b></p></div> -->
+            <!-- <div *ngIf="dataSet.trim_packing_id != undefined" class="col-md-2"><p class="left"><b>BOX NO</b></p><p class="left"><b>{{dataSet.box_no}}</b></p></div> -->
+            <div class="col-md-4"><p class="left"><b>COLOR</b></p><p class="left">{{dataSet.color_name}}'</p></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><p class="left"><b>SALES ORDER/LINE NO</b></p><p class="left">{{dataSet.order_code}}/{{dataSet.line_no}}</p></div>
+            <div class="col-md-4"><p class="left"><b>STYLE</b></p><p class="left">{{dataSet.style_no}}</p></div>
+            <!-- <div class="col-md-4"><p class="left"><b>LINE ITEM</b></p><p class="left">{{dataSet.line_no}}</p></div> -->
+            <div *ngIf="dataSet.category_id == 1" class="col-md-4"><p class="left"><b>QUANTITY<span style="color:#9d9696;font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UOM</span></b></p><p class="left">{{dataSet.received_qty}}<span style="color:#9d9696">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M</span></p><p class="left"></p></div>
+            <div *ngIf="dataSet.category_id == 2 || dataSet.category_id == 3" class="col-md-4"><p class="left"><b>QUANTITY</b></p><p class="left">{{dataSet.received_qty}}</p><p class="left"></p></div>
+          </div>
+          <div class="row">
+            <div class="col-md-3"><p class="left"><b>LOT NO</b></p><p class="left">{{dataSet.lot_no}}</p></div>
+            <div class="col-md-3"><p class="left"><b>INVOICE NO</b></p><p class="left">{{dataSet.invoice_no}}</p></div>
+            <div class="col-md-3"><p class="left"><b>SEASON</b></p><p class="left">{{dataSet.season_name}}</p></div>
+            <div class="col-md-3"><p class="left"><b>DIVISION</b></p><p class="left">{{dataSet.division_description}}</p></div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <p class="left"><b>CREATED DATE</b></p><p class="left">{{ dataSet.created_date | date:'yyyy-MM-dd' }}</p>
+            </div>
+            <div class="col-md-9" style="padding-left: 0;right: 10px;"><ngx-barcode [bc-value]="dataSet.barcode" [bc-display-value]="true" bc-height="50" bc-width="1" [bc-font-size]="15"></ngx-barcode></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+</form>
+
+</div>
+</div>
+
+</div>

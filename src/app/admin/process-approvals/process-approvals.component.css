@@ -1,0 +1,11 @@
+li {
+  padding : 7px
+}
+
+.list-group li {
+  cursor : pointer;
+}
+
+.stage-close {
+  cursor : pointer
+}

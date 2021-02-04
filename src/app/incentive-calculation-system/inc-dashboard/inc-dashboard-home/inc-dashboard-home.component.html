@@ -1,0 +1,36 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Incentive Calendar</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+
+          <tabset #shopOrderTabs [justified]="true">
+
+            <tab heading="Calendar" (select)="onSelect($event)">
+                <app-inc-dashboard></app-inc-dashboard>
+            </tab>
+
+            <tab heading="Incentive Calculate" (select)="onSelect($event)" >
+                <app-inc-dashboard-incentive-calculate></app-inc-dashboard-incentive-calculate>
+            </tab>
+
+          </tabset>
+
+            <!-- <app-shop-order-home></app-shop-order-home> -->
+
+
+        </div>
+
+
+		</div>
+</div>

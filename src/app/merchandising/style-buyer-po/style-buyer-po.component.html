@@ -1,0 +1,446 @@
+
+
+					  <!--<div class="row">
+								<div class=" col-md-3">
+										<label>Search Style Number <span class="text-danger">*</span>:</label>
+										<select class="form-control input-xxs" formControlName="type_of_loc" (blur)="formValidate()">
+												<option value="" disabled>Select One ...</option>
+										</select>
+										<span class="err"></span>
+								</div>
+								<div class=" col-md-3">
+										<label>Search SC Number <span class="text-danger">*</span>:</label>
+										<select class="form-control input-xxs" formControlName="type_of_loc" (blur)="formValidate()">
+												<option value="">Select One ...</option>
+										</select>
+										<span class="err"></span>
+								</div>
+						</div>-->
+            <form [formGroup]="formHeader" (ngSubmit)="saveHeader()">
+
+						<legend class="text-bold">Sales Order Details</legend>
+						<div class="row">
+
+                <input type="hidden" formControlName="order_id" [(ngModel)]="orderId">
+
+								<div class=" col-md-2">
+										<label>Sales Order # <span class="text-danger">*</span> :</label>
+										<input type="text" class="form-control input-xxs" value="{{ orderCode }}" disabled placeholder="Sales Order #">
+								</div>
+
+								<div class=" col-md-2">
+										<label>Style <span class="text-danger">*</span> :</label>
+										<ng-select [items]="style$ | async"
+														placeholder = "Select Style"
+														[selectOnTab]="true"
+														bindLabel="style_no"
+														[loading]="styleLoading"
+														[typeahead]="styleInput$"
+														formControlName="order_style" (change)="changeStyle($event)">
+									</ng-select>
+										<span class="err">{{ formValidatorHeader.validate_field('order_style')  }}</span>
+								</div>
+
+                <div class=" col-md-2">
+										<label>Style Description <span class="text-danger">*</span> :</label>
+										<input type="text" class="form-control input-xxs" value="{{styleDescription}}" disabled placeholder="Style Description">
+								</div>
+
+                <input type="hidden" formControlName="order_customer" [(ngModel)]="customerId">
+
+								<div class=" col-md-2">
+										<label>Customer <span class="text-danger">*</span> :</label>
+										<input type="text" class="form-control input-xxs" value="{{customerDetails}}" disabled placeholder="Customer">
+										<span class="err">{{ formValidatorHeader.validate_field('order_customer')  }}</span>
+								</div>
+
+                <div class=" col-md-2">
+                    <input type="hidden" formControlName="order_division" [(ngModel)]="divisionId">
+                    <label>Customer Division <span class="text-danger">*</span> :</label>
+                    <!--<select class="form-control input-xxs" formControlName="order_division">
+                        <option *ngFor="let division of customerDivisions" [value]="division.division_id" [selected]="division.division_id == formHeader.get('order_division').value">
+                          {{ division.division_description }}
+                        </option>
+                    </select>-->
+                    <input type="text" class="form-control input-xxs" value="{{divisionDescription}}" disabled placeholder="Customer Division">
+                    <span class="err">{{ formValidatorHeader.validate_field('order_division') }}</span>
+                </div>
+
+                <div class=" col-md-2">
+										<label>Season <span class="text-danger">*</span> :</label>
+										<select class="form-control input-xxs" formControlName="order_season" (change)="changeStage($event)">
+                      <option [ngValue]="null">Select Season</option>
+                      <option *ngFor="let load_s of loadSeason" [value]="load_s.season_id"
+                      [selected]="load_s.season_id == formHeader.get('order_season').value">
+                        {{ load_s.season_name }}
+                      </option>
+										</select>
+										<span class="err">{{ formValidatorHeader.validate_field('order_season') }}</span>
+								</div>
+
+
+
+						</div>
+
+						<div class="row">
+
+								<!-- <div class=" col-md-3">
+										<label>Order Type <span class="text-danger">*</span>:</label>
+										<select class="form-control input-xxs" formControlName="order_type">
+                      <option *ngFor="let orderType of orderTypes$ | async" [value]="orderType.order_type_id">
+                        {{ orderType.order_type }}
+                      </option>
+										</select>
+										<span class="err">{{ formValidatorHeader.validate_field('order_type') }}</span>
+								</div> -->
+
+
+                <div class=" col-md-2">
+										<label>BOM Stage <span class="text-danger">*</span> :</label>
+										<select class="form-control input-xxs" formControlName="order_stage" (change)="changeBuyName($event)">
+                      <option [ngValue]="null">Select BOM Stage</option>
+                      <option *ngFor="let load_st of loadBomStage" [value]="load_st.bom_stage_id"
+                      [selected]="load_st.bom_stage_id == formHeader.get('order_stage').value">
+                        {{ load_st.bom_stage_description }}
+                      </option>
+										</select>
+										<span class="err">{{ formValidatorHeader.validate_field('order_stage') }}</span>
+								</div>
+
+                <div class=" col-md-2">
+										<label>Buy Name :</label>
+                    <select class="form-control input-xxs" formControlName="order_buy_name" disabled>
+                      <option [ngValue]="null">Select Buy Name</option>
+                      <option *ngFor="let load_bn of loadBuyName" [value]="load_bn.buy_id"
+                      [selected]="load_bn.buy_id == formHeader.get('order_buy_name').value">
+                        {{ load_bn.buy_name }}
+                      </option>
+										</select>
+								</div>
+								<!-- <div class=" col-md-2">
+										<label>Order Status <span class="text-danger">*</span> :</label>
+										<input class="form-control input-xxs"  formControlName="order_status" disabled placeholder="Order Status">
+								</div> -->
+
+                <!-- <div class=" col-md-2">
+										<label>Buy Name:</label>
+                    <select class="form-control input-xxs" formControlName="order_buy_name" disabled>
+                      <option [ngValue]="null">Select Buy Name</option>
+                      <option *ngFor="let load_bn of loadBuyName" [value]="load_bn.buy_id"
+                      [selected]="load_bn.buy_id == formHeader.get('order_buy_name').value">
+                        {{ load_bn.buy_name }}
+                      </option>
+										</select>
+								</div> -->
+
+
+                <div class=" col-md-4">
+										<label>Bill to Party <span class="text-danger">*</span> :</label>
+                    <ng-select
+                      placeholder = "Select Bill To Party"
+                      [items]="billtoList$ | async"
+                      bindLabel="bill_to_address_name_2"
+                      [hideSelected]="true"
+                      formControlName="bill_to">
+                    </ng-select>
+										<span class="err">{{ formValidatorHeader.validate_field('bill_to')  }}</span>
+								</div>
+
+                <div class=" col-md-4">
+										<label>Ship to Party <span class="text-danger">*</span> :</label>
+                    <ng-select
+                      placeholder = "Select Ship To Party"
+                      [items]="shiptoList$ | async"
+                      bindLabel="ship_to_address_name_2"
+                      [hideSelected]="true"
+                      formControlName="ship_to">
+                    </ng-select>
+										<span class="err">{{ formValidatorHeader.validate_field('ship_to')  }}</span>
+								</div>
+
+
+
+						</div>
+
+            <div class="row">
+
+              <div class=" col-md-2">
+                  <label>LOT Number :</label>
+                  <input type="number" class="form-control input-xxs"  formControlName="lot_number" upperCase placeholder="LOT Number">
+                  <input type="hidden" class="form-control input-xxs"  formControlName="pack_count" disabled>
+              </div>
+
+
+              <div class=" col-md-2">
+                  <label>Order Status <span class="text-danger">*</span> :</label>
+                  <input class="form-control input-xxs"  formControlName="order_status" disabled placeholder="Order Status">
+              </div>
+
+
+              </div>
+
+            <div class="heading-btn pull-right" style="margin-top:20px">
+              <div [hasPermission]="['SALES_ORDER_CREATE']">
+              <button type="button" class="btn btn-labeled bg-teal-400 btn-success btn-xs" style="margin-right:15px" (click)="newOrder()"><b><i class="icon-plus22"></i></b> Add New</button>
+							<button *ngIf="!loadingHeader && !processingHeader && !userPermision" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formHeader.invalid"><b><i class="icon-floppy-disk"></i></b> Save</button>
+						</div>
+            </div>
+
+          </form>
+
+          <div *ngIf="orderId > 0" >
+  					<legend class="text-bold" style="margin-top:20px">Delivery Schedule</legend>
+  					<div class="row">
+  						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                <hot-table
+                  [hotId]="instance"
+                  [settings]="hotOptions"
+                  [data]="dataset">
+              </hot-table>
+
+
+  						</div>
+  					</div>
+        </div>
+
+
+
+
+<div   bsModal #detailsModel="bs-modal" [config]="{backdrop: 'static'}"
+ class="modal fade" (onShown)="modelShowEvent($event)" >
+ <div class="modal-dialog modal-lg">
+	 <form [formGroup]="formDetails" (ngSubmit)="saveDetails()">
+		 <div id="aaaa" class="modal-content">
+
+						 <div class="modal-header  bg-teal-300">
+								 <button type="button" class="close" (click)="detailsModel.hide()">&times;</button>
+								 <h5 class="modal-title">{{ modelTitle }}</h5>
+						 </div>
+						 <div class="modal-body">
+
+								 <input type="hidden"  class="form-control input-xxs" formControlName="details_id">
+								 <fieldset class="content-group">
+
+									 <div class="row">
+
+											 <div class="col-md-3">
+													 <label>RM In Date <span class="text-danger">*</span> :</label>
+													 <input type="text" class="form-control input-xxs" bsDatepicker  placement="bottom"
+														 formControlName="rm_in_date" placeholder="Select RM In Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                             (bsValueChange)="onValueChangerm($event)" [minDate]="today">
+													 <span class="err">{{ formValidatorDetails.validate_field('rm_in_date') }}</span>
+											 </div>
+                       <div class="col-md-3">
+                         <label>Revised RM In Date <span class="text-danger">*</span> :</label>
+                         <input type="text" class="form-control input-xxs" bsDatepicker  placement="bottom"
+                           formControlName="pcd"  placeholder="Select Revised RM In Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                           (bsValueChange)="onValueChange($event)">
+                         <span class="err">{{ formValidatorDetails.validate_field('pcd') }}</span>
+                       </div>
+
+											 <div class="col-md-3">
+													 <label>PO Number <span class="text-danger">*</span> :</label>
+													 <input type="text"  class="form-control input-xxs"
+														 formControlName="po_no" placeholder="PO Number" upperCase>
+													 <span class="err">{{ formValidatorDetails.validate_field('po_no') }}</span>
+											 </div>
+                       <div class="col-md-3">
+													 <label>Color Type <span class="text-danger">*</span> :</label>
+
+                           <select class="form-control input-xxs" formControlName="colour_type" (change)="loadFng($event)">
+                             <option [ngValue]="null">Select Color Type</option>
+                             <option *ngFor="let col_t of loadColorType" [value]="col_t.col_opt_id"
+                             [selected]="col_t.col_opt_id == formDetails.get('colour_type').value" >
+                               {{ col_t.color_option }}
+                             </option>
+       										</select>
+
+													 <span class="err">{{ formValidatorDetails.validate_field('colour_type') }}</span>
+											 </div>
+									</div>
+
+										 <div class="row">
+                       <div class="col-md-4">
+													 <label>FNG # <span class="text-danger">*</span> :</label>
+                           <!--<ng-select [items]="fng$ | async"
+                                      placeholder = "[Select FNG]"
+                                      [selectOnTab]="true"
+                                      bindLabel="country_description"
+                                      [loading]="fngLoading"
+                                      [typeahead]="fngInput$"
+                                      [(ngModel)]="selectedfng"
+                                      formControlName="fng_id">
+                         </ng-select>-->
+                             <select class="form-control input-xxs" formControlName="fng_id" (change)="loadStyleColour($event)">
+                               <option [ngValue]="null">Select FNG#</option>
+                               <option *ngFor="let l_fng of loadFngType" [value]="l_fng.master_id"
+                               [selected]="l_fng.master_id == formDetails.get('fng_id').value" >
+                                 {{ l_fng.master_code }}
+                               </option>
+                            </select>
+													 <span class="err">{{ formValidatorDetails.validate_field('fng_id') }}</span>
+											 </div>
+                       <div class="col-md-4">
+													 <label>FNG Color <span class="text-danger">*</span> :</label>
+                           <select class="form-control input-xxs" formControlName="style_color" (change)="styleColorChange()" >
+                              <option [ngValue]="null">Select FNG Color</option>
+                              <option *ngFor="let color of loadFngcolour" [value]="color.color_id"
+                               [selected]="color.color_id == formDetails.get('style_color').value">
+                                {{ color.color_code }}
+                              </option>
+       										</select>
+													 <span class="err">{{ formValidatorDetails.validate_field('style_color') }}</span>
+											 </div>
+											 <!--<div class="col-md-4">
+												 <div class="form-group">
+													 <label>Style Description <span class="text-danger">*</span> :</label>
+													 <input type="text" class="form-control input-xxs"
+														 formControlName="style_description" disabled>
+
+												 </div>
+											 </div>-->
+
+
+                       <div class="col-md-4">
+													 <label>Country <span class="text-danger">*</span> :</label>
+                           <!-- <ng-select [items]="country$ | async"
+                                   placeholder = "[Select Country]"
+                                   [selectOnTab]="true"
+                                   bindLabel="country_description"
+                                   [loading]="countryLoading"
+                                   [typeahead]="countryInput$"
+                                   [(ngModel)]="selectedCountry"
+                                   formControlName="country">
+                         </ng-select> -->
+                         <select class="form-control input-xxs" formControlName="country">
+                            <option [ngValue]="null">Select Country</option>
+                            <option *ngFor="let country of loadFngcountry" [value]="country.country_id"
+                             [selected]="country.country_id == formDetails.get('country').value">
+                              {{ country.country_description }}
+                            </option>
+                        </select>
+													 <span class="err">{{ formValidatorDetails.validate_field('country') }}</span>
+											 </div>
+
+
+										 </div>
+
+										 <div class="row">
+											 <div class="col-md-2">
+													 <label>FOB $ <span class="text-danger">*</span> :</label>
+													 <input type="text"  class="form-control input-xxs"
+														 formControlName="fob" placeholder="FOB $">
+													 <span class="err">{{ formValidatorDetails.validate_field('fob') }}</span>
+											 </div>
+                       <div class="col-md-3">
+                          <label>Customer Style :</label>
+                          <input type="text"  class="form-control input-xxs" formControlName="cus_style_manual" placeholder="Customer Style" upperCase>
+                          <span class="err">{{ formValidatorDetails.validate_field('cus_style_manual') }}</span>
+                      </div>
+
+											 <div class="col-md-3">
+													 <label>Delivery Status <span class="text-danger">*</span> :</label>
+                           <input type="text" class="form-control input-xxs" value="{{deliveryStatus}}" disabled>
+
+											 </div>
+
+                       <div class="col-md-4">
+													 <label>Projection Location <span class="text-danger">*</span> :</label>
+                           <select class="form-control input-xxs" formControlName="projection_location" >
+       												<option [ngValue]="null">Select Projection Location</option>
+                              <option *ngFor="let location of locations$ | async" [value]="location.loc_id" [selected]="location.loc_id == formDetails.get('projection_location').value">
+                                 {{ location.loc_name }}
+                               </option>
+       										</select>
+													 <span class="err">{{ formValidatorDetails.validate_field('projection_location') }}</span>
+											 </div>
+
+
+
+
+
+										 </div>
+
+										 <div class="row">
+                       <div class="col-md-3">
+													 <label>Order Qty Pack <span class="text-danger">*</span> :</label>
+													 <input type="number" formControlName="order_qty" class="form-control input-xxs"
+														 placeholder="Order Qty Pack" (keyup)="calculatePlannedQty()" (click)="calculatePlannedQty()">
+													 <span class="err">{{ formValidatorDetails.validate_field('order_qty') }}</span>
+											 </div>
+											 <div class="col-md-3">
+													 <label>Excess Percentage <span class="text-danger">*</span> :</label>
+													 <input type="number"  class="form-control input-xxs" placeholder="Excess Percentage"
+                           formControlName="excess_presentage" (keyup)="calculatePlannedQty()" (click)="calculatePlannedQty()">
+													 <span class="err">{{ formValidatorDetails.validate_field('excess_presentage') }}</span>
+											 </div>
+                       <div class="col-md-3">
+													 <label>Planned Qty <span class="text-danger">*</span> :</label>
+													 <input type="number"  class="form-control input-xxs"
+														 placeholder="Planned Qty" formControlName="planned_qty" disabled>
+													 <span class="err">{{ formValidatorDetails.validate_field('planned_qty') }}</span>
+											 </div>
+                       <div class="col-md-3">
+													 <label>Order Qty PCS :</label>
+													 <input type="number"  class="form-control input-xxs"
+														 placeholder="Order Qty Pcs" formControlName="order_qty_pcs" disabled>
+													 <span class="err">{{ formValidatorDetails.validate_field('order_qty_pcs') }}</span>
+											 </div>
+										 </div>
+
+										 <div class="row">
+                       <div class="col-md-3">
+                           <label>Shipment Mode <span class="text-danger">*</span> :</label>
+                            <select class="form-control input-xxs" formControlName="ship_mode">
+                                <option *ngFor="let shipMode of shipModes$ | async" [value]="shipMode.ship_mode" [selected]="shipMode.ship_mode == formDetails.get('ship_mode').value">
+                                  {{ shipMode.ship_mode }}
+                                </option>
+                            </select>
+                           <span class="err">{{ formValidatorDetails.validate_field('ship_mode') }}</span>
+                       </div>
+
+                       <div class="col-md-3">
+													 <label>Ex-factory Date <span class="text-danger">*</span> :</label>
+													 <input type="text" class="form-control input-xxs" bsDatepicker [minDate]="exfdate" placement="left"
+														formControlName="ex_factory_date" placeholder="Select Ex-Factory Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                             (bsValueChange)="onValueChangeexfd($event)">
+													 <span class="err">{{ formValidatorDetails.validate_field('ex_factory_date') }}</span>
+											 </div>
+
+                       <div class="col-md-3">
+													 <label>AC/Target Date <span class="text-danger">*</span> :</label>
+													 <input type="text" class="form-control input-xxs" bsDatepicker [minDate]="acdate" placement="left"
+														 formControlName="ac_date" placeholder="Select AC/Target Date " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                             (bsValueChange)="onValueChangecwdac($event)">
+													 <span class="err">{{ formValidatorDetails.validate_field('ac_date') }}</span>
+											 </div>
+
+
+                       <div class="col-md-3">
+													 <label>Customer Wanted Date <span class="text-danger">*</span> :</label>
+													 <input type="text" class="form-control input-xxs" bsDatepicker [minDate]="wantdate" placement="left"
+														formControlName="planned_delivery_date" placeholder="Select Customer Wanted Date" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }">
+													 <span class="err">{{ formValidatorDetails.validate_field('planned_delivery_date') }}</span>
+											 </div>
+										 </div>
+
+
+                     <div class="col-md-12 text-primary">
+                         <label>FNG Description : </label>
+                         <label> {{ (masterDescription == null) ? '' : masterDescription.master_description }}</label>
+                     </div>
+
+								 </fieldset>
+
+						 </div>
+						 <div class="modal-footer">
+								 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="detailsModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+								 <button *ngIf="!loadingDetails && !processingDetails" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formDetails.invalid">
+										 <b><i class="icon-floppy-disk"></i></b> Save</button>
+								 </div>
+
+				 </div>
+				 </form>
+		 </div>
+ </div>
+  <ng-snotify class="simple"></ng-snotify>

@@ -1,0 +1,91 @@
+
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Machine Type</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                        <div [hasPermission]="['MACHINE_TYPE_CREATE']">
+                          <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                          (click)="garmentOperationModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" [hasPermission]="['MACHINE_TYPE_VIEW']" style="min-height: 350px;">
+                  	 <div class="col-md-12">
+                      <table class="table display datatable-basic" id="garment_operation_tbl">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">Action</th>
+                                  <th>Status</th>
+                                  <th>Approval Status</th>
+                                  <th>Machine Type Code</th>
+                                  <th>Machine Type Name</th>
+                                  <th>created Date</th>
+
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- popup -->
+                   <div bsModal #garmentOperationModel="bs-modal" [config]="{backdrop: 'static'}"
+                   	class="modal fade" (onShow)="showEvent($event)" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="save()">
+                                <div class="modal-header  bg-teal-300">
+                                    <button type="button" class="close" (click)="garmentOperationModel.hide();clear()">&times;</button>
+                                    <h5 class="modal-title">{{ modelTitle }}</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" formControlName="machine_type_id" class="form-control input-xxs">
+
+                                    <fieldset>
+                                      <label>Machine Type Code<span class="text-danger"> *</span> :</label>
+                                      <span class="err" *ngIf="formGroup.get('machine_type_code').status === 'PENDING'"> Validating....</span>
+                                      <input type="text" formControlName="machine_type_code" class="form-control input-xxs"
+                                       placeholder="Machine Type Code" (blur)="formValidate()" upperCase>
+                                       <span class="err" *ngIf="formGroup.get('machine_type_code').errors && formGroup.get('machine_type_code').errors.remoteValidation">{{formGroup.get('machine_type_code').errors.remoteValidation}}</span>
+                                       <span class="err">{{ formValidator.validate_field('machine_type_code')}}</span>
+
+                                      </fieldset>
+
+                                    <fieldset>
+                                      <label>Machine Type Name<span class="text-danger"> *</span> :</label>
+                                     <input type="text" formControlName="machine_type_name" class="form-control input-xxs"
+                                       placeholder="Machine Type Name " (blur)="formValidate()" upperCase>
+                                       <span class="err">{{ formValidator.validate_field('machine_type_name')}}</span>
+                                      <!-- <span class="err" *ngIf="formGroup.get('machine_type_name').errors"></span>-->
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="garmentOperationModel.hide();clear()"><b><i class="icon-cross"></i></b> Close</button>
+                                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs"  [disabled]="formGroup.invalid || processing || formGroup.pending">
+                                        <b><i class="icon-floppy-disk"></i></b> Save</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>

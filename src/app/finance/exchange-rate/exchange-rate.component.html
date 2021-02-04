@@ -1,0 +1,101 @@
+<div class="panel panel-flat">
+            <div class="panel-heading">
+
+                <h5 class="panel-title">Exchange Rate</h5>
+                <div class="heading-elements">
+                    <ul class="icons-list">
+                        <li><a data-action="collapse"></a></li>
+                        <li><a data-action="reload"></a></li>
+                        <li><a data-action="close"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="text-right">
+										<button type="button" [hasPermission]="['EXCHANGE_RATE_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+											(click)="goodsTypeModel.show()"><b><i class="icon-plus3"></i></b> Add New</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="row" [hasPermission]="['EXCHANGE_RATE_VIEW']"  style="min-height: 350px;">
+								<div class="col-md-12">
+									<table class="table display compact" id="rate_tbl">
+										<thead>
+											<tr>
+												<th style="text-align:left">Action</th>
+                        	<th>Status</th>
+												<th>Currency Code</th>
+                        <th>Valid From</th>
+                        <th>Rate</th>
+												</tr>
+										</thead>
+										<tbody>
+										</tbody>
+										</table>
+								</div>
+							</div>
+
+							<div bsModal #goodsTypeModel="bs-modal"	[config]="{backdrop: 'static'}"
+							  class="modal fade" (onShow)="showEvent($event)" >
+							    <div class="modal-dialog modal-md">
+							        <div class="modal-content">
+							            <form class="form-horizontal form-validate-jquery" [formGroup]="formGroup" (ngSubmit)="saveGoodsType()">
+							                <div class="modal-header bg-teal-300">
+							                    <button type="button" class="close" (click)="goodsTypeModel.hide()">&times;</button>
+							                    <h5 class="modal-title">{{ modelTitle }}</h5>
+							                </div>
+
+							                <div class="modal-body">
+
+												<input type="hidden" formControlName="id">
+
+												<fieldset>
+													<label>Currency<span class="text-danger"> *</span> :</label>
+                          <ng-select [items]="currency$ | async"
+                                  placeholder = "Select Currency"
+                                  [selectOnTab]="true"
+                                  bindLabel="currency_code"
+                                  [loading]="currencyLoading"
+                                  [typeahead]="currencyInput$"
+                                  [(ngModel)]="selectedCurrency"
+                                  formControlName="currency"
+                                  (blur)="formValidate()" >
+                        </ng-select>
+														<span class="err">{{formFields.currency}}</span>
+                            <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+												</fieldset>
+
+                        <fieldset>
+                          <label>Valid From<span class="text-danger"> *</span> :</label>
+                          <input type="text" class="form-control input-xxs" bsDatepicker placement="left"
+                            formControlName="valid_from" placeholder="Select Date&hellip;"
+                            [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" (blur)="formValidate()" >
+                            <span class="err">{{formFields.valid_from}}</span>
+                            <span class="err">{{formFields.validation_error}}</span>
+                        </fieldset>
+
+                        <fieldset>
+                          <label>Rate <span class="text-danger"> *</span> :</label>
+                          <input type="number" formControlName="rate" step=".0001" class="form-control input-xxs" (blur)="formValidate()" placeholder="Rate"  >
+                          <span class="err">{{formFields.rate}}</span>
+                        </fieldset>
+
+											</div>
+
+							        <div class="modal-footer">
+							            <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="goodsTypeModel.hide()"><b><i class="icon-cross"></i></b>Close</button>
+							            <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+							                <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+							            </div>
+							        </form>
+							    </div>
+							</div>
+							</div>
+
+            </div>
+        </div>

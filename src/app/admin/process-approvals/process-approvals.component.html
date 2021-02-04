@@ -1,0 +1,81 @@
+<div class="col-md-12">
+    <div class="panel ">
+
+				<div class="panel-heading">
+					<h6 class="panel-title">Process Approvals</h6>
+					<div class="heading-elements">
+						<ul class="icons-list">
+		             <li><a data-action="collapse"></a></li>
+		             <li><a data-action="reload"></a></li>
+		             <li><a data-action="close"></a></li>
+		        </ul>
+		      </div>
+				</div>
+
+				<div class="panel-body">
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-12">
+                <ul class="list-group list-group-bordered">
+    							<li [ngClass]="currentProcess == process.process_name ? 'list-group-item active' : 'list-group-item'"
+                    *ngFor="let process of processList" (click)="changeProcess(process.process_name)">{{ process.process_name }}</li>
+    						</ul>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group" style="margin-top:15px">
+                  <select type="text" class="form-control input-xxs" [(ngModel)]="selectedApprovalStage">
+                    <option value="0">... Select Stage ...</option>
+                    <option *ngFor="let stage of approvalStageList; let i = index" value="{{i}}"> {{stage.stage_name}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <div [hasPermission]="['PROCESS_APPROVALS_MANAGE']">
+                    <button type="button" class="btn btn-labeled btn-primary btn-xs" (click)="addNewLevel()" [disabled]="processing || currentProcess == null" ><b><i class="icon-plus22"></i></b> Add Next</button>
+                    <button type="button" class="btn btn-labeled btn-success btn-xs" style="margin-left:10px" (click)="save()" [disabled]="processing || currentProcess == null"><b><i class="icon-plus22"></i></b> Save</button>
+        				</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-9">
+            <div class="table-responsive">
+								<table class="table text-nowrap">
+
+									<tbody>
+										<tr class="table-active table-border-double">
+											<td colspan="3">{{currentProcess}} : Approval Levels </td>
+										</tr>
+
+										<tr *ngFor="let level of approvelLevels; let i = index">
+											<td style="width:50px">
+														<a href="#" class="btn bg-teal-400 rounded-round btn-icon btn-sm">
+															<span class="letter-icon">{{ i + 1 }}</span>
+														</a>
+													<!--<div>
+														<a href="#" class="text-default font-weight-semibold letter-icon-title">{{level.stage_name}}</a>
+														<div class="text-muted font-size-sm"><span class="badge badge-mark border-blue mr-1"></span> Active</div>
+													</div>-->
+											</td>
+											<td>
+												<a href="#" class="text-default">
+													<div class="font-weight-semibold">Approval Stage : {{level.stage_name}}</div>
+													<span class="text-muted" *ngFor="let user of level.approval_users; let z = index">{{user.approval_order}}. {{user.first_name}} {{user.last_name}} | {{user.email}} <br></span>
+												</a>
+											</td>
+                      <td>
+                        <span class="badge bg-danger stage-close" (click)="removeStage(i)">X</span>
+                      </td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+          </div>
+
+        </div>
+
+
+		</div>
+</div>

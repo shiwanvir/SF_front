@@ -1,0 +1,327 @@
+<div class="panel ">
+        <div class="panel-heading">
+          <h6 class="panel-title">Items Property Assign</h6>
+
+        </div>
+
+        <div class="panel-body">
+
+          <form class="form-horizontal form-validate-jquery" [formGroup]="formGroup" (ngSubmit)="save()">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Main Category <span class="text-danger">*</span> :</label>
+              <select formControlName="category_code" id="category_code" class="form-control input-xxs"
+                      style='width: 200px;' (change)='loadSubCategory($event.target.value)'>
+                <option value="null">Select Main Category</option>
+                <option *ngFor="let com of mainCategory$ | async" [value]="com.category_id">
+                        {{com.category_name}}
+                    </option>
+              </select>
+              <span class="err" > {{ appFormValidator.validate_field('category_code') }} </span>
+
+            </div>
+
+            <div class="col-md-4">
+              <label>Sub Category <span class="text-danger">*</span> :</label>
+              <select formControlName="sub_category_code" id="sub_category_code" class="form-control input-xxs" style='width: 200px;' (change)='loadUnAssignProperties($event.target.value)'>
+              <option [ngValue]="null" >Select Sub Category</option>
+              <option *ngFor="let subCat of subCategory2" [value]="subCat.subcategory_id" >
+                {{ subCat.subcategory_name }}
+              </option>
+              </select>
+              <span class="err" > {{ appFormValidator.validate_field('sub_category_code') }} </span>
+
+            </div>
+
+
+            </div>
+
+            <legend class="text-bold"></legend>
+
+            <div class="row">
+
+              <div class="col-md-6">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th style="width:20px">#</th>
+                          <th>Un-Assigned</th>
+                          <th style="width:20%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let subc of subCatList; let i = index">
+                          <td>{{ (i + 1) }}</td>
+                          <td>{{ subc.property_name }}</td>
+
+                          <td>
+                            <i class="icon-square-right action-button-padding" (click)="changeOrder(i, 'LEFT',subc.property_id)" *ngIf="!processing"></i>&nbsp;
+                            <i class="icon-close2 action-button-padding" (click)="removeUser1(i,subc.property_id)"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+
+
+              </div>
+
+
+              <div class="col-md-6">
+
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th style="width:20px">#</th>
+                          <th>Assigned</th>
+                          <th style="width:22%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let subc2 of subCatList2; let i = index">
+                          <td>{{ (i + 1) }}</td>
+                          <td>{{ subc2.property_name }}</td>
+                          <td>
+                            <i class="icon-square-up action-button-padding" (click)="changeOrder(i, 'UP',subc2.property_id)"></i>&nbsp;
+                            <i class="icon-square-down action-button-padding" (click)="changeOrder(i, 'DOWN',subc2.property_id)"></i>&nbsp;
+                            <i class="icon-close2 action-button-padding" (click)="removeUser(i,subc2.property_id)"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+
+              </div>
+
+
+            </div>
+
+            <div  class="row">
+
+
+              <div class="col-sm-12 " style="margin-top:15px">
+                <div [hasPermission]="['ITEM_PROP_CREATE']">
+                <div class="col-sm-6">
+                  <button style="float:right" type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs" [disabled]="formGroup.invalid || formGroup.pending"  (click)="OpenPop()">
+                  <b><i class="icon-plus3"></i></b> Add New</button>
+                </div>
+                <div class="col-sm-6">
+                  <button style="float:right" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending">
+                  <b><i class="icon-floppy-disk"></i></b> Save </button>
+                </div>
+              </div>
+              </div>
+
+
+              </div>
+
+
+
+
+    </form>
+
+
+  </div>
+
+</div>
+
+
+<!-- popup -->
+ <div bsModal #sourceModel="bs-modal" [config]="{backdrop: 'static'}"
+ 	class="modal fade" (onShow)="showEvent($event)" >
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <form class="form-horizontal" [formGroup]="formPopUp" (ngSubmit)="save_unassign()">
+              <div class="modal-header  bg-teal-300">
+                  <button type="button" class="close" (click)="sourceModel.hide()">&times;</button>
+                  <h5 class="modal-title">{{ modelTitle }}</h5>
+              </div>
+              <div class="modal-body">
+                  <input type="hidden" formControlName="source_id" class="form-control input-xxs">
+                  <fieldset class="content-group">
+                      <div class="form-group">
+                          <label>Item Property Name <span class="text-danger">*</span> :</label>
+                          <span class="err" style="margin-top:25px" *ngIf="formPopUp.get('property_name').status === 'PENDING'"> Validating....</span>
+                          <input type="text" formControlName="property_name" class="form-control input-xxs" placeholder="Item Property Name" upperCase>
+                          <span class="err" *ngIf="formPopUp.get('property_name').errors && formPopUp.get('property_name').errors.remoteValidation">{{formPopUp.get('property_name').errors.remoteValidation}}</span>
+                          <span class="err" > {{ formValidator.validate_field('property_name') }} </span>
+                      </div>
+                  </fieldset>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="sourceModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                  <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || processing || formGroup.pending">
+                      <b><i class="icon-floppy-disk"></i></b> Save</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+
+
+      <!--  <div class="panel ">
+								<div class="panel-heading">
+									<h6 class="panel-title">Items Property Assign</h6>
+									<div class="heading-elements">
+										<ul class="icons-list">
+					                		<li><a data-action="collapse"></a></li>
+					                		<li><a data-action="reload"></a></li>
+					                		<li><a data-action="close"></a></li>
+					                	</ul>
+				                	</div>
+								</div>
+
+								<div class="panel-body">
+                  <form class="form-horizontal form-validate-jquery" [formGroup]="formGroup" >
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label>Main Category <span class="text-danger">*</span> :</label>
+                      <select formControlName="category_code" id="category_code" class="form-control input-xxs"
+                              style='width: 200px;' (change)='loadSubCategory($event.target.value)'>
+                        <option value="null">Select One ...</option>
+                        <option *ngFor="let com of mainCategory$ | async" [value]="com.category_id">
+                                {{com.category_name}}
+                            </option>
+                      </select>
+                      <span class="err" > {{ appFormValidator.validate_field('category_code') }} </span>
+
+                    </div>
+
+                    <div class="col-md-4">
+                      <label>Sub Category <span class="text-danger">*</span> :</label>
+                      <select formControlName="sub_category_code" id="sub_category_code" class="form-control input-xxs" style='width: 200px;' (change)='loadUnAssignProperties($event.target.value)'>
+                      <option value="null">Select One ...</option>
+                      <option *ngFor="let subCat of subCategory$ | async" [value]="subCat.subcategory_id">
+                            {{subCat.subcategory_name}}
+                      </option>
+                      </select>
+                      <span class="err" > {{ appFormValidator.validate_field('sub_category_code') }} </span>
+
+                    </div>
+
+
+                    </div>
+
+                    <legend class="text-bold"></legend>
+
+                    <div class="row">
+
+                      <div class="col-md-6">
+
+                        <div class="table-responsive">
+                						<table class="table table-bordered">
+                							<thead>
+                								<tr>
+                									<th style="width:20px">#</th>
+                									<th>Un-Assign</th>
+
+                									<th style="width:15%">Actions</th>
+                								</tr>
+                							</thead>
+                							<tbody>
+                								<tr *ngFor="let user of userList; let i = index">
+                									<td>{{ (i + 1) }}</td>
+                									<td>{{ user.first_name }}</td>
+
+                									<td>
+                										<i class="icon-square-up action-button-padding" (click)="changeOrder(i, 'UP')"></i>
+                										<i class="icon-square-down action-button-padding" (click)="changeOrder(i, 'DOWN')"></i>
+                										<i class="icon-close2 action-button-padding" (click)="removeUser(i)"></i>
+                									</td>
+                								</tr>
+                							</tbody>
+                						</table>
+                					</div>
+
+
+
+                      </div>
+
+
+                      <div class="col-md-6">
+
+
+                        <div class="table-responsive">
+                						<table class="table table-bordered">
+                							<thead>
+                								<tr>
+                									<th style="width:20px">#</th>
+                									<th>Assign</th>
+
+                									<th style="width:15%">Actions</th>
+                								</tr>
+                							</thead>
+                							<tbody>
+                								<tr *ngFor="let user of userList2; let i = index">
+                									<td>{{ (i + 1) }}</td>
+                									<td>{{ user.first_name }}</td>
+
+                									<td>
+                										<i class="icon-square-up action-button-padding" (click)="changeOrder2(i, 'UP')"></i>
+                										<i class="icon-square-down action-button-padding" (click)="changeOrder2(i, 'DOWN')"></i>
+                										<i class="icon-close2 action-button-padding" (click)="removeUser2(i)"></i>
+                									</td>
+                								</tr>
+                							</tbody>
+                						</table>
+                					</div>
+
+
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-12" style="margin-top:15px">
+              					<button *ngIf="!processing" type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending"><b><i class="icon-floppy-disk"></i></b> Save Role</button>
+              			</div>
+
+
+
+
+                    </form>
+								</div>
+							</div>
+
+
+
+              <div bsModal #model_new_properties="bs-modal" class="modal fade">
+                  <div class="modal-dialog modal-md">
+                      <div class="modal-content">
+
+
+                              <div class="modal-header bg-teal-300">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h5 class="modal-title">{{modelTitle}}</h5>
+                              </div>
+
+                              <div class="modal-body">
+                                  <div class=" col-source_hidmd-12">
+                                      <fieldset class="content-group">
+                                          <div class="form-group">
+                                              <label>Property Name<span class="text-danger">*</span> :</label>
+                                              <input type="text" formControlName="property_name" id="property_name" class="form-control input-xxs" placeholder="Enter new property name" >
+                                          </div>
+                                      </fieldset>
+
+                                  </div>
+                              </div>
+
+                              <div class="modal-footer">
+                                  <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" data-dismiss="modal" id="" (click)="model_new_properties.hide()">
+                                      <b><i class="icon-cross"></i></b>Close</button>
+
+                                  <button type="button" class="btn bg-teal-400 btn-labeled btn-success btn-xs" formControlName="btn-save-property" (click)="saveNewProperty()">
+                                      <b><i class="icon-floppy-disk"></i></b> Save</button>
+
+                              </div>
+
+                      </div>
+                  </div>
+              </div>
+            -->

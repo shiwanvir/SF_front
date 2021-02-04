@@ -1,0 +1,47 @@
+<div bsModal #revisionModel="bs-modal"  [config]="{backdrop: 'static'}"
+ class="modal fade" (onShown)="modelShowEvent($event)" >
+ <div class="modal-dialog modal-lg">
+
+		 <div class="modal-content">
+
+						 <div class="modal-header  bg-teal-300">
+								 <button type="button" class="close" (click)="Model_hide()">&times;</button>
+								 <h5 class="modal-title">{{ modelTitle }}</h5>
+						 </div>
+						 <div class="modal-body">
+                 <div class="col-md-12">
+         					<legend class="text-bold" style="margin-top:10px">Delivery Revisions</legend>
+         					<div class="row">
+         						<div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                       <hot-table
+                         [hotId]="instance"
+                         [settings]="hotOptions"
+                         [data]="dataset">
+                     </hot-table>
+         						</div>
+         					</div>
+               </div>
+
+               <div class="col-md-12" *ngIf="datasetOrigin.length > 0">
+                <legend class="text-bold" style="margin-top:10px">Delivery Origin</legend>
+                <div class="row">
+                  <div style="border-style:solid;border-width:1px;border-color:#DCDCDC">
+                     <hot-table
+                       [hotId]="instanceOrigin"
+                       [settings]="hotOptionsOrigin"
+                       [data]="datasetOrigin">
+                   </hot-table>
+                  </div>
+                </div>
+             </div>
+
+
+						 </div>
+						 <div class="modal-footer">
+								 <button type="button" style="margin-top:15px" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="Model_hide()"><b><i class="icon-cross"></i></b> Close</button>
+						 </div>
+
+				 </div>
+
+		 </div>
+ </div>

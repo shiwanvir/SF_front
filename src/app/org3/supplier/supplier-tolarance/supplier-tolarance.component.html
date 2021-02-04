@@ -1,0 +1,163 @@
+
+
+
+
+              <!-- <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveTolarance()" style="margin-top:-25px">
+
+
+
+                      <div class="panel panel-flat" style="border-style:none">
+                        <div class="panel-body">
+
+                        <div class="row">
+                          <h6 style="color:#26A69A">Supplier Tolerance</h6>
+                          <hr>
+
+                        </div>
+
+                      </div>
+                      <div class="row">
+
+
+                        <input type="hidden" formControlName="id" class="form-control input-xxs">
+                        <div class="col-md-4">
+                        <fieldset>
+                          <label>Supplier Name <span class="text-danger">*</span> :</label>
+                            <input type="hidden" formControlName="supplier_id" class="form-control input-xxs">
+                          <input type="text" formControlName="supplier_name" class="form-control input-xxs"
+                           placeholder="Supplier Name " (blur)="formValidate()" upperCase>
+                          <span class="err">{{ formFields.supplier_name }}</span>
+                          <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                        </fieldset>
+                      </div>
+                        <div class="col-md-4">
+                          <label>Main Category <span class="text-danger">*</span> : </label>
+                          <ng-select [items]="mainCategory$ | async"
+                                  placeholder = "Select Main Category"
+                                  [selectOnTab]="true"
+                                  bindLabel="category_name"
+                                  [loading]="mainCategoryLoading "
+                                  [typeahead]="mainCategoryInput$"
+                                  [(ngModel)]="selectedmainCategory"
+                                  formControlName="category_name" (blur)="formValidate()">
+                          </ng-select>
+                          <span class="err">{{ formFields.category_name }}</span>
+                           <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                        </div>
+                      <div class="col-md-4">
+                        <label>Sub Category <span class="text-danger">*</span> : </label>
+                        <ng-select [items]="subCategory$ | async"
+                                placeholder = "Select Sub Category"
+                                [selectOnTab]="true"
+                                bindLabel="subcategory_name"
+                                [loading]="subCategoryLoading "
+                                [typeahead]="subCategoryInput$"
+                                [(ngModel)]="selectedsubCategory"
+                                formControlName="subcategory_name" (blur)="formValidate()">
+                        </ng-select>
+                        <span class="err">{{ formFields.subcategory_name}}</span>
+                         <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-4">
+                      <label>UOM <span class="text-danger">*</span> : </label>
+                      <ng-select [items]="uom$| async"
+                              placeholder = "Select UOM"
+                              [selectOnTab]="true"
+                              bindLabel="uom_code"
+                              [loading]="uomLoading"
+                              [typeahead]="uomInput$"
+                              [(ngModel)]="selecteduom"
+                              formControlName="uom_code" (blur)="formValidate()">
+                      </ng-select>
+                      <span class="err">{{ formFields.uom_code}}</span>
+                       <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                      </div>
+                  <div class="col-md-4">
+                  <fieldset>
+                    <label>Qty <span class="text-danger">*</span> :</label>
+                    <input type="text" formControlName="qty" class="form-control input-xxs"
+                     placeholder="Qty" (blur)="formValidate()">
+                    <span class="err">{{ formFields.qty }}</span>
+                    <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                  </fieldset>
+                </div>
+                <div class="col-md-4">
+                <fieldset>
+                  <label>Min% <span class="text-danger">*</span> :</label>
+                  <input type="text" formControlName="min" class="form-control input-xxs"
+                   placeholder="Min" (blur)="formValidate()">
+                  <span class="err">{{ formFields.min }}</span>
+                  <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+                </fieldset>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col-md-4">
+              <fieldset>
+                <label>Max% <span class="text-danger">*</span> :</label>
+                <input type="text" formControlName="max" class="form-control input-xxs"
+                 placeholder="Max" (blur)="formValidate()">
+                <span class="err">{{ formFields.max }}</span>
+                <span *ngIf="formFields.validation_error != ''" class="err">{{formFields.validation_error}}</span>
+              </fieldset>
+            </div>
+            <div class="col-md-4">
+            <fieldset>
+              <label>Min Qty <span class="text-danger">*</span> :</label>
+              <input type="text" formControlName="min_qty" class="form-control input-xxs"
+               placeholder="Min Qty" (blur)="formValidate()">
+              <span class="err">{{ formFields.min_qty }}</span>
+
+            </fieldset>
+          </div>
+          <div class="col-md-4">
+          <fieldset>
+            <label>Max Qty <span class="text-danger">*</span> :</label>
+            <input type="text" formControlName="max_qty" class="form-control input-xxs"
+             placeholder="Max Qty" (blur)="formValidate()">
+            <span class="err">{{ formFields.max_qty }}</span>
+
+          </fieldset>
+        </div>
+        </div>
+
+
+                  </div>
+
+
+
+
+                    <div class="modal-footer">
+                        <div [hasPermission]="['SUPPLIER_CREATE']">
+
+                        <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+                            <b><i class="icon-floppy-disk"></i></b> Save</button>
+                        </div>
+                        </div>
+                    </form> -->
+
+
+                    <div class="row">
+                       <div class="col-md-12">
+                        <table class="table display datatable-basic" id="tolarance_table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Action</th>
+                                    <th>Status</th>
+                                    <th>Supplier Name</th>
+
+                                    
+                                    <th>Min</th>
+                                    <th>Max</th>
+                                    <th>Min Qty</th>
+                                    <th>Max Qty </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                      </div>
+                    </div>

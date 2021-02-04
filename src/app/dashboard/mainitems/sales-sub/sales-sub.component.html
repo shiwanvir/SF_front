@@ -1,0 +1,40 @@
+
+<div class="row">
+  <div class="col-md-6">
+  <!-- <h4 class="text-center">Quartely Sales</h4> -->
+       <canvas baseChart height="460vw" width="470vw"
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [chartType]="barChartType"
+        (chartClick)="chartClicked($event)"
+        [colors]="barChartColors"
+        >
+        </canvas>
+   </div>
+
+   <div class="col-md-6">
+      <!-- <h4 class="text-center">This Month</h4> -->
+       <canvas baseChart height="227vw" width="470vw"
+        [datasets]="barChartData2"
+        [labels]="barChartLabels2"
+        [options]="barChartOptions2"
+        [legend]="barChartLegend2"
+        [chartType]="barChartType2"
+        (chartClick)="chartClicked2($event)"
+        [colors]="barChartColors2"
+        >
+        </canvas>
+        <canvas baseChart height="227vw" width="470vw"
+         [datasets]="barChartData3"
+         [labels]="barChartLabels3"
+         [options]="barChartOptions3"
+         [legend]="barChartLegend3"
+         [chartType]="barChartType3"
+         (chartClick)="chartClicked3($event)"
+         [colors]="barChartColors3"
+         >
+         </canvas>
+      </div>
+ </div>

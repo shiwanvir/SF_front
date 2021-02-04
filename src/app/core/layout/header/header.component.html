@@ -1,0 +1,121 @@
+
+<!-- Main navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#/dashboard/dashboard"><img src="assets/images/logo_light.png" alt=""></a>
+
+        <ul class="nav navbar-nav visible-xs-block">
+            <li><a (click)="collapseMenu()" data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+            <li><a (click)="hideMenu()" class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
+            <li><a (click)="openFullscreen()" class="sidebar-mobile-main-toggle"><i class="icon-screen-full"></i></a></li>
+        </ul>
+    </div>
+
+    <div class="navbar-collapse collapse" id="navbar-mobile">
+        <ul class="nav navbar-nav">
+            <li><a (click)="collapseMenu()" class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
+            <li>
+                <a (click)="hideMenu()" class="sidebar-control sidebar-main-hide hidden-xs" data-popup="tooltip" title="Hide main" data-placement="bottom" data-container="body">
+                    <i class="icon-lan3"></i>
+                </a>
+            </li>
+            <li><a (click)="openFullscreen()" class="sidebar-mobile-main-toggle" data-popup="tooltip" title="Full Screen" data-placement="bottom" data-container="body"><i class="icon-screen-full"></i></a></li>
+
+        </ul>
+
+
+
+        <ul class="nav navbar-nav navbar-right">
+
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <i class="icon-history" style="margin-right:10px"></i>
+                Recent Pages <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li *ngFor="let item of recentPages"><a routerLink="{{item.url}}">{{item.title}}</a></li>
+
+              </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                  <i class="icon-star-full2" style="margin-right:10px"></i>
+                  Bookmarks<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li *ngFor="let bookmark of bookmarks$ | async">
+                    <a [routerLink]="bookmark.url">{{ bookmark.name }}</a>
+                  </li>
+                </ul>
+              </li>
+
+          <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <i class="icon-user-plus" style="margin-right:10px"></i>
+              {{ currentUserLocation }}
+              <i class="caret"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li *ngFor="let loc of locations$ | async"><a (click)="changeLocation(loc.loc_id, loc.loc_name)"><i class="icon-user-plus" ></i>{{ loc.loc_name }}</a></li>
+            </ul>
+          </li>
+
+<!--
+          <li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-bubbles4"></i>
+							<span class="visible-xs-inline-block position-right">Messages</span>
+							<span class="badge bg-warning-400">2</span>
+						</a>
+
+						<div class="dropdown-menu dropdown-content width-350">
+							<div class="dropdown-content-heading">
+								Messages
+
+							</div>
+
+							<ul class="media-list dropdown-content-body">
+								<li class="media">
+									<div class="media-left">
+										<img src="assets/images/placeholder.jpg" class="img-circle img-sm" alt="">
+										<span class="badge bg-danger-400 media-badge">1</span>
+									</div>
+
+									<div class="media-body">
+										<a href="#" class="media-heading">
+											<span class="text-semibold">James Alexander</span>
+											<span class="media-annotation pull-right">04:58</span>
+										</a>
+
+										<span class="text-muted">who knows, maybe that would be the best thing for me...</span>
+									</div>
+								</li>
+
+							</ul>
+
+							<div class="dropdown-content-footer">
+								<a href="#" data-popup="tooltip" title="All messages"><i class="icon-menu display-block"></i></a>
+							</div>
+						</div>
+					</li>-->
+
+            <li class="dropdown dropdown-user">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="assets/images/avatar5.jpg" alt="">
+                    <span>{{ display_name }}</span>
+                    <i class="caret"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="#"><i class="icon-user-plus"></i> My profile</a></li>
+
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li>
+                    <li><a (click)="logout()"><i class="icon-switch2"></i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- /main navbar -->

@@ -1,0 +1,31 @@
+
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">{{pageHeader}}</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <tabset #cancellationTabs [justified]="true">
+
+                    <tab heading="Cancellation Category" (select)="onSelect($event)">
+                      <app-cancellation-category></app-cancellation-category>
+                    </tab>
+
+                    <tab heading="Cancellation Reason" (select)="onSelect($event)">
+                        <app-cancellation-reason></app-cancellation-reason>
+                    </tab>
+
+
+                  </tabset>
+
+                </div>
+            </div>

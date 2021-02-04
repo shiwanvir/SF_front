@@ -1,0 +1,13 @@
+<div class="col-md-6 col-md-offset-3">
+    <h6 class="text-center">RM On-Time Delivery {{ anio }}</h6>
+  <div>
+    <canvas baseChart height="350vw" width="470vw"
+       [data]="pieChartData"
+       [labels]="pieChartLabels"
+       [chartType]="pieChartType"
+       [options]="pieChartOptions"
+       [colors]="colours"
+       (chartClick)="chartClicked($event)">
+     </canvas>
+  </div>
+</div>

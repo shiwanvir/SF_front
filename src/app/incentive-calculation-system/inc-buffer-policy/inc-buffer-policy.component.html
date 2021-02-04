@@ -1,0 +1,76 @@
+
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Buffer Policy</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                        <div [hasPermission]="['BUFFER_POLICY_CREATE']">
+                          <!-- <button type="button" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                          (click)="bufferPolicyModel.show()"><b><i class="icon-plus3"></i></b>Add New</button> -->
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row"  [hasPermission]="['BUFFER_POLICY_VIEW']" style="min-height: 350px;">
+                  	 <div class="col-md-12">
+                      <table class="table display datatable-basic" id="buffer_policy_tbl">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">Action</th>
+                                  <th>Status</th>
+                                  <th>Hours</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- popup -->
+                   <div bsModal #bufferPolicyModel="bs-modal" [config]="{backdrop: 'static'}"
+                   	class="modal fade" (onShow)="showEvent($event)" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="save()">
+                                <div class="modal-header  bg-teal-300">
+                                    <button type="button" class="close" (click)="bufferPolicyModel.hide()">&times;</button>
+                                    <h5 class="modal-title">{{ modelTitle }}</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" formControlName="inc_buffer_id" class="form-control input-xxs">
+                                    <fieldset class="content-group">
+                                        <label>Hours <span class="text-danger">*</span> :</label>
+                                        <span class="err" *ngIf="formGroup.get('hours').status === 'PENDING'"> Validating....</span>
+                                        <input type="text" class="form-control input-xxs" formControlName="hours" placeholder="hours" upperCase  (keypress)="keyPress($event)">
+                                        <span class="err" *ngIf="formGroup.get('hours').errors && formGroup.get('hours').errors.remoteValidation">{{formGroup.get('hours').errors.remoteValidation}}</span>
+                                        <span class="err">{{ formValidator.validate_field('hours')}}</span>
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="bufferPolicyModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid">
+                                        <b><i class="icon-floppy-disk"></i></b> Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>

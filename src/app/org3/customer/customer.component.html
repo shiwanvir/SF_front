@@ -1,0 +1,40 @@
+<div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Customer</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    <tabset #tabs>
+
+                      <tab heading="Customers" id="tab1" (select)="onSelect($event)">
+                          <app-customer-list></app-customer-list>
+                      </tab>
+
+                      <tab heading="Customer" (select)="onSelect($event)">
+                          <app-customer-creation></app-customer-creation>
+                      </tab>
+
+                      <tab heading="Customer Division">
+                          <app-multiselect
+                            [notSelected]="notSelectedDivisionList$ | async"
+                            [selected]="selectedDivisionList$ | async"
+                            selectedHeader = "Assigned Divisions"
+                            notSelectedHeader = "Un-Assigned Divisions"
+                            bindId = "division_id"
+                            bindLabel = "division_description"
+                            (onSave)="saveDivisionList($event)">
+                        </app-multiselect>
+                      </tab>
+                    </tabset>
+
+                </div>
+            </div>

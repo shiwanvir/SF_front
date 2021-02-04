@@ -1,0 +1,81 @@
+
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Currency</h6>
+
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li><a data-action="collapse"></a></li>
+                            <li><a data-action="reload"></a></li>
+                            <li><a data-action="close"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="text-right">
+                          <button type="button" [hasPermission]="['CURRENCY_CREATE']" class="btn bg-teal-400 btn-labeled btn-primary btn-xs"
+                          (click)="currencyModel.show()"><b><i class="icon-plus3"></i></b>Add New</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" [hasPermission]="['CURRENCY_VIEW']" style="min-height: 350px;">
+                  	 <div class="col-md-12">
+                      <table class="table display datatable-basic" id="currency_tbl">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">Action</th>
+                                  <th>Status</th>
+                                  <th>Currency Code</th>
+                                  <th>Currency Description</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- popup -->
+                   <div bsModal #currencyModel="bs-modal" [config]="{backdrop: 'static'}"
+                   	class="modal fade" (onShow)="showEvent($event)" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="saveCurrency()">
+                                <div class="modal-header  bg-teal-300">
+                                    <button type="button" class="close" (click)="currencyModel.hide()">&times;</button>
+                                    <h5 class="modal-title">{{ modelTitle }}</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" formControlName="currency_id" class="form-control input-xxs">
+                                    <fieldset class="content-group">
+                                        <label>Currency Code <span class="text-danger">*</span> :</label>
+                                        <span class="err" *ngIf="formGroup.get('currency_code').status === 'PENDING'"> Validating....</span>
+                                        <input type="text" class="form-control input-xxs" formControlName="currency_code" placeholder="Currency Code" upperCase>
+                                        <span class="err" *ngIf="formGroup.get('currency_code').errors && formGroup.get('currency_code').errors.remoteValidation">{{formGroup.get('currency_code').errors.remoteValidation}}</span>
+                                        <span class="err">{{ formValidator.validate_field('currency_code')}}</span>
+                                    </fieldset>
+                                    <fieldset>
+                                      <label>Currency Description <span class="text-danger">*</span> :</label>
+                                      <input type="text" formControlName="currency_description" class="form-control input-xxs"
+                                       placeholder="Currency Description" upperCase>
+                                    <span class="err">{{ formValidator.validate_field('currency_description')}}</span>
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="currencyModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                                    <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || formGroup.pending || processing">
+                                        <b><i class="icon-floppy-disk"></i></b> Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
